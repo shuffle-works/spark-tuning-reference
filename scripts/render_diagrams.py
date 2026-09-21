@@ -27,8 +27,11 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-import mermaidx
-
+# mermaidx is declared via inline PEP 723 metadata above, not in the project's
+# own dependency tree (see module docstring), so it's imported lazily inside
+# render_one() — that keeps `from scripts.render_diagrams import main` working
+# in a plain dev env, where main()'s glob/dispatch/error-handling is testable
+# with render_one() mocked out.
 DIAGRAMS_DIR = Path(__file__).resolve().parent.parent / "content" / "diagrams"
 
 FONT = "Recursive, ui-sans-serif, system-ui, -apple-system, sans-serif"
@@ -77,6 +80,8 @@ PASSES = [(".svg", LIGHT), (".dark.svg", DARK)]
 
 
 def render_one(source: str, theme_variables: dict) -> str:
+    import mermaidx
+
     diagram = mermaidx.render(
         source,
         theme="base",
