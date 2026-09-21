@@ -10,11 +10,12 @@ import urllib.parse
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-import requests
-import trafilatura
 import yaml
-from rich.console import Console
-from rich.table import Table
+
+# requests/trafilatura/rich are imported lazily inside the functions that need
+# them (the live network-fetch functions, and main()'s console/table output),
+# so that `from scripts.fetch_references import main` works in a minimal dev
+# env where the `research` group isn't installed — mirrors scripts/ask.py.
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 INDEX_PATH = REPO_ROOT / "references" / "index.yaml"
@@ -34,11 +35,11 @@ def html_to_markdown(html: str) -> str:
     )
     return result.stdout.strip()
 
-console = Console()
-
 
 def fetch_web(source: dict) -> tuple[str, int]:
     """Fetch an article page: trafilatura first, fall back to lynx -dump."""
+    import trafilatura
+
     url = source["url"]
     downloaded = trafilatura.fetch_url(url)
     text = trafilatura.extract(downloaded) if downloaded else None
@@ -57,6 +58,8 @@ def fetch_web(source: dict) -> tuple[str, int]:
 
 def fetch_source(source: dict) -> tuple[str, int]:
     """Fetch a raw source file verbatim (e.g. Scala from raw.githubusercontent.com)."""
+    import requests
+
     resp = requests.get(source["url"], timeout=60)
     resp.raise_for_status()
     return resp.text, len(resp.content)
@@ -64,6 +67,8 @@ def fetch_source(source: dict) -> tuple[str, int]:
 
 def fetch_paper(source: dict) -> tuple[str, int]:
     """Download a PDF and convert with pdftotext -layout."""
+    import requests
+
     tmp_pdf = REPO_ROOT / "references" / "papers" / f"{source['id']}.pdf"
     resp = requests.get(source["url"], timeout=120)
     resp.raise_for_status()
@@ -85,6 +90,8 @@ def fetch_jira(source: dict) -> tuple[str, int]:
     Apache's JIRA instance, but the issue-xml export view does — so that's used
     instead of the REST API for both metadata and attachment discovery.
     """
+    import requests
+
     match = JIRA_KEY_RE.search(source["url"])
     if not match:
         raise ValueError(f"could not extract JIRA key from url: {source['url']}")
@@ -148,6 +155,10 @@ def fetch_jira(source: dict) -> tuple[str, int]:
 
 
 def main() -> int:
+    from rich.console import Console
+    from rich.table import Table
+
+    console = Console()
     index = yaml.safe_load(INDEX_PATH.read_text())
     sources = index["sources"]
 
