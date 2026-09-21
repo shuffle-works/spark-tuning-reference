@@ -1,0 +1,9 @@
+stateDiagram-v2
+    [*] --> Uncached
+    Uncached --> Cached: action touches the<br/>partition (lazy, per block)
+    Cached --> Evicted: LRU, under execution<br/>memory pressure
+    Cached --> Lost: executor gone
+    Evicted --> OnDisk: MEMORY_AND_DISK<br/>spills to disk
+    OnDisk --> Cached: read back from disk
+    Evicted --> Uncached: MEMORY_ONLY<br/>drop, recompute from lineage
+    Lost --> Uncached: recompute from lineage

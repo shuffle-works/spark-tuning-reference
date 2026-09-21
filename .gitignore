@@ -1,0 +1,34 @@
+# RAG index (rebuilt from references/)
+.chromadb/
+.chromadb-meta/
+
+# Proprietary/third-party reference corpus — licensed, not for distribution.
+# Kept on disk locally; only the source manifest (index.yaml) is tracked.
+references/*
+!references/index.yaml
+
+# Python cache
+__pycache__/
+*.pyc
+.venv/
+
+# Machine-local Claude harness state (per-user settings)
+.claude/settings.local.json
+
+# Machine-local agent worktrees — full checkouts, regenerable, never committed
+.claude/worktrees/
+
+# Local-only pprose editorial toolkit (uvx pprose install) — kept on disk, not tracked
+.agents/
+.claude/skills/pprose-*/
+AGENTS.md
+
+# Local scratch plans, never tracked
+docs/superpowers/
+
+# graft's local graph cache — regenerable, not committed (run `graft build`).
+graft/
+
+docs/plans/
+
+docs/designs/

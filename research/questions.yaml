@@ -1,0 +1,1004 @@
+# Question registry — single source of truth for the answering pipeline.
+# Field reference (see also docs/architecture.md):
+#
+# sections[].id         section key, e.g. "3.6-shuffle" — matches the projection
+#                       file/manifest grouping
+# sections[].num        human section number, e.g. "3.6"
+# sections[].title      display title, e.g. "Shuffle"
+# sections[].default_k  retrieval k for the section's questions unless overridden
+# questions[].id        stable "<num>-qNN"; never renumbered or reused
+# questions[].section   foreign key to sections[].id
+# questions[].text      the question, verbatim, as passed to ask.py
+# questions[].version   "3.0" | "3.5" | "4.0" | "n/a" -> ask.py --version
+# questions[].k         per-question retrieval override; null -> section default_k
+# questions[].status    "pending" | "answered" | "needs-review"
+#
+# NOTE: this comment is a documentation aid on the committed snapshot only.
+# scripts/registry.py:save_registry() uses yaml.safe_dump, which does not
+# preserve comments — any CLI write (add_question, recompute_question, ...)
+# regenerates this file without it. Re-add it manually after such an edit if
+# you want it to persist; it is not read by any script.
+sections:
+- id: 3.1-introduction
+  num: '3.1'
+  title: Introduction
+  default_k: 15
+- id: 3.2-execution-model
+  num: '3.2'
+  title: Spark Execution Model
+  default_k: 15
+- id: 3.3-memory-management
+  num: '3.3'
+  title: Memory Management
+  default_k: 15
+- id: 3.4-partitioning
+  num: '3.4'
+  title: Partitioning
+  default_k: 15
+- id: 3.5-join-optimization
+  num: '3.5'
+  title: Join Optimization
+  default_k: 15
+- id: 3.6-shuffle
+  num: '3.6'
+  title: Shuffle
+  default_k: 15
+- id: 3.7-data-formats
+  num: '3.7'
+  title: Data Formats
+  default_k: 15
+- id: 3.7b-table-formats
+  num: 3.7b
+  title: Table Formats
+  default_k: 15
+- id: 3.8-caching-persistence
+  num: '3.8'
+  title: Caching & Persistence
+  default_k: 15
+- id: 3.9-pyspark-specifics
+  num: '3.9'
+  title: PySpark Specifics
+  default_k: 15
+- id: 3.10-adaptive-query-execution
+  num: '3.10'
+  title: Adaptive Query Execution
+  default_k: 15
+- id: 3.11-cluster-tuning
+  num: '3.11'
+  title: Cluster Tuning
+  default_k: 15
+- id: 3.12-anti-patterns
+  num: '3.12'
+  title: Anti-Patterns
+  default_k: 15
+- id: 3.13-bottleneck-reference
+  num: '3.13'
+  title: Bottleneck Reference
+  default_k: 18
+- id: 3.14-metrics-glossary
+  num: '3.14'
+  title: Metrics Glossary
+  default_k: 18
+- id: 3.15-config-quick-reference
+  num: '3.15'
+  title: Spark Config Quick-Reference
+  default_k: 18
+questions:
+- id: 3.1-q01
+  section: 3.1-introduction
+  text: What is the intended mental model a practitioner should have before reading an optimization guide?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.1-q02
+  section: 3.1-introduction
+  text: What is the canonical definition of a "straggler task" in Spark documentation vs in the research literature? Are they the same concept?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.1-q03
+  section: 3.1-introduction
+  text: What exactly is a "speculative task" — what conditions trigger speculative execution, and what config controls it (spark.speculation.*)?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.2-q01
+  section: 3.2-execution-model
+  text: What are the precise responsibilities of the Driver process? What data structures live only on the Driver?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.2-q02
+  section: 3.2-execution-model
+  text: How does a Job decompose into Stages and Tasks? What exactly is the rule for stage boundary creation?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.2-q03
+  section: 3.2-execution-model
+  text: Is a shuffle the only trigger for a stage boundary, or can other operations (e.g., sortBy on an RDD, checkpointing) also split stages?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.2-q04
+  section: 3.2-execution-model
+  text: What is the difference between spark.default.parallelism and spark.sql.shuffle.partitions? When does each take effect — is there a priority order?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.2-q05
+  section: 3.2-execution-model
+  text: What is the DAG Scheduler exact responsibility vs the Task Scheduler? Can they be run on different threads?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.2-q06
+  section: 3.2-execution-model
+  text: What does "narrow" vs "wide" transformation mean formally? Is mapPartitions always narrow? Is coalesce narrow or wide?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.2-q07
+  section: 3.2-execution-model
+  text: When does Spark use pipelining within a stage? Are all narrow transformations pipelined, or are there exceptions?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.3-q01
+  section: 3.3-memory-management
+  text: How does the Unified Memory Manager (introduced in Spark 1.6) allocate memory between execution and storage?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.3-q02
+  section: 3.3-memory-management
+  text: What is the exact eviction policy when execution needs memory that storage is using? Is it LRU per block, per partition, or per RDD?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.3-q03
+  section: 3.3-memory-management
+  text: Does storage memory ever evict execution memory, or is eviction unidirectional (storage to execution)?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.3-q04
+  section: 3.3-memory-management
+  text: What is the formula for reserved system memory? The docs mention 300 MB — is this hardcoded or configurable?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.3-q05
+  section: 3.3-memory-management
+  text: What happens step-by-step when execution memory is exhausted during a sort or hash aggregation — what is the exact spill trigger and spill path?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.3-q06
+  section: 3.3-memory-management
+  text: What is the difference between spark.executor.memoryOverhead in YARN vs Kubernetes — does the meaning or formula differ?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.3-q07
+  section: 3.3-memory-management
+  text: Is spark.python.worker.memory a hard limit enforced by the JVM, or just a hint? What happens when a Python worker exceeds it?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.3-q08
+  section: 3.3-memory-management
+  text: What is off-heap memory (spark.memory.offHeap) used for exactly — Tungsten, storage, both? Does it affect GC pause frequency?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.3-q09
+  section: 3.3-memory-management
+  text: Is spark.memory.fraction applied to total JVM heap or to JVM heap minus the 300 MB reserved memory?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.3-q10
+  section: 3.3-memory-management
+  text: What is the exact behavior when spark.memory.offHeap.enabled=true but spark.memory.offHeap.size=0?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.4-q01
+  section: 3.4-partitioning
+  text: What is the default number of partitions after a shuffle, and what is the guidance for tuning it?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.4-q02
+  section: 3.4-partitioning
+  text: When should repartition be preferred over coalesce, and vice versa?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.4-q03
+  section: 3.4-partitioning
+  text: Does repartition(n) guarantee exactly n output partitions? What algorithm does it use — does it use a hash shuffle?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.4-q04
+  section: 3.4-partitioning
+  text: Does coalesce(n) ever trigger a shuffle? Under what condition does it promote to a full shuffle?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.4-q05
+  section: 3.4-partitioning
+  text: What is the partition sizing rule of thumb (128–256 MB per task) — where does this number come from, and does it refer to input bytes, output bytes, or compressed bytes?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.4-q06
+  section: 3.4-partitioning
+  text: In the salting technique for skew, how many salt values should be used? Is there a formula relating salt count to skew ratio or partition count?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.4-q07
+  section: 3.4-partitioning
+  text: When using repartition(col) for join alignment, does Spark guarantee that both DataFrames will use the same partitioner if the same column and count are specified?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.4-q08
+  section: 3.4-partitioning
+  text: What is the maximum number of partitions Spark supports? Is there a practical upper limit beyond which performance degrades due to scheduling overhead?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.5-q01
+  section: 3.5-join-optimization
+  text: What join strategies does Spark SQL support, and how does the optimizer choose between them?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.5-q02
+  section: 3.5-join-optimization
+  text: What is the exact default for spark.sql.autoBroadcastJoinThreshold in Spark 3.x? Is it based on compressed or uncompressed table size, and where does Spark measure it (statistics, file size, or plan estimate)?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.5-q03
+  section: 3.5-join-optimization
+  text: When a broadcast hint is specified but the table exceeds the threshold, does Spark obey the hint or fall back to sort-merge?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.5-q04
+  section: 3.5-join-optimization
+  text: What is the driver memory cost of broadcasting a table — is the full table materialized on the driver before being sent to executors?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.5-q05
+  section: 3.5-join-optimization
+  text: Does bucketing require both tables to have the same number of buckets? What happens if bucket counts differ — is there a partial benefit?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.5-q06
+  section: 3.5-join-optimization
+  text: Does bucketing eliminate the sort phase of sort-merge join, or just the shuffle, or both?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.5-q07
+  section: 3.5-join-optimization
+  text: Can the Catalyst optimizer reorder joins automatically (join reordering)? Is spark.sql.cbo.joinReorder.enabled needed?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.5-q08
+  section: 3.5-join-optimization
+  text: What is the difference between BROADCAST, MERGE, SHUFFLE_HASH, and SHUFFLE_REPLICATE_NL join hints?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.5-q09
+  section: 3.5-join-optimization
+  text: In a skew join with manual salting, what is the correct way to handle the NULL key case so salted and non-salted rows join correctly?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.5-q10
+  section: 3.5-join-optimization
+  text: What is spark.sql.join.preferSortMergeJoin and when does it override broadcast threshold logic?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.6-q01
+  section: 3.6-shuffle
+  text: Q1. What operations trigger a shuffle in Spark SQL / DataFrame API?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.6-q02
+  section: 3.6-shuffle
+  text: Q2. What is the difference between sort-based shuffle (SortShuffleManager) and hash-based shuffle? When does Spark fall back to hash-based?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.6-q03
+  section: 3.6-shuffle
+  text: Q3. What is the bypass merge threshold (spark.shuffle.sort.bypassMergeThreshold)? When does Spark use the bypass path and what are the trade-offs?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.6-q04
+  section: 3.6-shuffle
+  text: Q4. What does spark.shuffle.compress compress — map output, reduce input, or both? What codec is used by default?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.6-q05
+  section: 3.6-shuffle
+  text: Q5. What is spark.reducer.maxSizeInFlight and what happens when a reducer tries to fetch more than this limit?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.6-q06
+  section: 3.6-shuffle
+  text: Q6. What is spark.shuffle.file.buffer — what is it buffering, and when does increasing it help?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.6-q07
+  section: 3.6-shuffle
+  text: Q7. Does groupBy().agg() always produce a shuffle? Are there cases where Spark can avoid it (e.g., input is already partitioned by the group key)?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.6-q08
+  section: 3.6-shuffle
+  text: Q8. What is the shuffle read overhead for distinct() vs dropDuplicates(cols) — do they differ in shuffle volume?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.6-q09
+  section: 3.6-shuffle
+  text: Q9. What exactly is "external shuffle service" (spark.shuffle.service.enabled) and when is it required vs optional?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.6-q10
+  section: 3.6-shuffle
+  text: Q10. What is push-based shuffle (SPARK-30602 / Magnet) — when available, how is it enabled, and what does it improve vs classic pull shuffle?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.7-q01
+  section: 3.7-data-formats
+  text: Q1. What are the main structural differences between Parquet and ORC, and when should each be preferred?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.7-q02
+  section: 3.7-data-formats
+  text: Q2. Does Snappy compression support block-level splitting in Parquet? If not, how does Parquet achieve parallelism despite non-splittable Snappy?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.7-q03
+  section: 3.7-data-formats
+  text: Q3. What is the difference between Parquet row group size and HDFS/S3 block size, and how do they interact for task parallelism?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.7-q04
+  section: 3.7-data-formats
+  text: Q4. What statistics does Parquet collect per row group (min/max, null count, bloom filters)? Which are used for predicate pushdown in Spark?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.7-q05
+  section: 3.7-data-formats
+  text: Q5. What statistics does ORC collect (min/max, bloom filters, row index stride)? How does ORC's predicate pushdown differ from Parquet's?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.7-q06
+  section: 3.7-data-formats
+  text: Q6. At what file size does the "too many small files" problem become measurable? Is there a task count threshold where scheduling overhead dominates?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.7-q07
+  section: 3.7-data-formats
+  text: Q7. Does mergeSchema in spark.read.parquet handle type widening (e.g., int -> long)? What happens on a type conflict it cannot resolve?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.7-q08
+  section: 3.7-data-formats
+  text: Q8. What is Zstd's compression ratio vs speed trade-off compared to Snappy for Parquet files of typical Spark workload sizes? Are there benchmark references?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.7-q09
+  section: 3.7-data-formats
+  text: Q9. Why is Gzip generally discouraged for Spark inputs? Is it solely the non-splittability, or are there other factors (CPU cost, codec availability)?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.7-q10
+  section: 3.7-data-formats
+  text: Q10. Parquet v1 vs v2 (parquet.writer.version) — what is the practical difference for Spark readers, and is v2 safe to enable by default?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.8-q01
+  section: 3.8-caching-persistence
+  text: Q1. Under what circumstances does caching a DataFrame improve performance vs have no effect or hurt performance?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.8-q02
+  section: 3.8-caching-persistence
+  text: Q2. What is the exact difference between df.cache() and df.persist(StorageLevel.MEMORY_AND_DISK) in Spark 3.0+? Are they identical?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.8-q03
+  section: 3.8-caching-persistence
+  text: Q3. What are the pros and cons of df.write.format("noop").mode("overwrite").save() vs df.count() for forcing materialization of a cached DataFrame?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.8-q04
+  section: 3.8-caching-persistence
+  text: Q4. Does calling df.cache() followed by df.count() guarantee that all partitions are cached, including those on executors that aren't currently active?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.8-q05
+  section: 3.8-caching-persistence
+  text: Q5. What is the eviction policy for MEMORY_AND_DISK — when does Spark decide to spill a partition to disk rather than evict it?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.8-q06
+  section: 3.8-caching-persistence
+  text: Q6. What is the CPU/memory trade-off of MEMORY_AND_DISK_SER vs MEMORY_AND_DISK? At what data size does serialization save enough memory to be worth the CPU cost?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.8-q07
+  section: 3.8-caching-persistence
+  text: Q7. Does checkpointing always truncate the lineage graph? What happens if the checkpoint directory is unavailable at job runtime?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.8-q08
+  section: 3.8-caching-persistence
+  text: Q8. Is there a limit on how many DataFrames can be cached simultaneously? What is the actual eviction trigger — absolute memory bytes or fraction?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.8-q09
+  section: 3.8-caching-persistence
+  text: Q9. What is the overhead of calling unpersist() — is it synchronous (blocks until eviction) or asynchronous by default?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.9-q01
+  section: 3.9-pyspark-specifics
+  text: Q1. How does PySpark execute Python UDFs — what is the serialization path between the JVM and the Python worker?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.9-q02
+  section: 3.9-pyspark-specifics
+  text: Q2. What is the exact per-row overhead of Pickle serialization in a Python UDF vs Arrow batch serialization in a pandas UDF? Are there published benchmarks?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.9-q03
+  section: 3.9-pyspark-specifics
+  text: Q3. What is the difference between a pandas_udf of type SCALAR (Series -> Series), SCALAR_ITER (Iterator[Series] -> Iterator[Series]), and MAP_ITER (mapInPandas)? When should each be used?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.9-q04
+  section: 3.9-pyspark-specifics
+  text: Q4. Does enabling spark.sql.execution.arrow.pyspark.enabled affect operations other than pandas UDFs (e.g., toPandas(), createDataFrame() from a pandas DataFrame)?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.9-q05
+  section: 3.9-pyspark-specifics
+  text: Q5. Is pyspark.sql.functions always faster than an equivalent Python UDF? Are there documented edge cases where a UDF is competitive?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.9-q06
+  section: 3.9-pyspark-specifics
+  text: Q6. What is spark.python.worker.reuse — what does it reuse, and what are the correctness risks of enabling it?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.9-q07
+  section: 3.9-pyspark-specifics
+  text: Q7. What does spark.python.worker.memory control exactly — is it a per-worker limit, and what happens at the OS level when it is exceeded?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.9-q08
+  section: 3.9-pyspark-specifics
+  text: Q8. What is the correct way to handle stateful operations in PySpark without row-at-a-time Python UDFs?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.10-q01
+  section: 3.10-adaptive-query-execution
+  text: Q1. What does AQE re-optimize at runtime that the static optimizer cannot?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.10-q02
+  section: 3.10-adaptive-query-execution
+  text: Q2. At what point in query execution are shuffle statistics available to AQE — after all map tasks complete, or incrementally?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.10-q03
+  section: 3.10-adaptive-query-execution
+  text: Q3. What is the exact algorithm for AQE partition coalescing — does it use a greedy bin-packing approach, and what is the target partition size (spark.sql.adaptive.advisoryPartitionSizeInBytes)?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.10-q04
+  section: 3.10-adaptive-query-execution
+  text: 'Q4. What is the exact skew detection algorithm: what are spark.sql.adaptive.skewJoin.skewedPartitionFactor and spark.sql.adaptive.skewJoin.skewedPartitionThresholdInBytes doing, and how does the split work?'
+  version: n/a
+  k: null
+  status: answered
+- id: 3.10-q05
+  section: 3.10-adaptive-query-execution
+  text: Q5. When AQE promotes a sort-merge join to broadcast, does it re-materialize the build side, or does it reuse the shuffle files already written?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.10-q06
+  section: 3.10-adaptive-query-execution
+  text: Q6. Can AQE re-optimize the same query plan multiple times (e.g., after each shuffle stage), or only once?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.10-q07
+  section: 3.10-adaptive-query-execution
+  text: Q7. Does disabling AQE affect query plan caching (spark.sql.cache.serializer)?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.10-q08
+  section: 3.10-adaptive-query-execution
+  text: Q8. Are there known cases where AQE produces a worse plan than the static optimizer? What are the failure modes?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.10-q09
+  section: 3.10-adaptive-query-execution
+  text: Q9. What is spark.sql.adaptive.localShuffleReader.enabled — when does AQE use a local shuffle reader and what does it avoid?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.10-q10
+  section: 3.10-adaptive-query-execution
+  text: Q10. Does AQE interact with Dynamic Partition Pruning (DPP)? What is the order of application — DPP first, then AQE re-optimization?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.11-q01
+  section: 3.11-cluster-tuning
+  text: Q1. What is the recommended formula for sizing Spark executors (cores × memory)?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.11-q02
+  section: 3.11-cluster-tuning
+  text: Q2. Why is ≤5 cores per executor the common recommendation — what is the connection to NUMA, OS jitter, and HDFS throughput?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.11-q03
+  section: 3.11-cluster-tuning
+  text: 'Q3. What is the exact container memory formula for YARN: spark.executor.memory + spark.executor.memoryOverhead + spark.memory.offHeap.size? Is there an additional overhead on top?'
+  version: n/a
+  k: null
+  status: answered
+- id: 3.11-q04
+  section: 3.11-cluster-tuning
+  text: Q4. For Kubernetes, what is the difference between spark.kubernetes.executor.request.cores and spark.executor.cores? Can they be set independently, and what happens if they differ?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.11-q05
+  section: 3.11-cluster-tuning
+  text: Q5. What does spark.locality.wait control exactly — is it a timeout per level (process-local → node-local → rack-local → any)? What are spark.locality.wait.node, spark.locality.wait.rack, spark.locality.wait.process?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.11-q06
+  section: 3.11-cluster-tuning
+  text: Q6. What is the interaction between dynamic allocation and shuffle tracking (spark.dynamicAllocation.shuffleTracking.enabled)? What can go wrong if shuffle tracking is disabled?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.11-q07
+  section: 3.11-cluster-tuning
+  text: Q7. When dynamic allocation removes an executor, are its shuffle files lost? What does the external shuffle service solve here?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.11-q08
+  section: 3.11-cluster-tuning
+  text: Q8. What is the driver memory impact of a wide physical plan (many columns, deeply nested)? What is spark.driver.maxResultSize and how is it different from driver heap?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.11-q09
+  section: 3.11-cluster-tuning
+  text: Q9. Is there a documented maximum number of executors beyond which Spark scheduling overhead degrades performance?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.11-q10
+  section: 3.11-cluster-tuning
+  text: Q10. What is spark.task.cpus and when must it be set greater than 1? What is the interaction with spark.executor.cores for resource allocation?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.12-q01
+  section: 3.12-anti-patterns
+  text: Q1. What are the most commonly cited Spark anti-patterns in practitioner literature?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.12-q02
+  section: 3.12-anti-patterns
+  text: 'Q2. collect() on a large DataFrame — what is the exact failure path: driver OOM, serialization buffer, or network transfer?'
+  version: n/a
+  k: null
+  status: answered
+- id: 3.12-q03
+  section: 3.12-anti-patterns
+  text: Q3. Does df.count() after a cache() guarantee full materialization? Is there any scenario where some partitions are computed but not persisted to the cache?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.12-q04
+  section: 3.12-anti-patterns
+  text: 'Q4. For Python row-at-a-time UDFs: is the overhead primarily serialization (pickle), context switching, or Python interpreter overhead? Are there benchmarks separating these?'
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.12-q05
+  section: 3.12-anti-patterns
+  text: 'Q5. spark.sql.shuffle.partitions=200 fixed: observable symptom of too few partitions (spill) vs too many (scheduling overhead) in the Spark UI?'
+  version: n/a
+  k: null
+  status: answered
+- id: 3.12-q06
+  section: 3.12-anti-patterns
+  text: 'Q6. Broadcasting a table that is too large — at what point does the broadcast fail: driver OOM, executor OOM, or serialization timeout?'
+  version: n/a
+  k: null
+  status: answered
+- id: 3.12-q07
+  section: 3.12-anti-patterns
+  text: Q7. Is repartition(1) before write ever correct, or is coalesce(1) always preferable when a single output file is needed?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.12-q08
+  section: 3.12-anti-patterns
+  text: 'Q8. For the "no predicate pushdown" anti-pattern: how can a practitioner verify pushdown is happening in the physical plan? What keywords indicate pushdown is active?'
+  version: n/a
+  k: null
+  status: answered
+- id: 3.13-q01
+  section: 3.13-bottleneck-reference
+  text: Q1. Is executorRunTime (as recorded in taskMetrics) wall-clock time or CPU time? Does it include time the task is blocked on I/O?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.13-q02
+  section: 3.13-bottleneck-reference
+  text: Q2. Is jvmGCTime included in executorRunTime, or is it additive? — i.e., does executorRunTime + jvmGCTime > wall-clock task time?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.13-q03
+  section: 3.13-bottleneck-reference
+  text: Q3. What is peakExecutionMemory exactly — is it measured per-task or per-executor? Does it include storage memory?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.13-q04
+  section: 3.13-bottleneck-reference
+  text: Q4. Does shuffleReadMetrics.remoteBytesRead include local reads (same host shuffle), or only cross-node reads?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.13-q05
+  section: 3.13-bottleneck-reference
+  text: Q5. What is the exact condition Spark uses to fire a speculative task — is it based on a fraction of median task duration, a percentile, or an absolute threshold? What config controls it?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.13-q06
+  section: 3.13-bottleneck-reference
+  text: 'Q6. For memoryBytesSpilled vs diskBytesSpilled: what is the semantic difference? Can memoryBytesSpilled > 0 with diskBytesSpilled = 0?'
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.13-q07
+  section: 3.13-bottleneck-reference
+  text: Q7. Where exactly is SparkListenerStageSubmitted emitted in the event log — is it fired when the stage is created or when the first task is launched?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.13-q08
+  section: 3.13-bottleneck-reference
+  text: 'Q8. For the slow-host detector: does Spark record host per task in the event log? What field name in SparkListenerTaskEnd carries the executor host?'
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.13-q09
+  section: 3.13-bottleneck-reference
+  text: Q9. What is fetchWaitTime in task metrics — what exactly is the executor waiting for, and does it include deserialization time?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.13-q10
+  section: 3.13-bottleneck-reference
+  text: Q10. What is resultSerializationTime in taskMetrics and under what workload profile does it dominate end-to-end task time?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.13-q11
+  section: 3.13-bottleneck-reference
+  text: Q11. When a task attempt is superseded by a later retry after executor loss (`ExecutorLostFailure`) or a shuffle `FetchFailed`, what executor time is wasted on the abandoned attempt, and how is the dominant cause (lost executor vs. fetch failure) identified from the event log?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.13-q12
+  section: 3.13-bottleneck-reference
+  text: Q12. What is the per-task scheduling and serialization overhead in Spark, and when does `coalesce()` (no shuffle) versus `repartition()` (full shuffle) reduce the cost of too many tiny tasks?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.13-q13
+  section: 3.13-bottleneck-reference
+  text: Q13. What distinguishes whole-job abandonment (retries exhausted, e.g. `spark.task.maxFailures`) from transient task retries that succeed, and what final-stage failure reasons drive a job to fail outright?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.14-q01
+  section: 3.14-metrics-glossary
+  text: Does taskMetrics.inputMetrics.bytesRead count bytes before or after decompression?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.14-q02
+  section: 3.14-metrics-glossary
+  text: Does taskMetrics.outputMetrics.bytesWritten count bytes before or after compression?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.14-q03
+  section: 3.14-metrics-glossary
+  text: Is taskMetrics.executorRunTime available for tasks that failed, or only for successful task ends?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.14-q04
+  section: 3.14-metrics-glossary
+  text: What is the unit of taskMetrics.jvmGCTime — milliseconds? Is it cumulative across all GC events in the task?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.14-q05
+  section: 3.14-metrics-glossary
+  text: What exactly is taskMetrics.peakExecutionMemory tracking — Tungsten off-heap, on-heap execution pool, or both?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.14-q06
+  section: 3.14-metrics-glossary
+  text: Is SparkListenerExecutorAdded fired once at executor registration or every time an executor core becomes available?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.14-q07
+  section: 3.14-metrics-glossary
+  text: What is the reason field format in SparkListenerTaskEnd for different failure types — what are the canonical reason strings?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.14-q08
+  section: 3.14-metrics-glossary
+  text: Does taskMetrics.shuffleWriteMetrics.bytesWritten count bytes before or after compression, and does it include bytes spilled to disk during the shuffle write, or only the final merged output?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.14-q09
+  section: 3.14-metrics-glossary
+  text: For stage wall-clock duration, is completionTime − submissionTime (from SparkListenerStageCompleted/SparkListenerStageSubmitted) the correct pair of fields, or does Spark record a stage's duration elsewhere in the event log?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.15-q01
+  section: 3.15-config-quick-reference
+  text: Q1. What is the exact default of spark.sql.shuffle.partitions in Spark 3.0+ with AQE enabled — is the effective default different when coalescing is on?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.15-q02
+  section: 3.15-config-quick-reference
+  text: Q2. What is the valid range for spark.memory.fraction? Can it be set to 0.9 safely, or are there documented failure modes above a certain threshold?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.15-q03
+  section: 3.15-config-quick-reference
+  text: Q3. What is the interaction between spark.memory.fraction and spark.memory.storageFraction — are they independent, or does one constrains the other?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.15-q04
+  section: 3.15-config-quick-reference
+  text: Q4. Does spark.sql.execution.arrow.pyspark.enabled = true have any correctness risks (e.g., type mismatches between Arrow and Spark types)?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.15-q05
+  section: 3.15-config-quick-reference
+  text: Q5. What are the valid spark.dynamicAllocation.shuffleTracking.* configs and their defaults in Spark 3.x?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.15-q06
+  section: 3.15-config-quick-reference
+  text: Q6. What is the default and valid range for spark.sql.adaptive.advisoryPartitionSizeInBytes?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.15-q07
+  section: 3.15-config-quick-reference
+  text: Q7. What is the difference between -XX:+UseG1GC and -XX:+UseZGC in terms of throughput vs pause latency trade-offs — for what Spark workload profile does ZGC win?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.15-q08
+  section: 3.15-config-quick-reference
+  text: Q8. What is the default and behavior of spark.sql.adaptive.coalescePartitions.minPartitionSize (introduced Spark 3.2+)? How does it interact with advisoryPartitionSizeInBytes?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.15-q09
+  section: 3.15-config-quick-reference
+  text: Q9. With dynamic allocation, why is an executor's shuffle output lost when the executor is reclaimed, and how does `spark.shuffle.service.enabled` (the external shuffle service) prevent the resulting `FetchFailed` and stage recompute?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.15-q10
+  section: 3.15-config-quick-reference
+  text: Q10. How do `spark.dynamicAllocation.minExecutors` and `spark.dynamicAllocation.maxExecutors` behave when min is greater than max (inverted), and when maxExecutors is left unset (unbounded)?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.15-q11
+  section: 3.15-config-quick-reference
+  text: Q11. How does `spark.serializer` set to `org.apache.spark.serializer.KryoSerializer` compare with the default `JavaSerializer` on performance and compactness, and why is Kryo not the default?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.15-q12
+  section: 3.15-config-quick-reference
+  text: Q12. What does `spark.executor.memoryOverhead` cover (off-heap / non-JVM memory), what is its default floor, and how does setting it too low cause the container to be OOM-killed by the resource manager?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.13-q14
+  section: 3.13-bottleneck-reference
+  text: 'For the memoryUtilization detector: what causes executor cores to sit idle while the executor is held (task parallelism below allocated cores), and what Spark guidance bounds a healthy executor-core count and dynamic-allocation idle-timeout so a whole executor''s memory band is not held with little work?'
+  version: n/a
+  k: null
+  status: answered
+- id: 3.13-q15
+  section: 3.13-bottleneck-reference
+  text: In Spark's executor memory model, what is the relationship between an executor's peak used memory and its total allocated memory, and why can a derived estimate of unused ('wasted') allocated memory only be a rough, low-confidence signal rather than an exact measurement?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.13-q16
+  section: 3.13-bottleneck-reference
+  text: In a Spark physical plan, what is a ReusedExchange or repeated scan subtree, how do exchange reuse and cache()/persist() avoid recomputing an identical subtree, and why is inferring a duplicated subtree from the plan only a medium-confidence signal?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.13-q17
+  section: 3.13-bottleneck-reference
+  text: What is the small-files problem when Spark reads or writes many tiny files, what output file-size range do Spark and Parquet guidance target, and how do compaction, coalesce()/repartition(), and AQE advisoryPartitionSizeInBytes control output file size?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.13-q18
+  section: 3.13-bottleneck-reference
+  text: What does spark.sql.autoBroadcastJoinThreshold control and what is its default, when should a join broadcast the smaller side versus shuffle, and what are the failure modes of broadcasting a table that is too large (driver collection and executor memory pressure)?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.13-q19
+  section: 3.13-bottleneck-reference
+  text: What is the relationship between a stage's task count and the cluster's total executor cores, and what Spark guidance covers choosing the number of partitions/tasks per stage so parallelism is neither far below nor far above available cores?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.13-q20
+  section: 3.13-bottleneck-reference
+  text: How does Adaptive Query Execution size shuffle partitions at runtime through post-shuffle coalescing and skew-partition splitting, and how do spark.sql.shuffle.partitions and spark.sql.adaptive.advisoryPartitionSizeInBytes bound partition size when a shuffle produces partitions that are too large, too small, or skewed?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.13-q21
+  section: 3.13-bottleneck-reference
+  text: When a single Spark stage fails, what distinguishes a stage failure that is retried and succeeds from one that aborts the job, and what stage-level failure reasons (for example FetchFailed triggering a stage retry) does the scheduler act on?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.13-q22
+  section: 3.13-bottleneck-reference
+  text: When the same DataFrame/RDD or input is scanned multiple times across a job, how does cache()/persist() avoid recomputation, what storage-level tradeoffs apply, and when is caching not worthwhile (single use, or data larger than available storage memory)?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.13-q23
+  section: 3.13-bottleneck-reference
+  text: Absent a single slow host, what Spark-level factors (partition count, data volume per task, shuffle) explain why one stage is disproportionately slow relative to the rest of a job?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.7b-q01
+  section: 3.7b-table-formats
+  text: How do Delta Lake, Apache Iceberg, and Apache Hudi each control target data file size (Delta OPTIMIZE / target file size, Iceberg write.target-file-size-bytes, Hudi hoodie.parquet.max.file.size and small-file handling), and why do many small files hurt query and metadata performance?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.7b-q02
+  section: 3.7b-table-formats
+  text: How does each table format compact small files into larger ones — Delta Lake OPTIMIZE bin-packing, Iceberg rewrite_data_files, and Hudi compaction/clustering — and how is each triggered (manual command, procedure, or automatic/inline)?
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.7b-q03
+  section: 3.7b-table-formats
+  text: 'How does data clustering to co-locate related rows compare across the formats: Delta Lake Z-order versus liquid clustering, Iceberg sort orders and rewrite_data_files sort/zorder strategies, and Hudi clustering?'
+  version: n/a
+  k: null
+  status: needs-review
+- id: 3.7b-q04
+  section: 3.7b-table-formats
+  text: How does each format track table metadata and what is the resulting overhead — the Delta transaction log (JSON commits plus Parquet checkpoints), Iceberg metadata files with manifest lists and manifest files, and the Hudi timeline and metadata table?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.7b-q05
+  section: 3.7b-table-formats
+  text: How does each format expire old snapshots/versions and reclaim storage, and what are the default retention windows — Delta Lake VACUUM and log retention, Iceberg expire_snapshots and orphan-file removal, and the Hudi cleaner?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.7b-q06
+  section: 3.7b-table-formats
+  text: How do the formats handle row-level deletes and updates without rewriting whole files — Delta Lake deletion vectors, Iceberg copy-on-write versus merge-on-read with position and equality deletes, and Hudi Copy-on-Write versus Merge-on-Read table types?
+  version: n/a
+  k: null
+  status: answered

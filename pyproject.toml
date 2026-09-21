@@ -1,0 +1,28 @@
+[project]
+name = "spark-tuning-reference"
+version = "0.21.0"
+requires-python = ">=3.11"
+dependencies = [
+  "pyyaml>=6.0",
+]
+
+[dependency-groups]
+research = [
+  "trafilatura>=1.12",
+  "chromadb>=0.5",
+  "sentence-transformers>=3.0",
+  "tiktoken>=0.7",
+  "rich>=13",
+]
+dev = [
+  "pytest>=8",
+  # test_mcp_server.py imports scripts.mcp_server, which needs the mcp
+  # package to import at all (fakes stand in for the actual model/collection,
+  # so the heavier research group stays out of dev).
+  "mcp>=1.0",
+]
+mcp = [
+  "mcp>=1.0",
+  # the server does real retrieval, so it needs the embedding/index runtime
+  {include-group = "research"},
+]

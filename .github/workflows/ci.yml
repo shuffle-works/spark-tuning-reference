@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up uv + Python 3.11
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.11"
+          enable-cache: true
+
+      # dev only: check/smoke need no embedding stack — keeps CI fast.
+      - name: Install (dev)
+        run: uv sync --group dev
+
+      - name: Tests
+        run: uv run pytest
+
+      - name: Prose lint
+        run: uv run scripts/check_prose.py content
+
+      - name: Content smoke
+        run: uv run scripts/smoke_content.py
+
+      # Staleness gate: advisory banner in the report -> hard failure here.
+      - name: Staleness gate (spark)
+        run: uv run scripts/content_state.py --check
+
+      - name: Staleness gate (meta)
+        run: uv run scripts/content_state.py --check --corpus meta
+
+      # anchors.json is committed and asserted current by
+      # tests/test_anchors_json.py (part of `uv run pytest` above); regenerate
+      # with `uv run scripts/build_anchors.py` after a manifest.yaml change.

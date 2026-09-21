@@ -1,0 +1,5 @@
+flowchart TD
+    J["Join, small side estimated size"] --> Q{"Under spark.sql.autoBroadcastJoinThreshold?<br/>(default 10 MB)"}
+    Q -->|"Yes"| B["Broadcast small side to every executor,<br/>join locally, no shuffle"]
+    Q -->|"No"| S["All-to-all shuffle join"]
+    B --> R["Failure modes:<br/>expensive driver collect,<br/>executor OOM if side is really too big"]

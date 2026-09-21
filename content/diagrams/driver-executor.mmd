@@ -1,0 +1,17 @@
+flowchart TD
+    subgraph Driver["Driver"]
+        SC["SparkContext /<br/>SparkSession"]
+        DAG["DAGScheduler"]
+        TS["TaskScheduler +<br/>SchedulerBackend"]
+        BMM["BlockManagerMaster"]
+        DAG --> TS
+    end
+    subgraph CM["Cluster manager"]
+        E1["Executor<br/>BlockManager"]
+        E2["Executor<br/>BlockManager"]
+    end
+    SC -->|"request executors"| CM
+    TS -->|"dispatch tasks"| E1
+    TS -->|"dispatch tasks"| E2
+    E1 -->|"status / results"| TS
+    E2 -->|"status / results"| TS

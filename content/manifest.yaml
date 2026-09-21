@@ -1,0 +1,198 @@
+groups:
+  - title: "Getting Started"
+    entries:
+      - file: content/01-intro.md
+        anchor: intro
+        title: Introduction
+        assembled_from: research/answers/3.1-introduction.md
+        brief: "Guide overview: what the reference covers, the severity-dot legend, and the tag system linking into the Bottleneck Reference."
+        keywords: [severity-dot, tag-system]
+
+  - title: "Optimization Guide"
+    entries:
+      - file: content/02-spark-architecture.md
+        anchor: spark-architecture
+        title: Spark Execution Model
+        assembled_from: research/answers/3.2-execution-model.md
+        brief: "Spark's execution model: Driver/Executor split, DAGScheduler/TaskScheduler roles, stage boundaries at shuffles, and pipelining of narrow transformations."
+        keywords: [driver-executor, dagscheduler, taskscheduler, stage-boundary]
+      - file: content/03-memory-model.md
+        anchor: memory-model
+        title: Memory Management
+        assembled_from: research/answers/3.3-memory-management.md
+        brief: "Unified memory management: on-heap/off-heap execution vs. storage regions, spill triggers, and executor memory overhead sizing."
+        keywords: [unified-memory, execution-memory, storage-memory, spill, memory-overhead]
+      - file: content/04-partitioning.md
+        anchor: partitioning
+        title: Partitioning
+        assembled_from: research/answers/3.4-partitioning.md
+        brief: "Partition sizing and reshaping: repartition vs. coalesce mechanics, shuffle-partition tuning, and skew detection thresholds."
+        keywords: [repartition, coalesce, skew]
+      - file: content/05-joins.md
+        anchor: joins
+        title: Join Optimization
+        assembled_from: research/answers/3.5-join-optimization.md
+        brief: "Physical join strategy selection: broadcast vs. shuffle joins, join hints, bucketing, and AQE's runtime join-strategy switching."
+        keywords: [broadcast, shuffle-join, bucketing, aqe]
+      - file: content/06-shuffle.md
+        anchor: shuffle
+        title: Shuffle
+        assembled_from: research/answers/3.6-shuffle.md
+        brief: "Shuffle internals: SortShuffleManager mechanics, shuffle-avoidance paths (bucketing, Storage Partition Join), and shuffle-tuning configs."
+        keywords: [sortshufflemanager, bucketing, storage-partition-join]
+      - file: content/07-data-formats.md
+        anchor: data-formats
+        title: Data Formats
+        assembled_from: research/answers/3.7-data-formats.md
+        brief: "Columnar file format tradeoffs: Parquet vs. ORC internals, splittability, predicate pushdown, and compression codec choice."
+        keywords: [parquet, orc, predicate-pushdown, compression]
+      - file: content/07b-table-formats.md
+        anchor: table-formats
+        title: Table Formats
+        assembled_from: research/answers/3.7b-table-formats.md
+        brief: "Lakehouse table-format tuning across Delta Lake, Iceberg, and Hudi: file sizing, compaction/OPTIMIZE, clustering (Z-order/liquid/sort), metadata and manifest overhead, snapshot/version expiry, and deletion vectors vs. merge-on-read/copy-on-write."
+        keywords: [delta, iceberg, hudi, compaction, optimize, z-order, deletion-vectors]
+      - file: content/08-caching.md
+        anchor: caching
+        title: Caching & Persistence
+        assembled_from: research/answers/3.8-caching-persistence.md
+        brief: "cache()/persist() semantics, storage levels, eviction behavior, and checkpointing as a lineage-truncation alternative."
+        keywords: [cache, persist, storage-level, checkpoint]
+      - file: content/09-pyspark.md
+        anchor: pyspark
+        title: PySpark Specifics
+        assembled_from: research/answers/3.9-pyspark-specifics.md
+        brief: "PySpark-specific performance: UDF serialization cost, Arrow-optimized and pandas UDF types, and Python-worker memory configs."
+        keywords: [udf, arrow, pandas-udf, python-worker-memory]
+      - file: content/10-aqe.md
+        anchor: aqe
+        title: Adaptive Query Execution
+        assembled_from: research/answers/3.10-adaptive-query-execution.md
+        brief: "AQE's runtime re-optimization loop: post-shuffle partition coalescing, join-strategy promotion, and skew-partition splitting."
+        keywords: [partition-coalescing, join-strategy-promotion, skew-splitting]
+      - file: content/11-cluster-config.md
+        anchor: cluster-config
+        title: Cluster Tuning
+        assembled_from: research/answers/3.11-cluster-tuning.md
+        brief: "Cluster-level sizing: executor core/memory formulas, container memory budgeting, dynamic allocation, and locality-wait tuning."
+        keywords: [executor-sizing, container-memory, dynamic-allocation, locality-wait]
+      - file: content/12-anti-patterns.md
+        anchor: anti-patterns
+        title: Anti-Patterns
+        assembled_from: research/answers/3.12-anti-patterns.md
+        brief: "Checklist of a dozen recurring Spark performance anti-patterns, each with what it is, how to detect it, why it hurts, and how to fix it."
+        keywords: [checklist, anti-pattern]
+
+  - title: "Detector Catalog"
+    entries:
+      - file: content/bottlenecks/skew.md
+        anchor: bottleneck-skew
+        title: Task Skew
+        assembled_from: research/answers/3.13-bottleneck-reference.md
+        brief: "Detecting and mitigating task skew: oversized shuffle partitions vs. the median, AQE skew-join splitting, and manual salting as the pre-AQE fallback."
+        keywords: [skew, aqe-skew-join, salting]
+      - file: content/bottlenecks/shuffle.md
+        anchor: bottleneck-shuffle
+        title: Shuffle I/O
+        assembled_from: research/answers/3.13-bottleneck-reference.md
+        brief: "Detecting and mitigating shuffle I/O bottlenecks: read/write byte thresholds, fetch-wait time, and shuffle-avoidance and tuning levers."
+        keywords: [shuffle-bytes, fetch-wait]
+      - file: content/bottlenecks/spill.md
+        anchor: bottleneck-spill
+        title: Memory / Disk Spill
+        assembled_from: research/answers/3.13-bottleneck-reference.md
+        brief: "Detecting and mitigating memory/disk spill: TaskMemoryManager pressure, the skew-vs-volume spill classification, and matching the fix to the cause."
+        keywords: [spill, taskmemorymanager]
+      - file: content/bottlenecks/gc.md
+        anchor: bottleneck-gc
+        title: GC Pressure
+        assembled_from: research/answers/3.13-bottleneck-reference.md
+        brief: "Detecting and mitigating GC pressure: the gcPct warning/critical thresholds, oversized executors and memory.fraction as causes, and off-heap/collector fixes."
+        keywords: [gc-pressure, memory-fraction, off-heap]
+      - file: content/bottlenecks/cold-start.md
+        anchor: bottleneck-cold-start
+        title: Cold Start
+        assembled_from: research/answers/3.13-bottleneck-reference.md
+        brief: "Detecting and mitigating cold start: the firstStageSubmittedAt gap before the first stage is submitted, and executor-sizing/dynamic-allocation readiness fixes."
+        keywords: [cold-start, dynamic-allocation]
+      - file: content/bottlenecks/utilization.md
+        anchor: bottleneck-utilization
+        title: Executor Utilization
+        assembled_from: research/answers/3.13-bottleneck-reference.md
+        brief: "Detecting and mitigating low executor utilization: the avg/peak active-executor ratio, under-partitioning and coalesce-caused parallelism loss, and dynamic-allocation over-provisioning."
+        keywords: [executor-utilization, under-partitioning, over-provisioning]
+      - file: content/bottlenecks/slow-host.md
+        anchor: bottleneck-slow-host
+        title: Slow Host
+        assembled_from: research/answers/3.13-bottleneck-reference.md
+        brief: "Detecting and mitigating a slow host: host-wide task duration inflation versus the cluster median, and speculative-execution or locality-wait fixes."
+        keywords: [slow-host, speculative-execution]
+      - file: content/bottlenecks/failures.md
+        anchor: bottleneck-failures
+        title: Task Failures
+        assembled_from: research/answers/3.13-bottleneck-reference.md
+        brief: "Detecting and mitigating task failures: the TaskEndReason taxonomy, failed-task-share thresholds, and distinguishing memory-driven ExecutorLostFailure from application-code ExceptionFailure."
+        keywords: [taskendreason, executorlostfailure, exceptionfailure]
+      - file: content/bottlenecks/straggler.md
+        anchor: bottleneck-straggler
+        title: Stragglers
+        assembled_from: research/answers/3.13-bottleneck-reference.md
+        brief: "Detecting and mitigating straggler tasks: the 4x-median-duration rule, distinguishing stragglers from GC pauses or skew, and speculative-execution tuning."
+        keywords: [straggler, speculative-execution]
+      - file: content/bottlenecks/retry-waste.md
+        anchor: bottleneck-retry-waste
+        title: Retry Waste
+        assembled_from: research/answers/3.13-bottleneck-reference.md
+        brief: "Detecting and mitigating wasted retry compute: executorRunTime burned by superseded task attempts, and distinguishing executor-loss from fetch-failure causes."
+        keywords: [retry-waste, fetch-failure]
+      - file: content/bottlenecks/tiny-tasks.md
+        anchor: bottleneck-tiny-tasks
+        title: Tiny Tasks
+        assembled_from: research/answers/3.13-bottleneck-reference.md
+        brief: "Detecting and mitigating tiny-task overhead: scheduling/serialization cost dominating once partitions shrink too far, and coalesce/repartition sizing fixes."
+        keywords: [tiny-tasks, scheduling-overhead]
+      - file: content/bottlenecks/job-failure-rate.md
+        anchor: bottleneck-job-failure-rate
+        title: Job Failure Rate
+        assembled_from: research/answers/3.13-bottleneck-reference.md
+        brief: "Detecting and mitigating job-level failure: the task/stage/executor retry-budget escalation ladder that turns isolated failures into an aborted job."
+        keywords: [job-failure-rate, retry-budget]
+      - file: content/bottlenecks/memory-utilization.md
+        anchor: bottleneck-memory-utilization
+        title: Memory Utilization
+        assembled_from: research/answers/3.13-bottleneck-reference.md
+        brief: "Detecting and mitigating held-but-idle executor memory: cores sitting idle below allocated slots, dynamic-allocation idle timeouts that reclaim an executor's memory band, and the low-confidence peak-vs-allocated waste estimate."
+        keywords: [memory-utilization, idle-timeout]
+      - file: content/bottlenecks/duplicate-plan-subtree.md
+        anchor: bottleneck-duplicate-plan-subtree
+        title: Duplicate Plan Subtree
+        assembled_from: research/answers/3.13-bottleneck-reference.md
+        brief: "Detecting a repeated scan or exchange subtree in a physical plan, how exchange reuse and cache()/persist() avoid recomputing it, and why inferring duplication from the plan is a medium-confidence signal."
+        keywords: [duplicate-plan-subtree, exchange-reuse]
+      - file: content/bottlenecks/small-files.md
+        anchor: bottleneck-small-files
+        title: Small Files
+        assembled_from: research/answers/3.13-bottleneck-reference.md
+        brief: "Detecting and mitigating the small-files problem on read and write: metadata and I/O overhead of many tiny files, and coalesce()/repartition()/compaction and AQE advisoryPartitionSizeInBytes as output-size controls."
+        keywords: [small-files, advisorypartitionsizeinbytes]
+      - file: content/bottlenecks/broadcast-sizing.md
+        anchor: bottleneck-broadcast-sizing
+        title: Broadcast Sizing
+        assembled_from: research/answers/3.13-bottleneck-reference.md
+        brief: "Detecting under- and over-broadcast joins: spark.sql.autoBroadcastJoinThreshold and its default, when to broadcast the smaller side versus shuffle, and the driver-collection and executor-memory failure modes of broadcasting too large a table."
+        keywords: [broadcast-threshold, driver-collection]
+
+  - title: "Reference"
+    entries:
+      - file: content/14-metrics.md
+        anchor: metrics
+        title: Metrics Glossary
+        assembled_from: research/answers/3.14-metrics-glossary.md
+        brief: "Glossary of every metric surfaced elsewhere on the site: what each one measures, its event-log source field, and what a problematic value looks like."
+        keywords: [metrics-glossary, event-log]
+      - file: content/15-config.md
+        anchor: config
+        title: Spark Config Quick-Reference
+        assembled_from: research/answers/3.15-config-quick-reference.md
+        brief: "Cross-reference of the Spark/PySpark config properties and JVM GC flags discussed elsewhere in the guide, with defaults and version notes."
+        keywords: [spark-config, gc-flags]

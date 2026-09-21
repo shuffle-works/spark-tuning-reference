@@ -1,0 +1,5 @@
+flowchart TD
+    Q{"What do you need?"}
+    Q -->|"More partitions, fix skew,<br/>or rebalance before a join/cache"| RP["repartition<br/>(full hash shuffle)"]
+    Q -->|"Only reduce partition count,<br/>no rebalance needed"| CO["coalesce<br/>(narrow, no shuffle,<br/>drops upstream parallelism)"]
+    Q -->|"Reduce count but still<br/>need a rebalance"| COS["coalesce(n, shuffle=True)<br/>(shuffle + rebalance)"]

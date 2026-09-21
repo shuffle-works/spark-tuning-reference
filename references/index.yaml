@@ -1,0 +1,671 @@
+sources:
+  - id: spark-tuning-guide
+    type: web
+    url: https://spark.apache.org/docs/latest/tuning.html
+    local: references/web/spark-tuning-guide.md
+    fetched: 2026-07-09
+    spark_version: "3.5"
+    version_bucket: "3.5"
+    min_bytes: 5000
+  - id: spark-sql-perf-tuning
+    type: web
+    url: https://spark.apache.org/docs/latest/sql-performance-tuning.html
+    local: references/web/spark-sql-perf-tuning.md
+    fetched: 2026-07-09
+    spark_version: "3.5"
+    version_bucket: "3.5"
+    min_bytes: 5000
+  - id: spark-configuration
+    type: web
+    url: https://spark.apache.org/docs/latest/configuration.html
+    local: references/web/spark-configuration.md
+    fetched: 2026-07-09
+    spark_version: "3.5"
+    version_bucket: "3.5"
+    min_bytes: 5000
+  - id: spark-monitoring
+    type: web
+    url: https://spark.apache.org/docs/latest/monitoring.html
+    local: references/web/spark-monitoring.md
+    fetched: 2026-07-09
+    spark_version: "3.5"
+    version_bucket: "3.5"
+    min_bytes: 5000
+  - id: spark-rdd-programming
+    type: web
+    url: https://spark.apache.org/docs/latest/rdd-programming-guide.html
+    local: references/web/spark-rdd-programming.md
+    fetched: 2026-07-09
+    spark_version: "3.5"
+    version_bucket: "3.5"
+    min_bytes: 5000
+  - id: spark-sql-ref
+    type: web
+    url: https://spark.apache.org/docs/latest/sql-ref.html
+    local: references/web/spark-sql-ref.md
+    fetched: 2026-07-09
+    spark_version: "3.5"
+    version_bucket: "3.5"
+    min_bytes: 5000
+    note: "confirmed thin is legitimate, not an extraction bug: this page is a section index/hub (one intro paragraph + a table of contents linking to ~15 subpages like sql-ref-datatypes.html, sql-ref-syntax.html, etc.), verified via WebFetch (renders JS) and raw curl (static Jekyll HTML, not JS-rendered) — both agree real content is ~300-1500 bytes. No single-page/print alternate exists for this doc set. Not fixable without pointing at a different (more specific) subpage, which would change what this source id represents"
+  - id: spark-job-scheduling
+    type: web
+    url: https://spark.apache.org/docs/latest/job-scheduling.html
+    local: references/web/spark-job-scheduling.md
+    fetched: 2026-07-09
+    spark_version: "3.5"
+    version_bucket: "3.5"
+    min_bytes: 5000
+  - id: databricks-aqe
+    type: web
+    url: https://www.databricks.com/blog/2020/05/29/adaptive-query-execution-speeding-up-spark-sql-at-runtime.html
+    local: references/web/databricks-aqe.md
+    fetched: 2026-07-09
+    spark_version: "3.0"
+    version_bucket: "3.0"
+    min_bytes: 5000
+  - id: databricks-skew-join
+    type: web
+    url: https://docs.databricks.com/aws/en/archive/legacy/skew-join
+    local: references/web/databricks-skew-join.md
+    fetched: 2026-07-09
+    spark_version: "3.5"
+    version_bucket: "3.5"
+    min_bytes: 3000
+    note: "original URL docs.databricks.com/en/optimizations/skew-join.html now 301-redirects here (Databricks retired the page in favor of AQE-based skew handling, but kept the content as legacy/archived docs); page is short by nature, min_bytes lowered to match true full-content size (~3.4KB)"
+  - id: databricks-memory
+    type: web
+    url: https://www.databricks.com/blog/2015/05/28/tuning-java-garbage-collection-for-spark-applications.html
+    local: references/web/databricks-memory.md
+    fetched: 2026-07-09
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: databricks-pandas-udf
+    type: web
+    url: https://www.databricks.com/blog/2017/10/30/introducing-vectorized-udfs-for-pyspark.html
+    local: references/web/databricks-pandas-udf.md
+    fetched: 2026-07-09
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: cloudera-tuning-spark
+    type: web
+    url: https://blog.cloudera.com/how-to-tune-your-apache-spark-jobs-part-2/
+    local: references/web/cloudera-tuning-spark.md
+    fetched: 2026-07-09
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: parquet-format-spec
+    type: web
+    url: https://parquet.apache.org/_print/docs/file-format/
+    local: references/web/parquet-format-spec.md
+    fetched: 2026-07-09
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+    note: "docs/file-format/ is just a section index (short, links to ~10 subpages); switched to the site's own '_print' combined view, which concatenates the whole File Format section (configurations, types, encodings, compression, bloom filter, page index, encryption, etc.) into one page"
+  - id: parquet-bloom-filters
+    type: web
+    url: https://parquet.apache.org/docs/file-format/bloomfilter/
+    local: references/web/parquet-bloom-filters.md
+    fetched: 2026-07-09
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: orc-spec
+    type: web
+    url: https://orc.apache.org/specification/ORCv1/
+    local: references/web/orc-spec.md
+    fetched: 2026-07-09
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: orc-types
+    type: web
+    url: https://orc.apache.org/docs/types.html
+    local: references/web/orc-types.md
+    fetched: 2026-07-09
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 2000
+    note: "page is genuinely short (full article ~2.4KB incl. the Timestamps section); previous 'thin' flag was lynx-dump nav clutter, not missing content — re-extracted with trafilatura, min_bytes lowered to match true full-content size"
+  - id: arrow-columnar
+    type: web
+    url: https://arrow.apache.org/docs/format/Columnar.html
+    local: references/web/arrow-columnar.md
+    fetched: 2026-07-09
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: jdk-g1gc
+    type: web
+    url: https://docs.oracle.com/en/java/javase/17/gctuning/garbage-first-garbage-collector-tuning.html
+    local: references/web/jdk-g1gc.md
+    fetched: 2026-07-09
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+    note: "original URL was already dead (404); replaced with the current official Oracle HotSpot Garbage Collection Tuning Guide chapter 8 (Garbage-First Garbage Collector Tuning), javase/17 edition"
+  - id: jdk-zgc
+    type: web
+    url: https://wiki.openjdk.org/display/zgc
+    local: references/web/jdk-zgc.md
+    fetched: 2026-07-09
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: pyspark-pandas-udfs
+    type: web
+    url: https://spark.apache.org/docs/3.5.8/api/python/user_guide/sql/arrow_pandas.html
+    local: references/web/pyspark-pandas-udfs.md
+    fetched: 2026-07-09
+    spark_version: "3.5"
+    version_bucket: "3.5"
+    min_bytes: 5000
+    note: "original 'latest' URL now 404s — in Spark 4.x the PySpark user_guide was restructured and this content moved to sql-pyspark-pandas-with-arrow.html, which itself is now just an archived stub; pinned to the 3.5.8 docs (matches this source's own version_bucket) where the original path still serves the full guide"
+  - id: spark-history-server
+    type: web
+    url: https://spark.apache.org/docs/latest/monitoring.html#spark-history-server
+    local: references/web/spark-history-server.md
+    fetched: 2026-07-09
+    spark_version: "3.5"
+    version_bucket: "3.5"
+    min_bytes: 5000
+  - id: snappy-format
+    type: web
+    url: https://github.com/google/snappy/blob/main/format_description.txt
+    local: references/web/snappy-format.md
+    fetched: 2026-07-09
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: zstd-manual
+    type: web
+    url: https://facebook.github.io/zstd/zstd_manual.html
+    local: references/web/zstd-manual.md
+    fetched: 2026-07-09
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: spark-spip-aqe-skew
+    type: jira
+    url: https://issues.apache.org/jira/browse/SPARK-29544
+    local: references/web/spark-spip-aqe-skew.md
+    fetched: 2026-07-09
+    spark_version: "3.0"
+    version_bucket: "3.0"
+    min_bytes: 3000
+    note: "browse URL is a JIRA SPA that trafilatura/lynx can't render; fetch_jira() in fetch_references.py uses the public JIRA REST API for metadata/description/comments plus downloads and pandoc-converts any docx/pdf design-doc attachments (this ticket links 'Skewed Join Optimization Design Doc.docx')"
+  - id: spark-spip-magnet
+    type: jira
+    url: https://issues.apache.org/jira/browse/SPARK-30602
+    local: references/web/spark-spip-magnet.md
+    fetched: 2026-07-09
+    spark_version: "3.0"
+    version_bucket: "3.0"
+    min_bytes: 3000
+
+  - id: spark-source-shuffle-manager
+    type: source
+    url: https://raw.githubusercontent.com/apache/spark/v3.5.0/core/src/main/scala/org/apache/spark/shuffle/sort/SortShuffleManager.scala
+    local: references/web/spark-source-shuffle-manager.scala
+    fetched: 2026-07-09
+    spark_version: "3.5"
+    version_bucket: "3.5"
+    min_bytes: 5000
+  - id: spark-source-sql-conf
+    type: source
+    url: https://raw.githubusercontent.com/apache/spark/v3.5.0/sql/catalyst/src/main/scala/org/apache/spark/sql/internal/SQLConf.scala
+    local: references/web/spark-source-sql-conf.scala
+    fetched: 2026-07-09
+    spark_version: "3.5"
+    version_bucket: "3.5"
+    min_bytes: 5000
+  - id: spark-source-json-protocol
+    type: source
+    url: https://raw.githubusercontent.com/apache/spark/v3.5.0/core/src/main/scala/org/apache/spark/util/JsonProtocol.scala
+    local: references/web/spark-source-json-protocol.scala
+    fetched: 2026-07-09
+    spark_version: "3.5"
+    version_bucket: "3.5"
+    min_bytes: 5000
+  - id: spark-source-rdd
+    type: source
+    url: https://raw.githubusercontent.com/apache/spark/v3.5.0/core/src/main/scala/org/apache/spark/rdd/RDD.scala
+    local: references/web/spark-source-rdd.scala
+    fetched: 2026-07-10
+    spark_version: "3.5"
+    version_bucket: "3.5"
+    min_bytes: 5000
+    note: "coalesce/repartition docstrings — coalesce(n) shuffle-promotion condition (shuffle=true, drastic coalesce to 1, increasing partitions always shuffles) and repartition delegating to round-robin. Added 2026-07-10 to close §3.4 Q3/Q4 genuine internals gaps."
+
+  - id: rdd-nsdi12
+    type: paper
+    url: https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf
+    local: references/papers/rdd-nsdi12.txt
+    fetched: 2026-07-09
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: spark-hotcloud10
+    type: paper
+    url: https://people.csail.mit.edu/matei/papers/2010/hotcloud_spark.pdf
+    local: references/papers/spark-hotcloud10.txt
+    fetched: 2026-07-09
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: spark-sql-sigmod15
+    type: paper
+    url: https://amplab.cs.berkeley.edu/wp-content/uploads/2015/03/SparkSQLSigmod2015.pdf
+    local: references/papers/spark-sql-sigmod15.txt
+    fetched: 2026-07-09
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+    note: "dl.acm.org returns 403 (paywalled); using author-hosted mirror on AMPLab UC Berkeley's own publication page instead"
+
+  # Added 2026-07-10 per user request + web research
+  - id: luminousmen-optimization-checklist
+    type: web
+    url: https://luminousmen.com/post/the-apache-spark-optimization-checklist
+    local: references/web/luminousmen-optimization-checklist.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 3000
+  - id: luminousmen-memory-management
+    type: web
+    url: https://luminousmen.com/post/dive-into-spark-memory
+    local: references/web/luminousmen-memory-management.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 3000
+  - id: luminousmen-caching-tips
+    type: web
+    url: https://luminousmen.com/post/spark-tips-caching
+    local: references/web/luminousmen-caching-tips.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 2000
+  - id: luminousmen-caching-mechanics
+    type: web
+    url: https://luminousmen.com/post/explaining-the-mechanics-of-spark-caching
+    local: references/web/luminousmen-caching-mechanics.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 2000
+  - id: luminousmen-partition-tuning
+    type: web
+    url: https://luminousmen.com/post/spark-tips-partition-tuning
+    local: references/web/luminousmen-partition-tuning.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 2000
+  - id: luminousmen-partitions
+    type: web
+    url: https://luminousmen.com/post/spark-partitions
+    local: references/web/luminousmen-partitions.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 2000
+  - id: luminousmen-join-types
+    type: web
+    url: https://luminousmen.com/post/introduction-to-pyspark-join-types
+    local: references/web/luminousmen-join-types.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 2000
+  - id: luminousmen-bucketing
+    type: web
+    url: https://luminousmen.com/post/the-5-minute-guide-to-using-bucketing-in-pyspark
+    local: references/web/luminousmen-bucketing.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 2000
+    note: "replacement for the dead spark-bucketing-deep-dive Medium source dropped 2026-07-09"
+  - id: luminousmen-dont-collect
+    type: web
+    url: https://luminousmen.com/post/spark-tips-dont-collect-data-on-driver
+    local: references/web/luminousmen-dont-collect.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 2000
+  - id: luminousmen-history-server
+    type: web
+    url: https://luminousmen.com/post/spark-history-server-and-monitoring-jobs-performance
+    local: references/web/luminousmen-history-server.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 2000
+  - id: luminousmen-dataframe-api
+    type: web
+    url: https://luminousmen.com/post/spark-tips-dataframe-api
+    local: references/web/luminousmen-dataframe-api.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 2000
+  - id: luminousmen-anatomy
+    type: web
+    url: https://luminousmen.com/post/spark-anatomy-of-spark-application
+    local: references/web/luminousmen-anatomy.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 2000
+  - id: luminousmen-jdbc-reads
+    type: web
+    url: https://luminousmen.com/post/spark-tips-optimizing-jdbc-data-source-reads
+    local: references/web/luminousmen-jdbc-reads.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 2000
+
+  - id: spark-notes-executor-sizing
+    type: source
+    url: https://raw.githubusercontent.com/spoddutur/spark-notes/master/distribution_of_executors_cores_and_memory_for_spark_application.md
+    local: references/web/spark-notes-executor-sizing.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 2000
+  - id: spark-notes-storage-formats
+    type: source
+    url: https://raw.githubusercontent.com/spoddutur/spark-notes/master/deep_dive_into_storage_formats.md
+    local: references/web/spark-notes-storage-formats.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 2000
+  - id: spark-notes-tungsten-v2
+    type: source
+    url: https://raw.githubusercontent.com/spoddutur/spark-notes/master/second_generation_tungsten_engine.md
+    local: references/web/spark-notes-tungsten-v2.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 2000
+  - id: spark-notes-task-memory-management
+    type: source
+    url: https://raw.githubusercontent.com/spoddutur/spark-notes/master/task_memory_management_in_spark.md
+    local: references/web/spark-notes-task-memory-management.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 2000
+  - id: spark-notes-broadcast-rebroadcast
+    type: source
+    url: https://raw.githubusercontent.com/spoddutur/spark-notes/master/rebroadcast_a_broadcast_variable.md
+    local: references/web/spark-notes-broadcast-rebroadcast.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 1000
+  - id: spark-notes-broadcast-streaming
+    type: source
+    url: https://raw.githubusercontent.com/spoddutur/spark-notes/master/weaving_a_changing_broadcast_variable.md
+    local: references/web/spark-notes-broadcast-streaming.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 1000
+  - id: spark-notes-knowledge-browser
+    type: source
+    url: https://raw.githubusercontent.com/spoddutur/spark-notes/master/knowledge-browser.md
+    local: references/web/spark-notes-knowledge-browser.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 1000
+  - id: spark-notes-s3-troubles
+    type: source
+    url: https://raw.githubusercontent.com/spoddutur/spark-notes/master/s3-filesystem-as-datasource-in-spark.md
+    local: references/web/spark-notes-s3-troubles.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 1000
+
+  - id: databricks-kb-performance
+    type: web
+    url: http://web.archive.org/web/20250209010145/https://databricks.gitbooks.io/databricks-spark-knowledge-base/content/performance_optimization/README.html
+    local: references/web/databricks-kb-performance.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 1500
+    note: "live databricks.gitbooks.io is up but intermittently 401s (legacy GitBook hosting, anti-bot/rate-limit flakiness) — using a stable Wayback Machine snapshot instead of the live URL"
+  - id: databricks-kb-best-practices
+    type: web
+    url: http://web.archive.org/web/20250501141603/https://databricks.gitbooks.io/databricks-spark-knowledge-base/content/best_practices/dont_call_collect_on_a_very_large_rdd.html
+    local: references/web/databricks-kb-best-practices.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 1000
+    note: "same flakiness caveat as databricks-kb-performance; Wayback snapshot used for stability"
+
+  - id: holdenk-slow-flowchart
+    type: web
+    url: https://holdenk.github.io/spark-flowchart/flowchart/slow/
+    local: references/web/holdenk-slow-flowchart.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 1000
+
+  - id: japila-bucketing
+    type: web
+    url: https://books.japila.pl/spark-sql-internals/bucketing/
+    local: references/web/japila-bucketing.md
+    fetched: 2026-07-10
+    spark_version: "3.5"
+    version_bucket: "3.5"
+    min_bytes: 2000
+  - id: taboola-bucketing-shuffle
+    type: web
+    url: https://www.taboola.com/engineering/bucket-the-shuffle-out-of-here/
+    local: references/web/taboola-bucketing-shuffle.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 2000
+  - id: databricks-spark3-dpp
+    type: web
+    url: https://www.databricks.com/blog/2020/06/18/introducing-apache-spark-3-0-now-available-in-databricks-runtime-7-0.html
+    local: references/web/databricks-spark3-dpp.md
+    fetched: 2026-07-10
+    spark_version: "3.0"
+    version_bucket: "3.0"
+    min_bytes: 3000
+  - id: waitingforcode-dpp
+    type: web
+    url: https://www.waitingforcode.com/apache-spark-sql/whats-new-apache-spark-3-dynamic-partition-pruning/read
+    local: references/web/waitingforcode-dpp.md
+    fetched: 2026-07-10
+    spark_version: "3.0"
+    version_bucket: "3.0"
+    min_bytes: 2000
+  - id: databricks-catalyst-optimizer
+    type: web
+    url: https://www.databricks.com/blog/2015/04/13/deep-dive-into-spark-sqls-catalyst-optimizer.html
+    local: references/web/databricks-catalyst-optimizer.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 3000
+  - id: databricks-tungsten
+    type: web
+    url: https://www.databricks.com/blog/2015/04/28/project-tungsten-bringing-spark-closer-to-bare-metal.html
+    local: references/web/databricks-tungsten.md
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 3000
+  - id: japila-tungsten
+    type: web
+    url: https://books.japila.pl/spark-sql-internals/tungsten/
+    local: references/web/japila-tungsten.md
+    fetched: 2026-07-10
+    spark_version: "3.5"
+    version_bucket: "3.5"
+    min_bytes: 2000
+
+  - id: definitive-guide
+    type: book
+    url: null
+    local: references/books/definitive-guide/
+    fetched: 2026-07-09
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 0
+    chapters: ["ch04", "ch05", "ch06", "ch07", "ch08", "ch09", "ch10", "ch11", "ch12", "ch13", "ch14", "ch15", "ch16", "ch17", "ch18", "ch19"]
+    note: "split into one file per chapter; relevant per plan §1.4: ch15, ch16, ch19. chapters: widened to the structured-API-through-perf-tuning + monitoring core (ch04-ch19); drops intro (ch00-03) and the streaming/ML/graph/DL/ecosystem tail (ch20-33) from retrieval to cut noise."
+  - id: learning-spark-2e
+    type: book
+    url: null
+    local: references/books/learning-spark-2e/
+    fetched: 2026-07-09
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 0
+    chapters: ["ch03", "ch04", "ch05", "ch06", "ch07", "ch09"]
+    note: "split into one file per chapter; relevant per plan §1.4: ch07, ch09. chapters: keeps structured APIs / SQL / data sources / optimizing-tuning / data lakes (ch03-07, ch09); drops intro+download (ch00-02), streaming (ch08), ML/scaling/epilogue (ch10-12)."
+  - id: high-perf-spark
+    type: book
+    url: null
+    local: references/books/high-perf-spark/
+    fetched: 2026-07-09
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 0
+    chapters: ["ch02", "ch04", "ch05", "ch06", "ch07", "ch08"]
+    note: "2nd edition (Karau, Polak, Warren) — newer than plan's cited 2017 1st ed (Karau & Warren). Chapter numbers shifted; relevant by title: ch02 How Spark Works, ch04 What's New in Spark 4/version deltas, ch05 DataFrames/Datasets/Spark SQL, ch06 Joins (SQL and Core), ch07 Effective Transformations, ch08 Working with Key/Value Data. chapters: drops front/intro (ch00-01), ch03 upgrading, and Scala-interop/genAI/testing/components tail (ch09-12)."
+  - id: advanced-analytics-pyspark
+    type: book
+    url: null
+    local: references/books/advanced-analytics-pyspark/
+    fetched: 2026-07-10
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 0
+    chapters: ["ch02"]
+    note: "Advanced Analytics with PySpark — Tandon, Ryza, Laserson et al. (O'Reilly). Added 2026-07-10 per user request. Book is ML-focused (recommenders, decision trees, k-means, NLP, genomics, MLflow); only ch02 (Introduction to Data Analysis with PySpark — Spark architecture, DataFrame API) is relevant to this doc site's scope. Files for all chapters remain committed, but chapters: keeps only ch02 in the retrieval index."
+  # --- Lakehouse table formats: Delta / Iceberg / Hudi primary docs ---
+  - id: delta-optimize
+    type: web
+    url: https://docs.delta.io/latest/optimizations-oss.html
+    local: references/web/delta-optimize.md
+    fetched: 2026-08-13
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: delta-utility
+    type: web
+    url: https://docs.delta.io/latest/delta-utility.html
+    local: references/web/delta-utility.md
+    fetched: 2026-08-13
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: delta-deletion-vectors
+    type: web
+    url: https://docs.delta.io/latest/delta-deletion-vectors.html
+    local: references/web/delta-deletion-vectors.md
+    fetched: 2026-08-13
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: delta-best-practices
+    type: web
+    url: https://docs.delta.io/latest/best-practices.html
+    local: references/web/delta-best-practices.md
+    fetched: 2026-08-13
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: iceberg-maintenance
+    type: web
+    url: https://iceberg.apache.org/docs/latest/maintenance/
+    local: references/web/iceberg-maintenance.md
+    fetched: 2026-08-13
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: iceberg-spark-procedures
+    type: web
+    url: https://iceberg.apache.org/docs/latest/spark-procedures/
+    local: references/web/iceberg-spark-procedures.md
+    fetched: 2026-08-13
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: iceberg-configuration
+    type: web
+    url: https://iceberg.apache.org/docs/latest/configuration/
+    local: references/web/iceberg-configuration.md
+    fetched: 2026-08-13
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: iceberg-spec
+    type: web
+    url: https://iceberg.apache.org/spec/
+    local: references/web/iceberg-spec.md
+    fetched: 2026-08-13
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: hudi-file-sizing
+    type: web
+    url: https://hudi.apache.org/docs/file_sizing/
+    local: references/web/hudi-file-sizing.md
+    fetched: 2026-08-13
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: hudi-compaction
+    type: web
+    url: https://hudi.apache.org/docs/compaction/
+    local: references/web/hudi-compaction.md
+    fetched: 2026-08-13
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: hudi-clustering
+    type: web
+    url: https://hudi.apache.org/docs/clustering/
+    local: references/web/hudi-clustering.md
+    fetched: 2026-08-13
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: hudi-cleaning
+    type: web
+    url: https://hudi.apache.org/docs/cleaning/
+    local: references/web/hudi-cleaning.md
+    fetched: 2026-08-13
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000
+  - id: hudi-table-types
+    type: web
+    url: https://hudi.apache.org/docs/table_types/
+    local: references/web/hudi-table-types.md
+    fetched: 2026-08-13
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 5000

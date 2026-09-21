@@ -1,0 +1,15 @@
+flowchart TD
+    subgraph CONTAINER["Requested container / pod memory"]
+        HEAP["executorMemory (heap)<br/>8192 MB"]
+        OVER["memoryOverhead<br/>819 MB"]
+        OFF["spark.memory.offHeap.size<br/>1024 MB"]
+        PY["pyspark.memory<br/>512 MB (only when set)"]
+    end
+    HEAP --> SUM["Sum of terms = requested size<br/>= 10,547 MB"]
+    OVER --> SUM
+    OFF --> SUM
+    PY --> SUM
+    SUM --> GRANT["Resource manager grants a<br/>container of that size<br/>(YARN / Kubernetes)"]
+    GRANT --> CHK{"Actual runtime footprint<br/>&gt; container limit?<br/>(native / Python use spills<br/>past the overhead budget)"}
+    CHK -->|"Yes"| OOM["OOMKilled by resource manager<br/>(YARN / Kubernetes kubelet)"]
+    CHK -->|"No"| OK["Runs within budget"]

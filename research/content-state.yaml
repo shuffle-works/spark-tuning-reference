@@ -1,0 +1,62 @@
+content/01-intro.md:
+  generated_from_hash: 66ceae78fc86d96223c1aa6cbda46a673b93f76b5d7e01ff80d186f4b2c07bdf
+content/02-spark-architecture.md:
+  generated_from_hash: eaf2591bea68c8836862816a572bca4976ebd5d8e45647ed6f735beedced5be1
+content/03-memory-model.md:
+  generated_from_hash: 7972d4d83ef31f7e29f72e45e2d17f192ad575807f9817161d925481adae54e1
+content/04-partitioning.md:
+  generated_from_hash: 1fe0259613322511a158dae8ba022607e263bef2117cd32e0d586728ffe3c36c
+content/05-joins.md:
+  generated_from_hash: 30f179568d1ae9027f3017c6ef00086055bb4677f0418554564ec5a3facc6a52
+content/06-shuffle.md:
+  generated_from_hash: bc70599079a52f1f767697b16aa8fd243f137e305c97a04fa1c957ed0349c686
+content/07-data-formats.md:
+  generated_from_hash: 003990145a74a838be2c65c922915173f3b22a9cb6eb84a8ebf2f2db0c6cd7d2
+content/07b-table-formats.md:
+  generated_from_hash: 52156017cf35fe057d9af392dd69134ced54f78c8ef4c821032ae4b91fa9c378
+content/08-caching.md:
+  generated_from_hash: d3ffbe12d35efdd17ecc6e034cca2ac4ba218096510010aeb6ace5626724b05e
+content/09-pyspark.md:
+  generated_from_hash: ead842e72730cbb724431428342f47937fbadba64d2c9c3c215f9c23f45cf99e
+content/10-aqe.md:
+  generated_from_hash: 447bef8158b683a8ab2714465111674b6f4c567e3c6bd05057657d8b1a37a667
+content/11-cluster-config.md:
+  generated_from_hash: 192337ca71e42e173559bdad785e5e11a6ccf9f494f40369e2ac93c5d115b257
+content/12-anti-patterns.md:
+  generated_from_hash: a6ad7daeb849670a16bcbe18e6a9982dd0f73adfe3e4250110a7e2821abe69e4
+content/14-metrics.md:
+  generated_from_hash: 3f579d717643413fbdd06a87f091684bfc4da46c0515789c845e79e23b61c0ca
+content/15-config.md:
+  generated_from_hash: 1d41d39d9c4498c988e489aa55f9a6e65eee7425b843d40f9d3f08b97a1b1fad
+content/bottlenecks/broadcast-sizing.md:
+  generated_from_hash: 8491e98c58b499dc55de0a4a359f8f44e9d01f727f5190b8463aab50376f2849
+content/bottlenecks/cold-start.md:
+  generated_from_hash: 8491e98c58b499dc55de0a4a359f8f44e9d01f727f5190b8463aab50376f2849
+content/bottlenecks/duplicate-plan-subtree.md:
+  generated_from_hash: 8491e98c58b499dc55de0a4a359f8f44e9d01f727f5190b8463aab50376f2849
+content/bottlenecks/failures.md:
+  generated_from_hash: 8491e98c58b499dc55de0a4a359f8f44e9d01f727f5190b8463aab50376f2849
+content/bottlenecks/gc.md:
+  generated_from_hash: 8491e98c58b499dc55de0a4a359f8f44e9d01f727f5190b8463aab50376f2849
+content/bottlenecks/job-failure-rate.md:
+  generated_from_hash: 8491e98c58b499dc55de0a4a359f8f44e9d01f727f5190b8463aab50376f2849
+content/bottlenecks/memory-utilization.md:
+  generated_from_hash: 8491e98c58b499dc55de0a4a359f8f44e9d01f727f5190b8463aab50376f2849
+content/bottlenecks/retry-waste.md:
+  generated_from_hash: 8491e98c58b499dc55de0a4a359f8f44e9d01f727f5190b8463aab50376f2849
+content/bottlenecks/shuffle.md:
+  generated_from_hash: 8491e98c58b499dc55de0a4a359f8f44e9d01f727f5190b8463aab50376f2849
+content/bottlenecks/skew.md:
+  generated_from_hash: 8491e98c58b499dc55de0a4a359f8f44e9d01f727f5190b8463aab50376f2849
+content/bottlenecks/slow-host.md:
+  generated_from_hash: 8491e98c58b499dc55de0a4a359f8f44e9d01f727f5190b8463aab50376f2849
+content/bottlenecks/small-files.md:
+  generated_from_hash: 8491e98c58b499dc55de0a4a359f8f44e9d01f727f5190b8463aab50376f2849
+content/bottlenecks/spill.md:
+  generated_from_hash: 8491e98c58b499dc55de0a4a359f8f44e9d01f727f5190b8463aab50376f2849
+content/bottlenecks/straggler.md:
+  generated_from_hash: 8491e98c58b499dc55de0a4a359f8f44e9d01f727f5190b8463aab50376f2849
+content/bottlenecks/tiny-tasks.md:
+  generated_from_hash: 8491e98c58b499dc55de0a4a359f8f44e9d01f727f5190b8463aab50376f2849
+content/bottlenecks/utilization.md:
+  generated_from_hash: 8491e98c58b499dc55de0a4a359f8f44e9d01f727f5190b8463aab50376f2849

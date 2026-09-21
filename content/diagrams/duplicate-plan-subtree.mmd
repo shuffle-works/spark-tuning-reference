@@ -1,0 +1,9 @@
+flowchart TD
+    subgraph BEFORE["Before: subtree computed twice"]
+        SA["Scan + operators"] --> B1["Branch 1"]
+        SB["Scan + operators<br/>(same subtree, recomputed)"] --> B2["Branch 2"]
+    end
+    subgraph AFTER["After: subtree shared once"]
+        SH["Scan + operators<br/>(exchange reuse or cache/persist)"] --> C1["Branch 1"]
+        SH --> C2["Branch 2"]
+    end

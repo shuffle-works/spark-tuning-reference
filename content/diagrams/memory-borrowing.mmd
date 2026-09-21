@@ -1,0 +1,4 @@
+flowchart LR
+    ST["Storage memory"] -->|"grows into idle<br/>execution space"| EX["Execution memory"]
+    EX -->|"evicts storage to reclaim<br/>its space (one-directional, LRU)"| ST
+    N["Execution memory is never evicted by storage"]

@@ -1,0 +1,14 @@
+flowchart TB
+    subgraph PLAIN["Plain Python UDF"]
+        direction LR
+        JVM1["JVM"] -->|"pickle, row-at-a-time<br/>(serialization cost per row)"| PY1["Python"]
+    end
+    subgraph ARROW["Arrow-optimized Python UDF"]
+        direction LR
+        JVM2["JVM"] -->|"Arrow transfer,<br/>still row semantics"| PY2["Python"]
+    end
+    subgraph PANDAS["pandas UDF (vectorized)"]
+        direction LR
+        JVM3["JVM"] -->|"whole Arrow batches,<br/>no per-row handoff"| PY3["Python<br/>(pandas Series / DataFrame)"]
+    end
+    PLAIN ~~~ ARROW ~~~ PANDAS

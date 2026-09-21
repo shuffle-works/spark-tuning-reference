@@ -1,0 +1,20 @@
+flowchart TD
+    subgraph TASK["Task-computation failures (TaskScheduler)"]
+        T["Task attempt fails"] --> TR{"spark.task.maxFailures<br/>reached? (default 4)"}
+        TR -->|"No"| RETRY["Retry task on another executor<br/>(earlier attempt superseded)"]
+        TR -->|"Yes"| TABORT["Stage aborted"]
+    end
+    subgraph FETCH["Shuffle-fetch failures (DAGScheduler)"]
+        FF["FetchFailed"] --> RESUB["Resubmit the stage<br/>as a fresh attempt"]
+        RESUB --> SR{"spark.stage.maxConsecutiveAttempts<br/>reached? (default 4)"}
+        SR -->|"No"| FRETRY["Stage runs again"]
+        SR -->|"Yes"| SABORT["Stage aborted"]
+    end
+    subgraph EXEC["Executor failures (application level)"]
+        EL["Executor lost"] --> EX{"spark.executor.maxNumFailures<br/>reached?"}
+        EX -->|"No"| KEEP["Keep running on<br/>surviving executors"]
+        EX -->|"Yes"| EABORT["Application attempt fails<br/>(driver restart)"]
+    end
+    TABORT --> JOB(["Job aborted"])
+    SABORT --> JOB
+    EABORT --> JOB

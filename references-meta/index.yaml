@@ -1,0 +1,65 @@
+sources:
+  - id: architecture
+    type: doc
+    local: references-meta/docs/architecture.md
+    version_bucket: "n/a"
+  - id: runbook
+    type: doc
+    local: references-meta/docs/runbook.md
+    version_bucket: "n/a"
+  - id: anchor-map
+    type: doc
+    local: references-meta/docs/anchor-map.md
+    version_bucket: "n/a"
+  - id: rules-registry
+    type: doc
+    local: references-meta/docs/rules/registry.md
+    version_bucket: "n/a"
+  - id: rules-research
+    type: doc
+    local: references-meta/docs/rules/research.md
+    version_bucket: "n/a"
+  - id: rules-editorial
+    type: doc
+    local: references-meta/docs/rules/editorial.md
+    version_bucket: "n/a"
+  - id: rules-content
+    type: doc
+    local: references-meta/docs/rules/content.md
+    version_bucket: "n/a"
+  - id: agents-md
+    type: doc
+    local: references-meta/AGENTS.md
+    version_bucket: "n/a"
+  - id: skill-answer-question
+    type: doc
+    local: references-meta/skills/answer-question.md
+    version_bucket: "n/a"
+  - id: skill-answer-meta-question
+    type: doc
+    local: references-meta/skills/answer-meta-question.md
+    version_bucket: "n/a"
+  - id: agent-spark-draft
+    type: doc
+    local: references-meta/agents/spark-section-draft.md
+    version_bucket: "n/a"
+  - id: agent-spark-verify
+    type: doc
+    local: references-meta/agents/spark-section-verify.md
+    version_bucket: "n/a"
+  - id: agent-spark-redraft
+    type: doc
+    local: references-meta/agents/spark-section-redraft.md
+    version_bucket: "n/a"
+  - id: agent-meta-draft
+    type: doc
+    local: references-meta/agents/meta-section-draft.md
+    version_bucket: "n/a"
+  - id: agent-meta-verify
+    type: doc
+    local: references-meta/agents/meta-section-verify.md
+    version_bucket: "n/a"
+  - id: agent-meta-redraft
+    type: doc
+    local: references-meta/agents/meta-section-redraft.md
+    version_bucket: "n/a"

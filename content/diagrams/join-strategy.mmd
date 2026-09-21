@@ -1,0 +1,11 @@
+flowchart TD
+    J(["Join"]) --> EQ{"Equi-join condition?"}
+    EQ -->|"No"| NE{"Cartesian or non-equi?"}
+    NE -->|"fallback"| BNLJ["Broadcast nested loop join"]
+    NE -->|"cartesian"| CART["Shuffle-and-replicate nested loop"]
+    EQ -->|"Yes"| SZ{"One side smaller than<br/>autoBroadcastJoinThreshold?<br/>(default 10 MB)"}
+    SZ -->|"Yes"| BHJ["Broadcast hash join<br/>(no shuffle)"]
+    SZ -->|"No"| PREF{"preferSortMergeJoin?<br/>(default true)"}
+    PREF -->|"Yes"| SMJ["Shuffle sort-merge join"]
+    PREF -->|"No"| SHJ["Shuffle hash join"]
+    SMJ --> AQE(["AQE may promote to broadcast<br/>hash join at runtime"])

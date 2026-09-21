@@ -1,0 +1,13 @@
+flowchart TD
+    subgraph S1["Stage 1"]
+        F["filter"] --> M1["map"]
+    end
+    subgraph S2["Stage 2"]
+        M2["map"]
+    end
+    subgraph S3["Stage 3"]
+        C["count"]
+    end
+    M1 -->|"groupByKey<br/>(wide shuffle)"| M2
+    M2 -->|"sortByKey<br/>(wide shuffle)"| C
+    N["Each stage runs one task per partition"]

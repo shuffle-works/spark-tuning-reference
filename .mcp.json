@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "spark-tuning-reference": {
+      "command": "uv",
+      "args": ["run", "--directory", "${CLAUDE_PROJECT_DIR:-.}", "--group", "mcp", "scripts/mcp_server.py"]
+    }
+  }
+}

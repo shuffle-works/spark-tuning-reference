@@ -1,0 +1,96 @@
+sections:
+- id: m1-pipeline-overview
+  num: M1
+  title: Pipeline Overview
+  default_k: 15
+- id: m2-registry-and-retrieval
+  num: M2
+  title: Registry & Retrieval
+  default_k: 15
+- id: m3-agents-and-orchestration
+  num: M3
+  title: Agents & Orchestration
+  default_k: 15
+- id: m4-content-staleness-and-build
+  num: M4
+  title: Content, Staleness & Build
+  default_k: 15
+questions:
+- id: M1-q01
+  section: m1-pipeline-overview
+  text: Q1. What problem does this repository solve, and what does it produce as its build output?
+  version: n/a
+  k: null
+  status: answered
+- id: M1-q02
+  section: m1-pipeline-overview
+  text: Q2. What is the one-way derive-direction chain from research/questions.yaml down to index.html, and why does the architecture forbid editing a downstream artifact as a source of truth?
+  version: n/a
+  k: null
+  status: answered
+- id: M1-q03
+  section: m1-pipeline-overview
+  text: Q3. Why is the question, not the section, the atomic unit of the answering pipeline?
+  version: n/a
+  k: null
+  status: answered
+- id: M2-q01
+  section: m2-registry-and-retrieval
+  text: Q1. What fields does a section have in research/questions.yaml, and what fields does a question have, including which are optional?
+  version: n/a
+  k: null
+  status: answered
+- id: M2-q02
+  section: m2-registry-and-retrieval
+  text: Q2. What retrieval model does scripts/ask.py use for the Spark corpus, and why is it described as an asymmetric question-to-passage retriever?
+  version: n/a
+  k: null
+  status: answered
+- id: M2-q03
+  section: m2-registry-and-retrieval
+  text: Q3. Why does the meta-doc pipeline use a separate embedding model and a separate Chroma collection from the Spark corpus's retrieval index?
+  version: n/a
+  k: null
+  status: answered
+- id: M2-q04
+  section: m2-registry-and-retrieval
+  text: Q4. What is append-only about research/questions.yaml, and which two scripts are responsible for enforcing it?
+  version: n/a
+  k: null
+  status: answered
+- id: M3-q01
+  section: m3-agents-and-orchestration
+  text: Q1. What are the responsibilities of the Draft, Verify, and Redraft agents in the answering pipeline, and in what order does the answer-question skill run them?
+  version: n/a
+  k: null
+  status: answered
+- id: M3-q02
+  section: m3-agents-and-orchestration
+  text: Q2. Why does verification treat a citation as failed if its source ID is not on that specific question's citable source_ids line, even if the same source ID appears under a different question's retrieval block?
+  version: n/a
+  k: null
+  status: answered
+- id: M3-q03
+  section: m3-agents-and-orchestration
+  text: Q3. What does the Humanize stage do, and what deterministic script backstops it after every humanize pass?
+  version: n/a
+  k: null
+  status: answered
+- id: M4-q01
+  section: m4-content-staleness-and-build
+  text: Q1. What is the difference between a content page reported as ungenerated versus stale by content_state.py, and what should a human do in each case?
+  version: n/a
+  k: null
+  status: answered
+- id: M4-q02
+  section: m4-content-staleness-and-build
+  text: Q2. Why are content/manifest.yaml's anchor IDs described as a frozen cross-repo integration contract, and which sibling repository does that contract bind?
+  version: n/a
+  k: null
+  status: answered
+- id: M4-q03
+  section: m4-content-staleness-and-build
+  text: Q3. What does build.py do when it detects a stale or ungenerated content page, and why is that warning non-fatal?
+  version: n/a
+  k: null
+  status: answered

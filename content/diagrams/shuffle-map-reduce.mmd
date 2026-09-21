@@ -1,0 +1,19 @@
+flowchart LR
+    subgraph Maps["Map tasks"]
+        M1["Map task 1<br/>sort by partition id"]
+        M2["Map task 2<br/>sort by partition id"]
+    end
+    subgraph Outputs["Map outputs"]
+        F1["One file per task"]
+        F2["One file per task"]
+    end
+    subgraph Reduces["Reduce tasks"]
+        R1["Reduce task 1"]
+        R2["Reduce task 2"]
+    end
+    M1 -->|"write"| F1
+    M2 -->|"write"| F2
+    F1 -->|"fetch"| R1
+    F1 -->|"fetch"| R2
+    F2 -->|"fetch"| R1
+    F2 -->|"fetch"| R2

@@ -1,0 +1,4 @@
+flowchart LR
+    A["app.startTime"] --> G["Acquiring executors,<br/>no tasks run yet"]
+    G --> F["firstStageSubmittedAt<br/>(first SparkListenerStageSubmitted)"]
+    G -.->|"cold-start delay<br/>(Warning above 30 s)"| F

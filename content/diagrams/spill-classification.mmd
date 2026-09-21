@@ -1,0 +1,8 @@
+flowchart TD
+    S["memoryBytesSpilled &gt; 0"] --> C{"How is the spill spread<br/>across tasks?"}
+    C -->|"≥ 80% of tasks<br/>have zero spill"| SKEW["skew"]
+    C -->|"&lt; 20% of tasks<br/>have zero spill"| VOL["volume"]
+    C -->|"Neither condition"| UNC["unclassified<br/>(treat as volume)"]
+    SKEW --> SFIX["Fix the data shape:<br/>salting or AQE skew join"]
+    VOL --> VFIX["Add partitions or memory"]
+    UNC --> VFIX

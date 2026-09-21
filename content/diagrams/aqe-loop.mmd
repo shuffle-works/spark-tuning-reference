@@ -1,0 +1,8 @@
+flowchart TD
+    START(["Execute leaf query stages"]) --> MAT["Materialize at shuffle /<br/>broadcast boundary"]
+    MAT --> STATS["Collect real runtime statistics"]
+    STATS --> RULES["Re-apply AQE rules:<br/>coalesce post-shuffle partitions,<br/>skew-partition split,<br/>promote sort-merge to broadcast"]
+    RULES --> DONE{"Plan complete?"}
+    DONE -->|"No"| NEXT["Launch and run next query stages"]
+    NEXT --> MAT
+    DONE -->|"Yes"| END(["Query finished"])

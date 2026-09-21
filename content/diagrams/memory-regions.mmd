@@ -1,0 +1,11 @@
+flowchart TD
+    subgraph Heap["JVM heap"]
+        R["Reserved memory<br/>300 MiB"]
+        subgraph M["Unified region M<br/>(heap − 300 MiB) × 0.6"]
+            EX["Execution"]
+            ST["Storage<br/>storageFraction 0.5"]
+        end
+        U["User Memory<br/>~40%"]
+    end
+    OH["Off-heap pool<br/>execution + storage"]
+    OV["memoryOverhead<br/>outside the heap"]

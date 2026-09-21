@@ -1,0 +1,32 @@
+groups:
+  - title: "Pipeline Overview"
+    entries:
+      - file: content/meta/01-pipeline-overview.md
+        anchor: pipeline-overview
+        title: Pipeline Overview
+        assembled_from: research/meta/answers/m1-pipeline-overview.md
+        brief: "What this repo builds and why: the question-granular, citation-backed answering pipeline that runs twice (Spark corpus and this meta corpus) via --corpus, the one-way registry-to-site derive chain, why the question (not the section) is the atomic unit, and the non-fatal staleness model that never blocks a build."
+
+  - title: "Registry & Retrieval"
+    entries:
+      - file: content/meta/02-registry-and-retrieval.md
+        anchor: registry-and-retrieval
+        title: Registry & Retrieval
+        assembled_from: research/meta/answers/m2-registry-and-retrieval.md
+        brief: "The registry's data model (section/question fields, which are optional, and why id/version/status behave the way they do), the asymmetric vs. symmetric retrieval models each corpus uses and why, and the two scripts (add_question.py, recompute_question.py) that enforce questions.yaml's append-only discipline."
+
+  - title: "Agents & Orchestration"
+    entries:
+      - file: content/meta/03-agents-and-orchestration.md
+        anchor: agents-and-orchestration
+        title: Agents & Orchestration
+        assembled_from: research/meta/answers/m3-agents-and-orchestration.md
+        brief: "The Draft/Verify/Redraft agent roles and the fixed stage order the answer-question skill runs them in, why a citation fails Verify if its source ID isn't on that specific question's own citable source_ids line (even if true elsewhere), and what the Humanize stage plus its check_prose.py backstop do after every pass."
+
+  - title: "Content, Staleness & Build"
+    entries:
+      - file: content/meta/04-content-staleness-and-build.md
+        anchor: content-staleness-and-build
+        title: Content, Staleness & Build
+        assembled_from: research/meta/answers/m4-content-staleness-and-build.md
+        brief: "How content_state.py tells ungenerated pages from stale ones and what a human does for each, why content/manifest.yaml's anchor IDs are a frozen cross-repo Integration Contract with sparkforensics (Spark corpus only, not this meta corpus), and why scripts/prebuild_checks.py's staleness warning is non-fatal, plus HTML generation's retirement from this repo to an upstream one."

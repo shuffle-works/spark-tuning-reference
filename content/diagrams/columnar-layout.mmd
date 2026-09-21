@@ -1,0 +1,10 @@
+flowchart TD
+    FILE(["Columnar file<br/>(Parquet / ORC)"]) --> FOOTER["Footer / file metadata<br/>row-group offsets,<br/>per-column min/max stats,<br/>indexes"]
+    FILE --> RG1["Row group / stripe 1"]
+    FILE --> RG2["Row group / stripe 2"]
+    FILE --> RGN["Row group / stripe N"]
+    RG1 --> CA["Column chunk A"]
+    RG1 --> CB["Column chunk B"]
+    RG1 --> CC["Column chunk C"]
+    READER(["Reader with predicate"]) -->|"1. read footer stats first"| FOOTER
+    FOOTER -->|"2. skip row groups whose<br/>min/max exclude predicate"| RG2
