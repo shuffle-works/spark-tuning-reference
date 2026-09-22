@@ -17,22 +17,18 @@ pauses and overstate how long the task actually ran.[^1]
 
 Because `jvmGCTime` sits inside `executorRunTime` rather than alongside it, the ratio between
 the two gives a bounded read on how much of a task's wall-clock time went to garbage collection.
-Both directions below require the stage's `executorRunTime` to be at least 10 seconds, a floor
-that keeps short stages from tripping either one on noise:
+Both directions below apply once a stage's `executorRunTime` reaches 10 seconds, a floor that
+keeps short stages from reading as noise:
 
 | Signal (gcPct = jvmGCTime / executorRunTime) | Fires when |
 |---|---|
 | High GC | > 10% |
 | Low GC (cost signal) | < 5% |
 
-10% is the only fixed tier on the high side: there's no separate 20% critical threshold. The
-two checks are opposite-direction reads of the same ratio, so a stage trips at most one of
-them, and the low-GC check only runs when the high-GC one didn't fire. Both directions get
-the same wall-clock-derived severity: the estimated recoverable time as a share of the app's
-total runtime decides the band, ≥2% critical, ≥0.5% warning, anything smaller info. High GC
-falls back to `warning` and low GC falls back to `info` only when no wall-clock estimate is
-available; otherwise the band moves with the estimate, and low GC stays a possible memory
-over-provisioning hint rather than a performance problem.
+A stage lands in at most one of these two opposite-direction bands at a time. Severity for
+both tracks the estimated recoverable time as a share of the app's total runtime: ≥2% is
+critical, ≥0.5% is warning, anything smaller is info. Low GC signals a possible memory
+over-provisioning cost rather than time lost to garbage collection.
 
 ## Why it matters
 

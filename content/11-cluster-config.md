@@ -171,19 +171,18 @@ provisioning and JVM startup cost repeatedly instead of running tasks.
 
 ### How it's detected
 
-The check only runs once a run has added at least 5 executors, a floor meant to keep a
-two- or three-executor job from tripping it on ordinary scale-down. An executor counts
-as short-lived when its lifetime, from its `ExecutorAdded` event to either its
-`ExecutorRemoved` event or the end of the run if it was never removed, is under 2
-minutes.
+An executor counts as short-lived when its lifetime, from its `ExecutorAdded` event to
+either its `ExecutorRemoved` event or the end of the run if it was never removed, is
+under 2 minutes. This is evaluated once a run has added at least 5 executors, a floor
+that keeps a two- or three-executor job from registering on ordinary scale-down.
 
 | Signal | Warning | Critical |
 |---|---|---|
 | Share of added executors that are short-lived (< 2 min lifetime) | > 30% | > 60% |
 
-The 2-minute lifetime cutoff and the 30%/60% split are this reference's own thresholds,
-not figures sourced from Spark's own documentation or benchmarks, so treat a finding here
-as a prompt to look at the executor timeline rather than a calibrated verdict.
+The 2-minute lifetime cutoff and the 30%/60% split are unvalidated heuristics rather than
+figures published in Spark's own documentation or benchmarks, so treat a finding here as
+a prompt to look at the executor timeline rather than a calibrated verdict.
 
 ### Why it matters
 

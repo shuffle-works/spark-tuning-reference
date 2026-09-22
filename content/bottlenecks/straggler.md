@@ -97,9 +97,9 @@ The 4x-median rule flags a slow task, but slow is not the same as broken. The sa
 
 <span class="tag">SPEC</span>
 
-The straggler finding above reports whichever signal, straggler share or speculative-task
-count, actually drove it. This is a separate, narrower signal: it measures the executor
-time speculative attempts burned without confirming a genuine straggler, whether the
+A straggler is reported by whichever signal, straggler share or speculative-task count,
+best explains it. Speculation waste is a separate, narrower signal: the executor time
+speculative attempts burned without confirming a genuine straggler, whether the
 speculative copy lost the race to the original attempt or the other way around. Either
 way, the losing attempt's executor time is pure waste.
 
@@ -110,10 +110,9 @@ way, the losing attempt's executor time is pure waste.
 | Wasted speculative attempts in a stage | ≥ 5 |
 | Wasted executor time from those attempts | ≥ 60 seconds |
 
-Both conditions have to hold together. Severity is wall-clock-derived like the other
-stage-scoped findings on this page: the estimated recoverable time as a share of the app's
-total runtime decides the band, ≥2% critical, ≥0.5% warning, anything smaller info; `warning`
-is only the fallback used when no wall-clock estimate is available.
+Both conditions have to hold together. Severity tracks the estimated recoverable time as
+a share of the app's total runtime, the same model used across this page: ≥2% is
+critical, ≥0.5% is warning, anything smaller is info.
 
 ### Why it matters
 

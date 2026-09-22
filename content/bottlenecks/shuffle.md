@@ -30,11 +30,9 @@ read from local disk, and `totalBytesRead` is their sum[^6].
 |---|---|
 | Shuffle read bytes in a stage | > 50 MB |
 
-50 MB is the only fixed threshold: it decides whether the finding fires, not how severe
-it is. There's no separate 500 MB or 1 GB tier. Once a stage clears that floor, severity
-comes from the estimated recoverable time as a share of the app's total runtime: ≥2%
-critical, ≥0.5% warning, anything smaller info (the fallback used when no wall-clock
-estimate is available is `info`).
+50 MB marks a stage as shuffle-heavy enough to flag. Severity then tracks the estimated
+recoverable time as a share of the app's total runtime: ≥2% is critical, ≥0.5% is
+warning, anything smaller is info.
 
 Beyond raw byte volume, the executor-side wait is captured by `fetchWaitTime`: time a task
 spends blocked on a remote shuffle block it needs next, not counting time spent prefetching
@@ -101,7 +99,7 @@ spark.reducer.maxSizeInFlight=48m
 
 ### How it's detected
 
-Three independent checks run per stage against its shuffle-read partition sizes:
+A stage's shuffle-read partition sizes surface three distinct problems:
 
 | Signal | Fires when | Level |
 |---|---|---|
@@ -109,12 +107,11 @@ Three independent checks run per stage against its shuffle-read partition sizes:
 | Low parallelism | ≥ 1 GB of shuffle read spread across ≤ 7 tasks | Warning |
 | Oversized partition | Largest partition ≥ 5 GB | Critical |
 
-The first two rows are wall-clock derived like most findings in this reference: warning
-is the code's own fallback level, and the band shown can be overwritten by the estimated
-recoverable time as a share of the app's total runtime. The oversized-partition row is
-different: its critical level is fixed and never gets overwritten, because it flags an
-OOM/crash risk rather than a time-recovery opportunity, so a huge partition on a short
-stage still reports as critical even when the modeled time savings are small.
+Skew and low-parallelism severity track the estimated recoverable time as a share of the
+app's total runtime, the same wall-clock model used across this reference. An oversized
+partition is a fixed safety signal instead: it reports critical purely on its own size,
+because a partition past 5 GB is an OOM/crash risk regardless of how much wall-clock time
+fixing it would recover, so it stays critical even on a stage that barely dents the run.
 
 Adaptive Query Execution re-optimizes the plan while the query runs: as each shuffle stage
 materializes, it reads the real shuffle-file sizes and resizes partitions before launching the

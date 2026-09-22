@@ -62,25 +62,25 @@ When enabling off-heap memory, always pair `spark.memory.offHeap.enabled=true` w
 
 <span class="tag">CSTOR</span>
 
-Spark's event log carries no block-access or hit-rate events, so there's no way to derive
-a literal cache hit rate. Instead, this reference infers cache utilization from periodic
-per-RDD storage snapshots: how much of a persisted RDD is actually resident where you
-asked it to be.
+Spark's event log carries no block-access or hit-rate events, so cache utilization is read
+from periodic per-RDD storage snapshots instead: how much of a persisted RDD is actually
+resident where it was asked to be.
 
 ### How it's detected
 
-Two independent checks run per persisted RDD (one whose storage level requests memory
-and/or disk, with at least one partition actually cached); an RDD can trip both at once:
+A persisted RDD, one whose storage level requests memory and/or disk with at least one
+partition actually cached, is evaluated on two independent measures and can register on
+both at once:
 
 | Signal | Info | Warning |
 |---|---|---|
 | Cached ratio (cached partitions ÷ total partitions) | < 90% | < 50% |
 | Disk ratio (disk bytes ÷ (memory bytes + disk bytes)), `MEMORY_AND_DISK*` levels only | > 15% | > 40% |
 
-Both ratios are read from a point-in-time storage snapshot taken at stage-submission
-events, not a runtime block-access count, so confirm against the Spark UI's Storage tab
-before acting. Confidence in either finding scales with the RDD's partition count: below
-10 partitions the ratio is noisy enough to call low confidence, at 50 or more it's high.
+Both ratios come from a point-in-time storage snapshot taken at stage-submission events,
+not a runtime block-access count, so confirm against the Spark UI's Storage tab before
+acting. Confidence scales with the RDD's partition count: below 10 partitions the ratio
+is noisy enough to call low confidence, at 50 or more it's high.
 
 ### Why it matters
 

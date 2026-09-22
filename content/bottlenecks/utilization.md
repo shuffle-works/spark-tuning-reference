@@ -14,8 +14,7 @@ The signal is the ratio of average active executors to the peak active executor 
 |---|---|
 | avg active executors / peak | < 60% |
 
-60% is the only threshold checked, and a finding that clears it always reports at the info
-level: there's no separate 40% warning or 20% critical tier.
+A finding here always reports at the info level.
 
 ## Why it matters
 
@@ -54,10 +53,10 @@ holds.
 
 ### How it's detected
 
-The signal is the share of tasks across the whole run that ran RACK_LOCAL or ANY, out of
-every task with a recorded locality level. NO_PREF tasks stay in the denominator only,
-since shuffle-read stages legitimately report that level without it indicating a
-placement problem. The check only evaluates once the run has at least 50 total tasks.
+The share of tasks that ran RACK_LOCAL or ANY, out of every task with a recorded locality
+level, is the non-local task share. NO_PREF tasks stay in the denominator only, since
+shuffle-read stages legitimately report that level without it indicating a placement
+problem. This applies once a run has logged at least 50 total tasks.
 
 | Signal | Warning | Critical |
 |---|---|---|
@@ -88,15 +87,12 @@ When the same DataFrame, RDD, or input is scanned more than once, low utilizatio
 
 ### How it's detected
 
-Across every SQL execution in one run, the detector matches input relations and
-join/union subtrees by structural shape, operator plus metric names plus a normalized
-join or filter condition, so it doesn't need matching literal values to notice that two
-executions compute the same thing. A relation or composite match that recurs across at
-least 2 SQL executions in the run fires, always at the info level: this is a single-tier
-signal, not a graded one. A composite match (a join or union and everything beneath it)
-is reported instead of its individual input relations whenever the composite itself
-qualifies, so a shared join doesn't also surface as several separate shared-scan
-findings underneath it.
+An input relation, or a join/union subtree, that recurs across at least 2 SQL executions
+in one run is flagged as a caching candidate, matched structurally: by operator name,
+metric names, and a normalized join or filter condition, so two executions that compute
+the same relation or join still match even when their literal filter values or join keys
+are written differently. A qualifying join or union subtree is reported as one finding
+covering everything beneath it. Every finding here reports at the info level.
 
 <img class="light-only" src="../diagrams/duplicate-plan-subtree.svg" alt="How two branches that repeat the same scan and operators each recompute it, until a shared cached or reused node lets both read one materialized result.">
 <img class="dark-only" src="../diagrams/duplicate-plan-subtree.dark.svg" alt="How two branches that repeat the same scan and operators each recompute it, until a shared cached or reused node lets both read one materialized result.">

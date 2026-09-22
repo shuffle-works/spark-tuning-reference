@@ -18,14 +18,13 @@ more data than everyone else in the same stage.
 | P95 / median task duration (stage has ≥ 20 tasks) | > 3× |
 | Max / median task duration (stage has < 20 tasks) | > 3× |
 
-3× is the only fixed tier: there is no separate, higher-ratio critical threshold. Firing
-also requires the estimated recoverable time (the P95-minus-median, or max-minus-median,
-delta) to be at least 0.5% of the app's total runtime, a floor that keeps a 3× ratio on a
-few milliseconds from tripping the check. Once both conditions hold, the severity shown
-isn't set by the ratio at all: it comes from that same recoverable-time estimate as a
-share of the app's total runtime, ≥2% critical, ≥0.5% warning, anything smaller info. A 3×
-ratio on a stage that barely dents an eight-hour run can still surface as info rather than
-a graded warning or critical.
+A 3× ratio marks a stage as skewed. Beyond that ratio, the estimated recoverable time (the
+P95-minus-median, or max-minus-median, delta) needs to clear 0.5% of the app's total
+runtime before it registers, a floor that filters out a 3× ratio sitting on a few
+milliseconds. Severity then tracks that same recoverable-time estimate as a share of the
+app's total runtime: ≥2% is critical, ≥0.5% is warning, anything smaller is info. A 3×
+ratio on a stage that barely dents an eight-hour run typically surfaces as info; the same
+ratio on a stage that dominates a short run reads as critical.
 
 ## Why it matters
 
