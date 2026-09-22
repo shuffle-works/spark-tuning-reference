@@ -4,15 +4,15 @@
 
 ## What it is
 
-Executor utilization measures how much of the cluster's allocated executor capacity a job actually keeps busy. When the average number of active executors trails the peak number allocated, the cluster is holding compute (cores and memory) that isn't running any tasks.
+Executor utilization measures how much of the cluster's allocated core-time a job actually keeps busy. When busy core-time trails the core-time available across the run, the cluster is holding compute (cores and memory) that isn't running any tasks.
 
 ## How it's detected
 
-The signal is the ratio of average active executors to the peak active executor count observed over the job's lifetime:
+The signal is the ratio of busy executor core-time to the core-time available over the run: peak concurrent cores multiplied by the app's duration.
 
 | Signal | Fires when |
 |---|---|
-| avg active executors / peak | < 60% |
+| busy core-time / available core-time | < 60% |
 
 A finding here always reports at the info level.
 
@@ -87,12 +87,15 @@ When the same DataFrame, RDD, or input is scanned more than once, low utilizatio
 
 ### How it's detected
 
-An input relation, or a join/union subtree, that recurs across at least 2 SQL executions
-in one run is flagged as a caching candidate, matched structurally: by operator name,
-metric names, and a normalized join or filter condition, so two executions that compute
-the same relation or join still match even when their literal filter values or join keys
-are written differently. A qualifying join or union subtree is reported as one finding
-covering everything beneath it. Every finding here reports at the info level.
+An input relation that recurs across at least 2 SQL executions in one run is flagged by
+its scan format and path identity. A join or union subtree that recurs across at least 2
+executions is matched by operator name, metric names, and its join or filter condition
+normalized to strip per-analysis ids and canonicalize commutative operand order, while
+columns and literal values are kept intact: two executions of the exact same join or
+filter still match even when Spark's internal ids differ between runs, but a genuinely
+different filter or join value does not. A qualifying join or union subtree is reported
+as one finding covering everything beneath it. Every finding here reports at the info
+level.
 
 <img class="light-only" src="../diagrams/duplicate-plan-subtree.svg" alt="How two branches that repeat the same scan and operators each recompute it, until a shared cached or reused node lets both read one materialized result.">
 <img class="dark-only" src="../diagrams/duplicate-plan-subtree.dark.svg" alt="How two branches that repeat the same scan and operators each recompute it, until a shared cached or reused node lets both read one materialized result.">
