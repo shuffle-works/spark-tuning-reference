@@ -110,8 +110,10 @@ way, the losing attempt's executor time is pure waste.
 | Wasted speculative attempts in a stage | ≥ 5 |
 | Wasted executor time from those attempts | ≥ 60 seconds |
 
-Both conditions have to hold together. A finding here always reports at the warning
-level.
+Both conditions have to hold together. Severity is wall-clock-derived like the other
+stage-scoped findings on this page: the estimated recoverable time as a share of the app's
+total runtime decides the band, ≥2% critical, ≥0.5% warning, anything smaller info; `warning`
+is only the fallback used when no wall-clock estimate is available.
 
 ### Why it matters
 

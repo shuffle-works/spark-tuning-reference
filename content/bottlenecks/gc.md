@@ -27,11 +27,12 @@ that keeps short stages from tripping either one on noise:
 
 10% is the only fixed tier on the high side: there's no separate 20% critical threshold. The
 two checks are opposite-direction reads of the same ratio, so a stage trips at most one of
-them, and the low-GC check only runs when the high-GC one didn't fire. High-GC severity comes
-from the estimated recoverable time as a share of the app's total runtime: ≥2% critical, ≥0.5%
-warning, anything smaller info (the fallback used when no wall-clock estimate is available is
-`warning`). Low GC never signals recoverable time, so it always stays informational: a possible
-memory over-provisioning hint, not a performance problem.
+them, and the low-GC check only runs when the high-GC one didn't fire. Both directions get
+the same wall-clock-derived severity: the estimated recoverable time as a share of the app's
+total runtime decides the band, ≥2% critical, ≥0.5% warning, anything smaller info. High GC
+falls back to `warning` and low GC falls back to `info` only when no wall-clock estimate is
+available; otherwise the band moves with the estimate, and low GC stays a possible memory
+over-provisioning hint rather than a performance problem.
 
 ## Why it matters
 
