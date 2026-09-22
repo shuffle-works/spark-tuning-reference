@@ -61,7 +61,7 @@ placement problem. The check only evaluates once the run has at least 50 total t
 
 | Signal | Warning | Critical |
 |---|---|---|
-| Non-local task share | > 15% | > 35% |
+| Non-local task share | ≥ 15% | ≥ 35% |
 
 ### Why it matters
 
