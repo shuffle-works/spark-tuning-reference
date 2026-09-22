@@ -40,14 +40,8 @@ generation" section). Data model and pipeline shape: `docs/architecture.md`.
      `memory-model`), `bottleneck-core-locality`/`bottleneck-caching-opportunity`
      (nested inside `bottleneck-utilization`), `bottleneck-speculation-waste` (nested
      inside `bottleneck-straggler`), and `bottleneck-autoscaling-churn` (nested inside
-     `cluster-config`). sparkforensics' own `docAnchor` wiring hasn't caught up to this
-     split for all 8 yet: only `bottleneck-stage-shape` and `bottleneck-stage-slowness`
-     are declared as a detector's `docAnchor` today. Five sub-anchors' detectors
-     (`partitionSizing`, `cacheUtilization`, `coreLocality`, `cachingOpportunity`,
-     `speculationWaste`) still declare their old, shared `docAnchor`, and
-     `bottleneck-autoscaling-churn`'s detector (`autoscalingChurn`) carries no
-     `docAnchor` at all; see `docs/anchor-map.md`'s coverage-contract section for the
-     full per-anchor wiring status.
+     `cluster-config`); see `docs/anchor-map.md`'s coverage-contract section for how
+     sparkforensics' doc-anchor coverage check treats these against `anchors.json`.
 
    Adding or removing a content page changes the 31-section count `smoke_content.py`
    asserts: update that literal in the same change. Note `anchors.json`
