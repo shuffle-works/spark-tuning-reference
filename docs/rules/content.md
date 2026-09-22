@@ -25,16 +25,22 @@ generation" section). Data model and pipeline shape: `docs/architecture.md`.
    carries no such contract and its anchors may change freely. This covers:
    - the 31 manifest-level anchors (one per `content/manifest.yaml` entry, enforced by
      `scripts/smoke_content.py`'s 31-section count check), and
-   - 6 sub-anchors that live inside a manifest entry's own page and so aren't manifest
+   - 12 sub-anchors that live inside a manifest entry's own page and so aren't manifest
      entries themselves, enforced by `scripts/smoke_content.py`'s separate `SUB_ANCHORS`
      check: 4 config-page sub-anchors nested inside the single `config` entry
      (`config-shuffle-service`, `config-autoscale-bounds`, `config-serializer`,
-     `config-memory-overhead`), plus 2 detector-facing sub-anchors nested inside the
-     `bottleneck-skew` and `bottleneck-slow-host` entries (`bottleneck-stage-shape`,
-     `bottleneck-stage-slowness`, each given its own page instead of pointing at an
-     existing one, since `SHAPE` used to link to Task Skew, covering only one of its
-     three smells, and `SLOW` used to link to Slow Host, a case its own detector
-     explicitly rules out).
+     `config-memory-overhead`), plus 8 detector-facing sub-anchors, each nested inside
+     an existing bottleneck or chapter page instead of getting its own manifest entry,
+     because the detector's `docAnchor` used to point at a page that never discussed
+     its specific signal: `bottleneck-stage-shape`/`bottleneck-stage-slowness` (nested
+     inside `bottleneck-skew`/`bottleneck-slow-host`; `SHAPE` used to link to Task Skew,
+     covering only one of its three smells, and `SLOW` used to link to Slow Host, a case
+     its own detector explicitly rules out), and `bottleneck-partition-sizing` (nested
+     inside `bottleneck-shuffle`), `bottleneck-cache-utilization` (nested inside
+     `memory-model`), `bottleneck-core-locality`/`bottleneck-caching-opportunity`
+     (nested inside `bottleneck-utilization`), `bottleneck-speculation-waste` (nested
+     inside `bottleneck-straggler`), and `bottleneck-autoscaling-churn` (nested inside
+     `cluster-config`).
 
    Adding or removing a content page changes the 31-section count `smoke_content.py`
    asserts: update that literal in the same change. Note `anchors.json`

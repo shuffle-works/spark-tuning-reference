@@ -13,10 +13,19 @@ more data than everyone else in the same stage.
 
 ## How it's detected
 
-| Signal | Warning | Critical |
-|---|---|---|
-| P95 / median task duration | > 3× | > 5× |
-| Max / median task duration (task count < 20) | > 3× | > 5× |
+| Signal | Fires when |
+|---|---|
+| P95 / median task duration (stage has ≥ 20 tasks) | > 3× |
+| Max / median task duration (stage has < 20 tasks) | > 3× |
+
+3× is the only fixed tier: there is no separate, higher-ratio critical threshold. Firing
+also requires the estimated recoverable time (the P95-minus-median, or max-minus-median,
+delta) to be at least 0.5% of the app's total runtime, a floor that keeps a 3× ratio on a
+few milliseconds from tripping the check. Once both conditions hold, the severity shown
+isn't set by the ratio at all: it comes from that same recoverable-time estimate as a
+share of the app's total runtime, ≥2% critical, ≥0.5% warning, anything smaller info. A 3×
+ratio on a stage that barely dents an eight-hour run can still surface as info rather than
+a graded warning or critical.
 
 ## Why it matters
 

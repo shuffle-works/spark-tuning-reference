@@ -42,6 +42,16 @@ SUB_ANCHORS = [
     # SLOW under slow-host); their detectors deep-link to these ids.
     "bottleneck-stage-shape",
     "bottleneck-stage-slowness",
+    # Detector-facing subsections nested inside an existing chapter/bottleneck page
+    # instead of getting their own manifest entry, same rationale as the two above:
+    # each detector's docAnchor used to point at a page that never discussed its
+    # specific signal.
+    "bottleneck-partition-sizing",      # shuffle.md (partitionSizing)
+    "bottleneck-cache-utilization",     # 03-memory-model.md (cacheUtilization)
+    "bottleneck-core-locality",         # utilization.md (coreLocality)
+    "bottleneck-caching-opportunity",   # utilization.md (cachingOpportunity)
+    "bottleneck-speculation-waste",     # straggler.md (speculationWaste)
+    "bottleneck-autoscaling-churn",     # 11-cluster-config.md (autoscalingChurn)
 ]
 for anchor in SUB_ANCHORS:
     if f"{{#{anchor}}}" not in ALL_SOURCE:

@@ -71,23 +71,29 @@ second source of anchor truth; run `uv run scripts/build_anchors.py` after any
 `manifest.yaml` change.
 
 **`anchors.json` scope: manifest-level anchors only, not sub-anchors.** Per
-`docs/rules/content.md` #3, the frozen contract also covers 6 sub-anchors that
+`docs/rules/content.md` #3, the frozen contract also covers 12 sub-anchors that
 live inside a manifest entry's own page rather than as their own manifest
 entries: 4 config-page sub-anchors (`config-shuffle-service`,
 `config-autoscale-bounds`, `config-serializer`, `config-memory-overhead`) and
-2 detector-facing sub-anchors (`bottleneck-stage-shape`,
-`bottleneck-stage-slowness`, each given its own bottleneck page rather than
-pointing at an existing one, since `SHAPE` used to link to Task Skew, covering
-only one of its three smells, and `SLOW` used to link to Slow Host, a case its
-own detector explicitly rules out). `anchors.json` does not, and by
-design should not, carry a record for any of these 6: `anchors.json` only projects
-manifest entries. A detector's doc-anchor coverage check that intersects
-against `anchors.json` alone will therefore report these 6 as dead links even
-though they resolve to real ids on their own manifest entry's chapter page.
-Treat any of these 6 in a
-coverage report as a known false positive, not a real dead link; only an
-anchor outside this list of 37 (31 manifest anchors plus these 6 sub-anchors)
-is a genuine gap.
+8 detector-facing sub-anchors, each nested inside an existing bottleneck or
+chapter page because the detector's `docAnchor` used to point at a page that
+never discussed its specific signal: `bottleneck-stage-shape` and
+`bottleneck-stage-slowness` (nested inside `bottleneck-skew` and
+`bottleneck-slow-host`; `SHAPE` used to link to Task Skew, covering only one
+of its three smells, and `SLOW` used to link to Slow Host, a case its own
+detector explicitly rules out), `bottleneck-partition-sizing` (nested inside
+`bottleneck-shuffle`), `bottleneck-cache-utilization` (nested inside
+`memory-model`), `bottleneck-core-locality` and `bottleneck-caching-opportunity`
+(both nested inside `bottleneck-utilization`), `bottleneck-speculation-waste`
+(nested inside `bottleneck-straggler`), and `bottleneck-autoscaling-churn`
+(nested inside `cluster-config`). `anchors.json` does not, and by
+design should not, carry a record for any of these 12: `anchors.json` only
+projects manifest entries. A detector's doc-anchor coverage check that
+intersects against `anchors.json` alone will therefore report these 12 as
+dead links even though they resolve to real ids on their own manifest entry's
+chapter page. Treat any of these 12 in a coverage report as a known false
+positive, not a real dead link; only an anchor outside this list of 43 (31
+manifest anchors plus these 12 sub-anchors) is a genuine gap.
 
 **`keywords` is the curatable join key, reserved for future use.** The
 `anchor`/`section`/`title` fields are mechanical projections of the manifest;
