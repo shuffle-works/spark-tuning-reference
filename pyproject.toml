@@ -9,7 +9,7 @@ dependencies = [
 [dependency-groups]
 research = [
   "trafilatura>=1.12",
-  "chromadb>=0.5",
+  "chromadb>=1.5.9",
   "sentence-transformers>=3.0",
   "tiktoken>=0.7",
   "rich>=13",
