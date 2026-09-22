@@ -44,10 +44,7 @@ SUB_ANCHORS = [
     "bottleneck-stage-slowness",
     # Detector-facing subsections nested inside an existing chapter/bottleneck page
     # instead of getting their own manifest entry, same rationale as the two above:
-    # each shares a page that never discussed its specific signal. Five of them
-    # (partitionSizing, cacheUtilization, coreLocality, cachingOpportunity,
-    # speculationWaste) replace a detector's still-current generic docAnchor, not
-    # yet repointed here; autoscalingChurn's detector carries no docAnchor at all.
+    # each shares a page that never discussed its specific signal.
     "bottleneck-partition-sizing",      # shuffle.md (partitionSizing)
     "bottleneck-cache-utilization",     # 03-memory-model.md (cacheUtilization)
     "bottleneck-core-locality",         # utilization.md (coreLocality)
