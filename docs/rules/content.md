@@ -30,19 +30,24 @@ generation" section). Data model and pipeline shape: `docs/architecture.md`.
      check: 4 config-page sub-anchors nested inside the single `config` entry
      (`config-shuffle-service`, `config-autoscale-bounds`, `config-serializer`,
      `config-memory-overhead`), plus 8 detector-facing sub-anchors, each nested inside
-     an existing bottleneck or chapter page instead of getting its own manifest entry.
-     Seven of them, because the detector's `docAnchor` used to point at a page that
-     never discussed its specific signal: `bottleneck-stage-shape`/`bottleneck-stage-slowness`
-     (nested inside `bottleneck-skew`/`bottleneck-slow-host`; `SHAPE` used to link to Task
-     Skew, covering only one of its three smells, and `SLOW` used to link to Slow Host, a
+     an existing bottleneck or chapter page instead of getting its own manifest entry,
+     because the page it would otherwise share never discussed its specific signal:
+     `bottleneck-stage-shape`/`bottleneck-stage-slowness` (nested inside
+     `bottleneck-skew`/`bottleneck-slow-host`; `SHAPE` used to link to Task Skew,
+     covering only one of its three smells, and `SLOW` used to link to Slow Host, a
      case its own detector explicitly rules out), `bottleneck-partition-sizing` (nested
      inside `bottleneck-shuffle`), `bottleneck-cache-utilization` (nested inside
      `memory-model`), `bottleneck-core-locality`/`bottleneck-caching-opportunity`
-     (nested inside `bottleneck-utilization`), and `bottleneck-speculation-waste` (nested
-     inside `bottleneck-straggler`). The eighth, `bottleneck-autoscaling-churn` (nested
-     inside `cluster-config`), had no `docAnchor` at all: `autoscalingChurn` carried no
-     reference page to begin with, so this sub-anchor is new prose rather than a
-     redirected anchor.
+     (nested inside `bottleneck-utilization`), `bottleneck-speculation-waste` (nested
+     inside `bottleneck-straggler`), and `bottleneck-autoscaling-churn` (nested inside
+     `cluster-config`). sparkforensics' own `docAnchor` wiring hasn't caught up to this
+     split for all 8 yet: only `bottleneck-stage-shape` and `bottleneck-stage-slowness`
+     are declared as a detector's `docAnchor` today. Five sub-anchors' detectors
+     (`partitionSizing`, `cacheUtilization`, `coreLocality`, `cachingOpportunity`,
+     `speculationWaste`) still declare their old, shared `docAnchor`, and
+     `bottleneck-autoscaling-churn`'s detector (`autoscalingChurn`) carries no
+     `docAnchor` at all; see `docs/anchor-map.md`'s coverage-contract section for the
+     full per-anchor wiring status.
 
    Adding or removing a content page changes the 31-section count `smoke_content.py`
    asserts: update that literal in the same change. Note `anchors.json`

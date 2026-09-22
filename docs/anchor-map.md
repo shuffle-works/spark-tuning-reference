@@ -76,26 +76,46 @@ live inside a manifest entry's own page rather than as their own manifest
 entries: 4 config-page sub-anchors (`config-shuffle-service`,
 `config-autoscale-bounds`, `config-serializer`, `config-memory-overhead`) and
 8 detector-facing sub-anchors, each nested inside an existing bottleneck or
-chapter page. Seven of them, because the detector's `docAnchor` used to point
-at a page that never discussed its specific signal: `bottleneck-stage-shape`
+chapter page instead of getting its own manifest entry, because the page it
+would otherwise share never discussed its specific signal: `bottleneck-stage-shape`
 and `bottleneck-stage-slowness` (nested inside `bottleneck-skew` and
 `bottleneck-slow-host`; `SHAPE` used to link to Task Skew, covering only one
 of its three smells, and `SLOW` used to link to Slow Host, a case its own
 detector explicitly rules out), `bottleneck-partition-sizing` (nested inside
 `bottleneck-shuffle`), `bottleneck-cache-utilization` (nested inside
 `memory-model`), `bottleneck-core-locality` and `bottleneck-caching-opportunity`
-(both nested inside `bottleneck-utilization`), and `bottleneck-speculation-waste`
-(nested inside `bottleneck-straggler`). The eighth, `bottleneck-autoscaling-churn`
-(nested inside `cluster-config`), had no `docAnchor` at all: `autoscalingChurn`
-carried no reference page to begin with, so this sub-anchor is new prose rather
-than a redirected anchor. `anchors.json` does not, and by
-design should not, carry a record for any of these 12: `anchors.json` only
-projects manifest entries. A detector's doc-anchor coverage check that
-intersects against `anchors.json` alone will therefore report these 12 as
-dead links even though they resolve to real ids on their own manifest entry's
-chapter page. Treat any of these 12 in a coverage report as a known false
-positive, not a real dead link; only an anchor outside this list of 43 (31
-manifest anchors plus these 12 sub-anchors) is a genuine gap.
+(both nested inside `bottleneck-utilization`), `bottleneck-speculation-waste`
+(nested inside `bottleneck-straggler`), and `bottleneck-autoscaling-churn`
+(nested inside `cluster-config`).
+
+These 8 differ in how far sparkforensics' own `docAnchor` wiring has caught up
+to this split. Two are already wired: `stageShape`'s and `stageSlowness`'s
+detector entries carry `docAnchor: '#bottleneck-stage-shape'` and
+`'#bottleneck-stage-slowness'` today. Five still carry the old, shared
+`docAnchor` their detector had before this split and haven't been repointed
+yet: `partitionSizing` still declares `'#bottleneck-shuffle'`,
+`cacheUtilization` still declares `'#memory-model'`, `coreLocality` and
+`cachingOpportunity` still both declare `'#bottleneck-utilization'`, and
+`speculationWaste` still declares `'#bottleneck-straggler'`. The eighth,
+`bottleneck-autoscaling-churn`, is a wholly new reference: `autoscalingChurn`'s
+detector entry carries no `docAnchor` field at all, so there was no prior
+value to repoint.
+
+`anchors.json` does not, and by design should not, carry a record for any of
+these 12: `anchors.json` only projects manifest entries. Of the 8
+detector-facing sub-anchors, only the two already-wired ones,
+`bottleneck-stage-shape` and `bottleneck-stage-slowness`, are declared as a
+detector's `docAnchor` today, so a coverage check intersecting declared
+doc-anchors against `anchors.json` will report exactly those two as dead
+links even though they resolve to real ids on their own manifest entry's
+chapter page; treat that pair as a known false positive, not a real dead
+link. The other six detector-facing sub-anchors aren't declared as any
+detector's `docAnchor` yet, so they won't surface in that coverage check at
+all, neither flagged nor validated, until a follow-up change on the
+sparkforensics side repoints (or, for `bottleneck-autoscaling-churn`, adds)
+each detector's `docAnchor` to its new sub-anchor id. Only an anchor outside
+this list of 43 (31 manifest anchors plus these 12 sub-anchors) is a genuine
+gap.
 
 **`keywords` is the curatable join key, reserved for future use.** The
 `anchor`/`section`/`title` fields are mechanical projections of the manifest;
@@ -120,8 +140,11 @@ the declared detector doc-anchors against `anchors.json` and reports:
 It is **warn-only by design, not a CI gate**: `tests/doc-anchor-coverage.test.js` runs under
 `npm test` (so it does surface in CI output) but is coded to never fail the suite on drift:
 only the manual `npm run doc-anchor-coverage` CLI exit-codes on a real dead link or orphan.
-The check also excludes this doc's 12 known sub-anchors (below) from its dead-link count, since
-`anchors.json` never carries them by design. The actual hard CI gate against dead deep-links is
+The check also excludes the 6 sub-anchors already declared as a detector's `docAnchor` today (below)
+from its dead-link count, since `anchors.json` never carries them by design: the 4 config-page
+sub-anchors, plus `bottleneck-stage-shape` and `bottleneck-stage-slowness`. The other 6
+detector-facing sub-anchors aren't declared as any detector's `docAnchor` yet, so they don't enter
+the check's declared-anchor set to begin with. The actual hard CI gate against dead deep-links is
 a separate, stricter mechanism: sparkforensics's `KNOWN_DOC_ANCHORS` allowlist
 (`src/docs-config.ts`), asserted by `tests/docs-config.test.js` to stay a subset of the real
 anchors this repo publishes. How a manifest-level anchor resolves in the rendered output (a
