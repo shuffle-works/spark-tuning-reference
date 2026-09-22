@@ -76,17 +76,19 @@ live inside a manifest entry's own page rather than as their own manifest
 entries: 4 config-page sub-anchors (`config-shuffle-service`,
 `config-autoscale-bounds`, `config-serializer`, `config-memory-overhead`) and
 8 detector-facing sub-anchors, each nested inside an existing bottleneck or
-chapter page because the detector's `docAnchor` used to point at a page that
-never discussed its specific signal: `bottleneck-stage-shape` and
-`bottleneck-stage-slowness` (nested inside `bottleneck-skew` and
+chapter page. Seven of them, because the detector's `docAnchor` used to point
+at a page that never discussed its specific signal: `bottleneck-stage-shape`
+and `bottleneck-stage-slowness` (nested inside `bottleneck-skew` and
 `bottleneck-slow-host`; `SHAPE` used to link to Task Skew, covering only one
 of its three smells, and `SLOW` used to link to Slow Host, a case its own
 detector explicitly rules out), `bottleneck-partition-sizing` (nested inside
 `bottleneck-shuffle`), `bottleneck-cache-utilization` (nested inside
 `memory-model`), `bottleneck-core-locality` and `bottleneck-caching-opportunity`
-(both nested inside `bottleneck-utilization`), `bottleneck-speculation-waste`
-(nested inside `bottleneck-straggler`), and `bottleneck-autoscaling-churn`
-(nested inside `cluster-config`). `anchors.json` does not, and by
+(both nested inside `bottleneck-utilization`), and `bottleneck-speculation-waste`
+(nested inside `bottleneck-straggler`). The eighth, `bottleneck-autoscaling-churn`
+(nested inside `cluster-config`), had no `docAnchor` at all: `autoscalingChurn`
+carried no reference page to begin with, so this sub-anchor is new prose rather
+than a redirected anchor. `anchors.json` does not, and by
 design should not, carry a record for any of these 12: `anchors.json` only
 projects manifest entries. A detector's doc-anchor coverage check that
 intersects against `anchors.json` alone will therefore report these 12 as
@@ -118,7 +120,7 @@ the declared detector doc-anchors against `anchors.json` and reports:
 It is **warn-only by design, not a CI gate**: `tests/doc-anchor-coverage.test.js` runs under
 `npm test` (so it does surface in CI output) but is coded to never fail the suite on drift:
 only the manual `npm run doc-anchor-coverage` CLI exit-codes on a real dead link or orphan.
-The check also excludes this doc's 6 known sub-anchors (below) from its dead-link count, since
+The check also excludes this doc's 12 known sub-anchors (below) from its dead-link count, since
 `anchors.json` never carries them by design. The actual hard CI gate against dead deep-links is
 a separate, stricter mechanism: sparkforensics's `KNOWN_DOC_ANCHORS` allowlist
 (`src/docs-config.ts`), asserted by `tests/docs-config.test.js` to stay a subset of the real
