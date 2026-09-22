@@ -1,5 +1,9 @@
 # Spark tuning reference
 
+[![CI](https://github.com/shuffle-works/spark-tuning-reference/actions/workflows/ci.yml/badge.svg)](https://github.com/shuffle-works/spark-tuning-reference/actions/workflows/ci.yml)
+[![Coverage Status](https://coveralls.io/repos/github/shuffle-works/spark-tuning-reference/badge.svg?branch=master)](https://coveralls.io/github/shuffle-works/spark-tuning-reference?branch=master)
+[![CodeQL](https://github.com/shuffle-works/spark-tuning-reference/actions/workflows/codeql.yml/badge.svg)](https://github.com/shuffle-works/spark-tuning-reference/actions/workflows/codeql.yml)
+
 An evidence-first reference for optimizing Apache Spark and PySpark jobs. Start from a job symptom, find the Spark mechanism behind it, then pick a tuning lever worth testing. The point is to stop hunches from becoming production settings.
 
 The published site covers Spark internals, memory, partitioning, joins, shuffle, file and table formats, caching, PySpark, AQE, cluster tuning, recurring anti-patterns, a bottleneck detector catalog, metrics, and configuration defaults.
