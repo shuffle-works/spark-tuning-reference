@@ -71,23 +71,35 @@ second source of anchor truth; run `uv run scripts/build_anchors.py` after any
 `manifest.yaml` change.
 
 **`anchors.json` scope: manifest-level anchors only, not sub-anchors.** Per
-`docs/rules/content.md` #3, the frozen contract also covers 6 sub-anchors that
+`docs/rules/content.md` #3, the frozen contract also covers 12 sub-anchors that
 live inside a manifest entry's own page rather than as their own manifest
 entries: 4 config-page sub-anchors (`config-shuffle-service`,
 `config-autoscale-bounds`, `config-serializer`, `config-memory-overhead`) and
-2 detector-facing sub-anchors (`bottleneck-stage-shape`,
-`bottleneck-stage-slowness`, each given its own bottleneck page rather than
-pointing at an existing one, since `SHAPE` used to link to Task Skew, covering
-only one of its three smells, and `SLOW` used to link to Slow Host, a case its
-own detector explicitly rules out). `anchors.json` does not, and by
-design should not, carry a record for any of these 6: `anchors.json` only projects
-manifest entries. A detector's doc-anchor coverage check that intersects
-against `anchors.json` alone will therefore report these 6 as dead links even
-though they resolve to real ids on their own manifest entry's chapter page.
-Treat any of these 6 in a
-coverage report as a known false positive, not a real dead link; only an
-anchor outside this list of 37 (31 manifest anchors plus these 6 sub-anchors)
-is a genuine gap.
+8 detector-facing sub-anchors, each nested inside an existing bottleneck or
+chapter page instead of getting its own manifest entry, because the page it
+would otherwise share never discussed its specific signal: `bottleneck-stage-shape`
+and `bottleneck-stage-slowness` (nested inside `bottleneck-skew` and
+`bottleneck-slow-host`; `SHAPE` used to link to Task Skew, covering only one
+of its three smells, and `SLOW` used to link to Slow Host, a case its own
+detector explicitly rules out), `bottleneck-partition-sizing` (nested inside
+`bottleneck-shuffle`), `bottleneck-cache-utilization` (nested inside
+`memory-model`), `bottleneck-core-locality` and `bottleneck-caching-opportunity`
+(both nested inside `bottleneck-utilization`), `bottleneck-speculation-waste`
+(nested inside `bottleneck-straggler`), and `bottleneck-autoscaling-churn`
+(nested inside `cluster-config`).
+
+`anchors.json` does not, and by design should not, carry a record for any of
+these 12: `anchors.json` only projects manifest entries. A detector's
+doc-anchor coverage check that intersects declared `docAnchor` values against
+`anchors.json` excludes whichever sub-anchor ids are currently declared as
+some detector's `docAnchor` from its dead-link count, treating each as a
+known false positive rather than a real dead link, since it resolves to a
+real id on its own manifest entry's chapter page. A sub-anchor id that isn't
+yet declared as any detector's `docAnchor` simply doesn't surface in that
+check at all, neither flagged nor validated, until a detector's `docAnchor`
+is pointed at it. Only an anchor outside this list of 43 (31 manifest
+anchors plus these 12 sub-anchors) is a genuine
+gap.
 
 **`keywords` is the curatable join key, reserved for future use.** The
 `anchor`/`section`/`title` fields are mechanical projections of the manifest;
@@ -112,8 +124,11 @@ the declared detector doc-anchors against `anchors.json` and reports:
 It is **warn-only by design, not a CI gate**: `tests/doc-anchor-coverage.test.js` runs under
 `npm test` (so it does surface in CI output) but is coded to never fail the suite on drift:
 only the manual `npm run doc-anchor-coverage` CLI exit-codes on a real dead link or orphan.
-The check also excludes this doc's 6 known sub-anchors (below) from its dead-link count, since
-`anchors.json` never carries them by design. The actual hard CI gate against dead deep-links is
+The check excludes whichever of the 12 sub-anchors are currently declared as a detector's
+`docAnchor` from its dead-link count, since `anchors.json` never carries any of them by
+design. A sub-anchor not yet declared as any detector's `docAnchor` doesn't enter the
+check's declared-anchor set to begin with, so it neither surfaces as a dead link nor
+confirms as covered. The actual hard CI gate against dead deep-links is
 a separate, stricter mechanism: sparkforensics's `KNOWN_DOC_ANCHORS` allowlist
 (`src/docs-config.ts`), asserted by `tests/docs-config.test.js` to stay a subset of the real
 anchors this repo publishes. How a manifest-level anchor resolves in the rendered output (a
