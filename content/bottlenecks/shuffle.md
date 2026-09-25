@@ -144,7 +144,7 @@ and `advisoryPartitionSizeInBytes` (64 MB) is the size AQE aims each partition a
 directions. Partitions below it get coalesced; skewed partitions past the 256 MB / 5.0-factor bar get
 split toward it.
 
-AQE resizes partitions as each shuffle stage materializes[^11], so it can't widen a stage whose few tasks start at the source. A JDBC table read, for example, runs as a single task by default[^15]; the fix there is the reader's own partitioning options, covered in [Partitioning](#partitioning).
+This signal does not flag low parallelism that starts at the source. It counts shuffle read spread across few tasks, and a single-task JDBC or connector read has no shuffle read to count. A JDBC table read runs as a single task by default[^15]. That is a separate cause with its own fix, the reader's partitioning options, covered in [Partitioning](#partitioning).
 
 ## Limitations / false-positive risk
 
