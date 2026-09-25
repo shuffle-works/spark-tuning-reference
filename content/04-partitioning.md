@@ -55,15 +55,15 @@ A stage that reads a database table in one task is a common, fixable cause of lo
 
 **Range partitioning.** Set `partitionColumn`, `lowerBound`, `upperBound`, and `numPartitions` as a group: they tell Spark how to partition the table across workers[^14]. `partitionColumn` must be a numeric, date, or timestamp column[^14]. The two bounds only set the partition stride. They don't filter anything, so every row in the table is still read and returned[^14]. `numPartitions` is the maximum number of read partitions and also the maximum number of concurrent JDBC connections[^14]. In PySpark's `DataFrameReader.jdbc()`, the `column` argument is an alias for `partitionColumn`, and passing it requires `lowerBound`, `upperBound`, and `numPartitions`[^15].
 
-**Choosing the column and bounds.** Databricks' reference example picks a partition column with a uniformly distributed range of values and sets `lowerBound` and `upperBound` to the lowest and highest values to pull data for with it[^16]. Prefer a column the source database has an index on, which speeds up each partition's query[^16].
+**Choosing the column and bounds.** Databricks' reference example picks a partition column with a uniformly distributed range of values and sets `lowerBound` and `upperBound` to the lowest and highest values to pull data for with it[^16]. Even then the bounds set only the stride, and rows outside them are still read[^14]. Prefer a column the source database has an index on, which speeds up each partition's query[^16].
 
 ```python
 df = (spark.read.format("jdbc")
       .option("url", "<jdbc-url>")
       .option("dbtable", "<table-name>")
       .option("partitionColumn", "<indexed-numeric-date-or-timestamp-column>")
-      .option("lowerBound", "<lowest value to read>")
-      .option("upperBound", "<highest value to read>")
+      .option("lowerBound", "<min of partition column>")
+      .option("upperBound", "<max of partition column>")
       .option("numPartitions", 8)
       .option("fetchsize", "<rows per round trip>")
       .load())
