@@ -669,3 +669,35 @@ sources:
     spark_version: "n/a"
     version_bucket: "n/a"
     min_bytes: 5000
+  - id: spark-jdbc
+    type: web
+    url: https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html
+    local: references/web/spark-jdbc.md
+    fetched: 2026-09-25
+    spark_version: "4.2"
+    version_bucket: "4.0"
+    min_bytes: 5000
+  - id: pyspark-dataframereader-jdbc
+    type: web
+    url: https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrameReader.jdbc.html
+    local: references/web/pyspark-dataframereader-jdbc.md
+    fetched: 2026-09-25
+    spark_version: "4.2"
+    version_bucket: "4.0"
+    min_bytes: 1000
+  - id: aws-glue-parallelize-tasks
+    type: web
+    url: https://docs.aws.amazon.com/prescriptive-guidance/latest/tuning-aws-glue-for-apache-spark/parallelize-tasks.html
+    local: references/web/aws-glue-parallelize-tasks.md
+    fetched: 2026-09-25
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 3000
+  - id: databricks-jdbc
+    type: web
+    url: https://docs.databricks.com/aws/en/connect/external-systems/jdbc
+    local: references/web/databricks-jdbc.md
+    fetched: 2026-09-25
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 3000

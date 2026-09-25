@@ -144,6 +144,8 @@ and `advisoryPartitionSizeInBytes` (64 MB) is the size AQE aims each partition a
 directions. Partitions below it get coalesced; skewed partitions past the 256 MB / 5.0-factor bar get
 split toward it.
 
+AQE resizes partitions as each shuffle stage materializes[^11], so it can't widen a stage whose few tasks start at the source. A JDBC table read, for example, runs as a single task by default[^15]; the fix there is the reader's own partitioning options, covered in [Partitioning](#partitioning).
+
 ## Limitations / false-positive risk
 
 A high shuffle-byte count is not automatically a defect. A wide transformation such as a large
@@ -172,3 +174,4 @@ prompt to look rather than a verdict.
 [^12]: [Performance Tuning: Coalescing Post Shuffle Partitions](https://spark.apache.org/docs/latest/sql-performance-tuning.html)
 [^13]: [Configuration (Spark)](https://spark.apache.org/docs/latest/configuration.html)
 [^14]: [SQLConf: shuffle-partition defaults (Spark source)](https://raw.githubusercontent.com/apache/spark/v3.5.0/sql/catalyst/src/main/scala/org/apache/spark/sql/internal/SQLConf.scala)
+[^15]: [Parallelize tasks (AWS Prescriptive Guidance: Tuning AWS Glue for Apache Spark)](https://docs.aws.amazon.com/prescriptive-guidance/latest/tuning-aws-glue-for-apache-spark/parallelize-tasks.html)
