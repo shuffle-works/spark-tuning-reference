@@ -1002,3 +1002,9 @@ questions:
   version: n/a
   k: null
   status: answered
+- id: 3.4-q09
+  section: 3.4-partitioning
+  text: How do you parallelize a JDBC read in Spark using partitionColumn, lowerBound, upperBound, numPartitions, fetchsize, or predicates, how should the partition column and bounds be chosen, and how do you avoid overloading the source database?
+  version: n/a
+  k: 20
+  status: answered

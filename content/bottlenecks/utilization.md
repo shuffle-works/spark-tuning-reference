@@ -18,7 +18,7 @@ A finding here always reports at the info level.
 
 ## Why it matters
 
-Idle executors are allocation you're paying for without getting work done. One common cause is too little task parallelism to occupy the allocated cores: the guidance is to keep at least as many partitions as there are cores across the executors, so no core sits idle[^1]. Parallelism can also be lost by accident rather than by under-partitioning upfront: because `coalesce` is a narrow transformation, reducing partition count with it forces the *entire* upstream stage down to the reduced parallelism, not just the coalesce step, trading a shuffle for lost concurrency[^2]. Separately, under dynamic allocation, a workload with many small tasks can end up over-provisioned: by default it requests enough executors to maximize parallelism for the task count, and with small tasks that can mean some executors "might not even do any work," wasting resources on allocation overhead[^3].
+Idle executors are allocation you're paying for without getting work done. One common cause is too little task parallelism to occupy the allocated cores: the guidance is to keep at least as many partitions as there are cores across the executors, so no core sits idle[^1]. The shortfall can start at the source: a JDBC table read runs as a single task by default[^12], and [Partitioning](#partitioning) covers the reader options that split it. Parallelism can also be lost by accident rather than by under-partitioning upfront: because `coalesce` is a narrow transformation, reducing partition count with it forces the *entire* upstream stage down to the reduced parallelism, not just the coalesce step, trading a shuffle for lost concurrency[^2]. Separately, under dynamic allocation, a workload with many small tasks can end up over-provisioned: by default it requests enough executors to maximize parallelism for the task count, and with small tasks that can mean some executors "might not even do any work," wasting resources on allocation overhead[^3].
 
 ## How to fix it
 
@@ -138,3 +138,4 @@ A persisted RDD you've stopped using still occupies memory until the app ends or
 [^9]: [Spark Tips: Caching](https://luminousmen.com/post/spark-tips-caching)
 [^10]: [RDD Programming Guide — Spark](https://spark.apache.org/docs/latest/rdd-programming-guide.html)
 [^11]: *Learning Spark, 2nd Edition*, Damji, Wenig, Das & Lee, ch. 7
+[^12]: [Parallelize tasks (AWS Prescriptive Guidance: Tuning AWS Glue for Apache Spark)](https://docs.aws.amazon.com/prescriptive-guidance/latest/tuning-aws-glue-for-apache-spark/parallelize-tasks.html)

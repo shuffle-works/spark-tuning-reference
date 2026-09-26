@@ -49,6 +49,34 @@ For skewed joins specifically, salting (adding a prefix to skewed keys so the sa
 
 For the join-alignment gotcha above, the mechanism that does reliably guarantee a shuffle can be skipped is storage-partitioned joins: both tables are physically bucketed identically at the catalog level, for example [Iceberg](#table-formats) tables created with matching `PARTITIONED BY (bucket(...))` clauses. When Spark recognizes both sides report the same partitioning through `SupportsReportPartitioning`, it can drop the Exchange (shuffle) node entirely, or shuffle only one side. A plain DataFrame-level `repartition(col)` doesn't offer that guarantee, because it isn't backed by catalog-level partitioning metadata[^9][^2].
 
+## Reading a database table in parallel
+
+A stage that reads a database table in one task is a common, fixable cause of low parallelism. By default a JDBC read scans the whole source table through a single `SELECT` in a single task[^13]. Parallel reads split that one `SELECT` into several queries, each with its own `WHERE` predicate[^13], and Spark offers two ways to define the split.
+
+**Range partitioning.** Set `partitionColumn`, `lowerBound`, `upperBound`, and `numPartitions` as a group: they tell Spark how to partition the table across workers[^14]. `partitionColumn` must be a numeric, date, or timestamp column[^14]. The two bounds only set the partition stride. They don't filter anything, so every row in the table is still read and returned[^14]. `numPartitions` is the maximum number of read partitions and also the maximum number of concurrent JDBC connections[^14]. In PySpark's `DataFrameReader.jdbc()`, the `column` argument is an alias for `partitionColumn`, and passing it requires `lowerBound`, `upperBound`, and `numPartitions`[^15].
+
+**Choosing the column and bounds.** Databricks' reference example picks a partition column with a uniformly distributed range of values and sets `lowerBound` and `upperBound` to the lowest and highest values to pull data for with it[^16]. Even then the bounds set only the stride, and rows outside them are still read[^14]. Prefer a column the source database has an index on, which speeds up each partition's query[^16].
+
+```python
+df = (spark.read.format("jdbc")
+      .option("url", "<jdbc-url>")
+      .option("dbtable", "<table-name>")
+      .option("partitionColumn", "<indexed-numeric-date-or-timestamp-column>")
+      .option("lowerBound", "<min of partition column>")
+      .option("upperBound", "<max of partition column>")
+      .option("numPartitions", 8)
+      .option("fetchsize", "<rows per round trip>")
+      .load())
+```
+
+**The `predicates` alternative.** `DataFrameReader.jdbc()` also accepts `predicates`, a list of expressions suitable for a `WHERE` clause, each defining one partition of the DataFrame, so you pick the ranges yourself[^15]. The read is parallel if either `column` or `predicates` is given; when both are, `column` wins[^15].
+
+**Fetch size.** `fetchsize` controls how many rows the driver fetches per round trip. Spark's default is `0`, and raising it helps on drivers with a low default, such as Oracle's 10 rows[^14].
+
+**Don't overload the source database.** Because `numPartitions` caps concurrent connections[^14], every extra partition is another simultaneous query against the database. Databricks warns that too many simultaneous queries can overwhelm the remote database, especially an application database, and advises caution above 50[^16]; its reference example uses 8 partitions for an eight-core cluster[^16]. The PySpark docs warn that too many parallel partitions on a large cluster might crash the external database[^15]. If the read can't safely go wider, AWS recommends a `repartition()` right after the initial load, at two or three times the available cores as a rule of thumb[^13].
+
+Other connectors have their own split knobs. AWS Glue DynamicFrames split JDBC reads with `hashfield` (or `hashexpression`) and `hashpartitions`, DynamoDB reads get their partition count from `dynamodb.splits`, and a Kinesis Data Streams read gets one partition per shard[^13].
+
 ## Sources
 
 [^1]: [Spark Partitions](https://luminousmen.com/post/spark-partitions)
@@ -63,3 +91,7 @@ For the join-alignment gotcha above, the mechanism that does reliably guarantee 
 [^10]: [Spark Tips: Partition Tuning](https://luminousmen.com/post/spark-tips-partition-tuning)
 [^11]: [SPARK-29544 — Optimize skewed join at runtime](https://issues.apache.org/jira/browse/SPARK-29544)
 [^12]: [Skew Join (legacy)](https://docs.databricks.com/aws/en/archive/legacy/skew-join)
+[^13]: [Parallelize tasks (AWS Prescriptive Guidance: Tuning AWS Glue for Apache Spark)](https://docs.aws.amazon.com/prescriptive-guidance/latest/tuning-aws-glue-for-apache-spark/parallelize-tasks.html)
+[^14]: [JDBC To Other Databases (Spark SQL, DataFrames and Datasets Guide)](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html)
+[^15]: [pyspark.sql.DataFrameReader.jdbc (PySpark API reference)](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrameReader.jdbc.html)
+[^16]: [Query databases using JDBC (Databricks)](https://docs.databricks.com/aws/en/connect/external-systems/jdbc)

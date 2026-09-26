@@ -5,7 +5,7 @@ content/02-spark-architecture.md:
 content/03-memory-model.md:
   generated_from_hash: 7972d4d83ef31f7e29f72e45e2d17f192ad575807f9817161d925481adae54e1
 content/04-partitioning.md:
-  generated_from_hash: 1fe0259613322511a158dae8ba022607e263bef2117cd32e0d586728ffe3c36c
+  generated_from_hash: b9d9294d52a51d1fa977e0545535d10dcb176a2319a8c72288d57647afb5902f
 content/05-joins.md:
   generated_from_hash: 30f179568d1ae9027f3017c6ef00086055bb4677f0418554564ec5a3facc6a52
 content/06-shuffle.md:
