@@ -257,6 +257,8 @@
     "title": "Memory Utilization",
     "keywords": [
       "memory-utilization",
+      "heap-near-capacity",
+      "heap-over-provisioned",
       "idle-timeout"
     ]
   },
