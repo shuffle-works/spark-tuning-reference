@@ -200,6 +200,15 @@ overhead than one that settles into a stable executor count.
   bounds set too close together force Spark to repeatedly add and remove executors to
   track small fluctuations in the task backlog instead of settling into a stable range.
 
+## Managed-platform overrides
+
+Managed platforms set or replace some of the sizing and scaling properties this page describes. Check the platform's own page before tuning them by hand.
+
+- **Databricks.** Serverless compute doesn't support setting most Spark properties for notebooks or jobs, and the documentation points to Databricks autoscaling, which manages executor lifecycle at the platform level, instead of `spark.dynamicAllocation.enabled`.[^7]
+- **Amazon EMR.** With `maximizeResourceAllocation`, EMR calculates the maximum compute and memory available for an executor on a core-group instance and sets the matching `spark-defaults` values.[^8] AWS recommends testing a migrated workload with EMR's Spark defaults before adding custom configuration.[^8] Managed scaling expects Spark dynamic allocation to stay enabled: turning `spark.dynamicAllocation.enabled` off can scale the cluster up more than the workload needs.[^9]
+- **AWS Glue.** With auto scaling, Glue adds and removes workers according to the parallelism at each stage, and the configured number of workers is a maximum.[^10] Each worker runs one Spark executor, and memory is fixed by worker type: 16 GB on `G.1X` and 32 GB on `G.2X`.[^11]
+- **Google Cloud managed Spark (serverless).** It doesn't support YARN-related or shuffle-related Spark properties such as `spark.master=yarn` and `spark.shuffle.service.enabled`.[^12]
+
 ## Sources
 
 [^1]: [Distribution of Executors, Cores and Memory for a Spark Application](https://raw.githubusercontent.com/spoddutur/spark-notes/master/distribution_of_executors_cores_and_memory_for_spark_application.md)
@@ -208,3 +217,9 @@ overhead than one that settles into a stable executor count.
 [^4]: [Spark Tuning Guide](https://spark.apache.org/docs/latest/tuning.html)
 [^5]: [Dive into Spark Memory](https://luminousmen.com/post/dive-into-spark-memory)
 [^6]: [Job Scheduling — Dynamic Resource Allocation](https://spark.apache.org/docs/latest/job-scheduling.html)
+[^7]: [Set Spark configuration properties on Databricks](https://docs.databricks.com/aws/en/spark/conf)
+[^8]: [Configure Spark (Amazon EMR)](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-spark-configure.html)
+[^9]: [Using managed scaling in Amazon EMR](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-managed-scaling.html)
+[^10]: [Using auto scaling for AWS Glue](https://docs.aws.amazon.com/glue/latest/dg/auto-scaling.html)
+[^11]: [Configuring job properties for Spark jobs in AWS Glue](https://docs.aws.amazon.com/glue/latest/dg/add-job.html)
+[^12]: [Spark properties (Google Cloud managed Spark service)](https://docs.cloud.google.com/dataproc-serverless/docs/concepts/properties)

@@ -87,6 +87,8 @@ spark.memory.fraction=0.6
 
 For the **skew** case (only a few tasks spill), the fix is `df.repartition(n)`, not more memory: see [Partitioning](#partitioning).
 
+> **Native engines:** Spill is handled by the engine's own operators. Gluten's Velox backend supports spill-to-disk, and its `spillStrategy` setting lets the Spark memory manager manage Velox's spilling (`auto`, the default) or turns it off (`none`).[^14] Gluten's documentation warns that `OutOfMemoryException` can still occur with spill-to-disk when the shuffle partition count is large, and advises reducing it.[^15] In Comet, an operator that can't spill fails the task when it can't reserve the memory it needs,[^16] and `ShuffledHashJoin` has no spill-to-disk.[^17]
+
 ## Confidence
 
 The core detection (any `memoryBytesSpilled > 0`) and the skew-vs-volume classification are validated: both the skew branch (most tasks spill nothing, so the shape of the data is the problem) and the volume branch (nearly every task spills, so the pool is too small) map to a well-understood fix, and neither needs further validation. <span class="tag">EXPERIMENTAL</span> When a spill matches neither shape, it falls back to a low-confidence unclassified finding that still requires validation, because there is no confirmed cause to act on; the page defaults it to the volume remedy, but that is a guess, not a diagnosis.
@@ -112,3 +114,7 @@ Some spill is normal. A large aggregation or join can spill by design once its w
 [^11]: [RDD.scala](https://raw.githubusercontent.com/apache/spark/v3.5.0/core/src/main/scala/org/apache/spark/rdd/RDD.scala)
 [^12]: [How to Tune Your Apache Spark Jobs (Part 2): Cloudera Engineering Blog](https://blog.cloudera.com/how-to-tune-your-apache-spark-jobs-part-2/)
 [^13]: [Spark Tuning Guide](https://spark.apache.org/docs/latest/tuning.html)
+[^14]: [Apache Gluten: Velox backend getting started](https://github.com/apache/gluten/blob/main/docs/get-started/Velox.md)
+[^15]: [Apache Gluten: Velox backend limitations](https://github.com/apache/gluten/blob/main/docs/velox-backend-limitations.md)
+[^16]: [Comet memory tuning](https://github.com/apache/datafusion-comet/blob/main/docs/source/user-guide/latest/tuning/memory.md)
+[^17]: [Comet operator tuning](https://github.com/apache/datafusion-comet/blob/main/docs/source/user-guide/latest/tuning/operators.md)

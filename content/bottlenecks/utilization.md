@@ -41,6 +41,8 @@ spark.conf.set("spark.dynamicAllocation.executorAllocationRatio", "0.5")  # 0.5 
 
 A low average-to-peak ratio isn't always waste. A bursty or I/O-bound job legitimately holds executors while tasks wait on external systems rather than burning cores, and the ratio is sensitive to short stages, where a brief spike in allocation skews the average without meaning the cluster was genuinely idle.
 
+> **Managed platforms:** Several platforms scale executors for you. Databricks autoscaling replaces `spark.dynamicAllocation.enabled`,[^13] and AWS Glue auto scaling adds and removes workers by per-stage parallelism.[^14] See [Cluster Tuning](#cluster-config) for the per-platform overrides.
+
 ## Core locality {#bottleneck-core-locality}
 
 <span class="tag">LOCAL</span>
@@ -139,3 +141,5 @@ A persisted RDD you've stopped using still occupies memory until the app ends or
 [^10]: [RDD Programming Guide — Spark](https://spark.apache.org/docs/latest/rdd-programming-guide.html)
 [^11]: *Learning Spark, 2nd Edition*, Damji, Wenig, Das & Lee, ch. 7
 [^12]: [Parallelize tasks (AWS Prescriptive Guidance: Tuning AWS Glue for Apache Spark)](https://docs.aws.amazon.com/prescriptive-guidance/latest/tuning-aws-glue-for-apache-spark/parallelize-tasks.html)
+[^13]: [Set Spark configuration properties on Databricks](https://docs.databricks.com/aws/en/spark/conf)
+[^14]: [Using auto scaling for AWS Glue](https://docs.aws.amazon.com/glue/latest/dg/auto-scaling.html)

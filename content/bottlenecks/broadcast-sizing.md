@@ -57,6 +57,8 @@ For `overBroadcast`, keep the large side out of the broadcast path. Lower the th
 oversized table no longer qualifies, or drop the explicit `broadcast()` hint if one is forcing
 it, and let Spark fall back to a shuffle join.
 
+> **Native engines:** Gluten has switches for columnar broadcast join and broadcast exchange (both default `true`).[^6] Its experimental `spark.gluten.velox.offHeapBroadcastBuildRelation.enabled` (default `false`) stores broadcast build relations off-heap instead of on-heap.[^7] Comet supports `BroadcastHashJoinExec` and produces serialized Arrow batches from its broadcast exchange.[^8]
+
 ## Confidence
 
 Validated for both branches. `underBroadcast` and `overBroadcast` rest on the same
@@ -76,3 +78,6 @@ broadcast a table well past the default on purpose.
 [^3]: *Learning Spark, 2nd Edition*, Damji, Wenig, Das, Lee, ch. 7
 [^4]: *High Performance Spark, 2nd Edition*, Karau, Polak & Warren, ch. 6
 [^5]: [The Apache Spark Optimization Checklist](https://luminousmen.com/post/the-apache-spark-optimization-checklist)
+[^6]: [Apache Gluten configuration](https://github.com/apache/gluten/blob/main/docs/Configuration.md)
+[^7]: [Apache Gluten: Velox backend getting started](https://github.com/apache/gluten/blob/main/docs/get-started/Velox.md)
+[^8]: [Comet operator tuning](https://github.com/apache/datafusion-comet/blob/main/docs/source/user-guide/latest/tuning/operators.md)

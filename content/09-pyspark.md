@@ -68,6 +68,8 @@ For pandas/NumPy conversion at the driver, turn on Arrow explicitly rather than 
 
 Leave `spark.python.worker.reuse` at its default (`true`) unless there's a specific reason not to; it keeps a fixed pool of Python workers alive so a large broadcast variable isn't re-shipped to Python for every task[^4]. If a job spills at the Python-worker level, `spark.python.worker.memory` is the knob for that; if it's getting OOMKilled at the container level, look at executor overhead and `spark.executor.pyspark.memory` instead, keeping in mind the latter's `resource`-module limitations on macOS and its absence on Windows[^4][^6].
 
+> **Native engines:** A Python UDF sits outside native execution. Photon doesn't support UDFs, RDD APIs or Dataset APIs.[^7] In Comet, the presence of a Scala or Java UDF doesn't force the enclosing operator out of the Comet pipeline, but Python `@udf` and pandas `@pandas_udf` UDFs aren't supported and continue to fall back to Spark.[^8] Comet can accelerate Python UDFs that use PyArrow-backed batch processing, such as `mapInArrow` and `mapInPandas`.[^9]
+
 ## Sources
 
 [^1]: *Learning Spark, 2nd Edition*, Damji, Wenig, Das & Lee, ch. 5
@@ -76,3 +78,6 @@ Leave `spark.python.worker.reuse` at its default (`true`) unless there's a speci
 [^4]: [Configuration — Spark](https://spark.apache.org/docs/latest/configuration.html)
 [^5]: [Introducing Pandas UDF for PySpark](https://www.databricks.com/blog/2017/10/30/introducing-vectorized-udfs-for-pyspark.html)
 [^6]: [Dive into Spark memory management](https://luminousmen.com/post/dive-into-spark-memory)
+[^7]: [What is Photon? (Databricks)](https://docs.databricks.com/aws/en/compute/photon)
+[^8]: [Comet Scala and Java UDFs](https://github.com/apache/datafusion-comet/blob/main/docs/source/user-guide/latest/scala_java_udfs.md)
+[^9]: [Comet PyArrow UDFs](https://github.com/apache/datafusion-comet/blob/main/docs/source/user-guide/latest/pyarrow-udfs.md)

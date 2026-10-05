@@ -46,6 +46,10 @@ Multi-way join reordering is a deliberate opt-in: enable `spark.sql.cbo.enabled`
 
 For [skewed join keys](#bottleneck-skew), Spark offers two built-in alternatives to hand-rolled salting: AQE's skew-join handling (`spark.sql.adaptive.skewJoin.enabled`), which detects oversized shuffle partitions at runtime and splits them automatically, replicating if needed[^10][^5], and Databricks' declarative `SKEW` hint, which builds a skew-aware plan without any manual salting[^11]. Manual salting remains the fallback where neither is available: add a random salt column to the join key on both sides so a hot key spreads across many partitions (exploding the dimension side into one row per salt value and assigning a random salt on the fact side), then join on the composite `(key, salt)` pair[^12].
 
+> **Native engines:** The engines change which join strategy is cheap. Gluten has a `spark.gluten.sql.columnar.forceShuffledHashJoin` setting (default `true`) and separate switches for columnar sort-merge and broadcast joins.[^13] Comet's tuning guide says vectorized engines tend to perform better with `ShuffledHashJoin` and offers `spark.comet.exec.forceShuffledHashJoin=true` to convert `SortMergeJoin`, with the warning that Comet has no spill-to-disk for `ShuffledHashJoin`, so it can run out of memory.[^14] Photon lists hash join among its supported operators.[^15]
+>
+> Native plans read differently. Photon operators appear in orange in the query DAG and standard Spark operators in blue.[^15] In a Gluten plan, `VeloxColumnarToRowExec` or `GlutenRowToArrowColumnar` marks a fallback operator before or after it.[^16] In a Comet plan, `CometColumnarToRow` and `CometSparkRowToColumnar` mark where data crosses between columnar and row execution, and frequent transitions usually indicate fallback inside the plan.[^17]
+
 ## Sources
 
 [^1]: *High Performance Spark, 2nd Edition*, Karau, Polak & Warren, ch. 6
@@ -60,3 +64,8 @@ For [skewed join keys](#bottleneck-skew), Spark offers two built-in alternatives
 [^10]: [SPARK-29544 — Optimize Skewed Join at Runtime](https://issues.apache.org/jira/browse/SPARK-29544)
 [^11]: [Skew Join Hint](https://docs.databricks.com/aws/en/archive/legacy/skew-join)
 [^12]: [Spark Tips: Partition Tuning](https://luminousmen.com/post/spark-tips-partition-tuning)
+[^13]: [Apache Gluten configuration](https://github.com/apache/gluten/blob/main/docs/Configuration.md)
+[^14]: [Comet operator tuning](https://github.com/apache/datafusion-comet/blob/main/docs/source/user-guide/latest/tuning/operators.md)
+[^15]: [What is Photon? (Databricks)](https://docs.databricks.com/aws/en/compute/photon)
+[^16]: [Apache Gluten: Velox backend getting started](https://github.com/apache/gluten/blob/main/docs/get-started/Velox.md)
+[^17]: [Understanding Comet plans](https://github.com/apache/datafusion-comet/blob/main/docs/source/user-guide/latest/understanding-comet-plans.md)

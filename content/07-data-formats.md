@@ -55,6 +55,8 @@ Treat `spark.sql.parquet.mergeSchema` (default `false`) as opt-in rather than de
 
 Don't flip `parquet.writer.version` to `2` without confirming every downstream reader of that data (an older Spark version, Hive, Impala, or anything else touching the files) actually supports `DataPageHeaderV2` first; it's a forward-incompatible page-format change, not an additive one[^11][^1].
 
+> **Native engines:** The scan is where fallback starts. Gluten fully supports Parquet and partially supports ORC, and the scan falls back to vanilla Spark for other formats.[^23] Comet falls back to Spark for Parquet scans it can't convert, including when `ignoreCorruptFiles` is `true`, when `spark.sql.parquet.enableVectorizedReader` is `false`, and, by default, for `ShortType` columns.[^24] Photon lists Parquet, Delta, CSV and JSON scans among its supported operators,[^25] while the Fabric native execution engine doesn't accelerate queries against JSON and XML.[^26]
+
 ## Sources
 
 [^1]: *Spark: The Definitive Guide*, Chambers & Zaharia, ch. 9
@@ -79,3 +81,7 @@ Don't flip `parquet.writer.version` to `2` without confirming every downstream r
 [^20]: *Learning Spark, 2nd Edition*, Damji, Wenig, Das & Lee, ch. 9
 [^21]: [The Apache Spark Optimization Checklist](https://luminousmen.com/post/the-apache-spark-optimization-checklist)
 [^22]: [SQLConf.scala](https://raw.githubusercontent.com/apache/spark/v3.5.0/sql/catalyst/src/main/scala/org/apache/spark/sql/internal/SQLConf.scala)
+[^23]: [Apache Gluten: Velox backend limitations](https://github.com/apache/gluten/blob/main/docs/velox-backend-limitations.md)
+[^24]: [Comet scan compatibility](https://github.com/apache/datafusion-comet/blob/main/docs/source/user-guide/latest/compatibility/scans.md)
+[^25]: [What is Photon? (Databricks)](https://docs.databricks.com/aws/en/compute/photon)
+[^26]: [Native execution engine for Fabric Data Engineering](https://learn.microsoft.com/en-us/fabric/data-engineering/native-execution-engine-overview)

@@ -75,6 +75,8 @@ true) set, AQE coalesces contiguous shuffle partitions toward
 scope: AQE only engages after the first shuffle, so it fixes shuffle-output partition counts
 but will not repair input-side partitioning or a bad file layout on disk[^6].
 
+> **Managed platforms:** On Databricks, optimized writes and auto compaction address small files at write time, and predictive optimization runs `OPTIMIZE` automatically on Unity Catalog managed tables. See [Table Formats](#table-formats) for the details.[^7][^8]
+
 ## Confidence
 
 The core inference, that one output file per partition times a high
@@ -102,3 +104,5 @@ confirm the write is not an intended partitioned layout before acting.
 [^4]: [Spark Partitions](https://luminousmen.com/post/spark-partitions)
 [^5]: [Performance Tuning (Spark SQL, DataFrames and Datasets Guide)](https://spark.apache.org/docs/latest/sql-performance-tuning.html)
 [^6]: [The Apache Spark Optimization Checklist](https://luminousmen.com/post/the-apache-spark-optimization-checklist)
+[^7]: [Control data file size (Databricks)](https://docs.databricks.com/aws/en/delta/tune-file-size)
+[^8]: [Predictive optimization for Unity Catalog managed tables (Databricks)](https://docs.databricks.com/aws/en/optimizations/predictive-optimization)
