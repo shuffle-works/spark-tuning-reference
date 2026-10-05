@@ -17,7 +17,7 @@ The core check is about concurrency. An executor's core count is its concurrency
 | heapNearCapacity | An executor's peak heap is above 95% of `spark.executor.memory` (memory may be too small) | Validated |
 | heapOverProvisioned | An executor's peak heap is below 70% of `spark.executor.memory` (memory may be over-provisioned, a cost signal) | Validated |
 | idleCores | More than 50% of the available core-time ran no task | Validated |
-| wasteModel | Allocated memory-time exceeds used memory-time by more than 1.5 times | Experimental |
+| wasteModel | Allocated memory-time exceeds used memory-time by more than 2.5 times (wasted memory-time, allocated minus used, above 1.5 times used) | Experimental |
 
 Both heap rules look at executors one at a time, so a run can produce one finding per executor. Driver memory is not evaluated. If the log carries no per-executor memory metrics, the heap rules cannot run, and the finding says so and points at `spark.eventLog.logStageExecutorMetrics` instead.
 
@@ -67,7 +67,7 @@ spark.dynamicAllocation.executorAllocationRatio=0.5
 
 ### Reading the wasted-memory estimate <span class="tag">EXPERIMENTAL</span>
 
-The wasteModel rule compares two memory-time figures. Allocated memory-time is the executor memory multiplied by the number of executors and the run duration. Used memory-time approximates the allocation as in use for as long as tasks ran, taking executor memory multiplied by the total task run time. The rule fires when the difference exceeds 1.5 times the used figure. Treat it as a rough buffer heuristic, not a measurement. It prices time with no task running, not bytes of heap left empty, so it can disagree with the heap bands: an executor can be busy all run with a half-empty heap, or idle with a full one. Use the number as a hint that the cluster may be oversized or underused, then confirm against sizing before acting on it.
+The wasteModel rule compares two memory-time figures. Allocated memory-time is the executor memory multiplied by the number of executors and the run duration. Used memory-time approximates the allocation as in use for as long as tasks ran, taking executor memory multiplied by the total task run time. The rule fires when that difference, the wasted memory-time, exceeds 1.5 times the used figure, which means allocated memory-time is more than 2.5 times used. Treat it as a rough buffer heuristic, not a measurement. It prices time with no task running, not bytes of heap left empty, so it can disagree with the heap bands: an executor can be busy all run with a half-empty heap, or idle with a full one. Use the number as a hint that the cluster may be oversized or underused, then confirm against sizing before acting on it.
 
 ## Confidence
 
@@ -81,6 +81,8 @@ Idle cores are not always waste. The tail of a stage legitimately leaves slots e
 
 > **Native engines:** The heap ratio is blind to native memory. Comet's native operators allocate from the Rust heap, not the JVM heap, and the part of that memory its accounting doesn't track has to fit in `spark.executor.memoryOverhead`.[^8] Gluten sizes its native memory from `spark.memory.offHeap.size`.[^9] On an executor running one of these engines, a heap far below 70% can sit next to a full off-heap pool or container, so check those before lowering `spark.executor.memory`.
 
+> **Managed platforms:** Several platforms set or replace the executor sizing and scaling this page discusses. Databricks autoscaling replaces `spark.dynamicAllocation.enabled`, and serverless compute does not support most Spark properties.[^10] On Amazon EMR, `maximizeResourceAllocation` sets `spark.executor.memory` and related spark-defaults values from the instance type,[^11] and managed scaling expects Spark dynamic allocation to stay enabled.[^12] AWS Glue memory is fixed by worker type, 16 GB for G.1X and 32 GB for G.2X, with one executor per worker.[^13]
+
 [^1]: [How to Tune Your Apache Spark Jobs (Part 2)](https://blog.cloudera.com/how-to-tune-your-apache-spark-jobs-part-2/)
 [^2]: [Configuration — Spark](https://spark.apache.org/docs/latest/configuration.html)
 [^3]: [Dive into Spark memory](https://luminousmen.com/post/dive-into-spark-memory)
@@ -90,3 +92,7 @@ Idle cores are not always waste. The tail of a stage legitimately leaves slots e
 [^7]: [Tuning Spark](https://spark.apache.org/docs/latest/tuning.html)
 [^8]: [Comet memory tuning](https://github.com/apache/datafusion-comet/blob/main/docs/source/user-guide/latest/tuning/memory.md)
 [^9]: [Apache Gluten configuration](https://github.com/apache/gluten/blob/main/docs/Configuration.md)
+[^10]: [Set Spark configuration properties on Databricks](https://docs.databricks.com/aws/en/spark/conf)
+[^11]: [Configure Spark — Amazon EMR](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-spark-configure.html)
+[^12]: [Using managed scaling in Amazon EMR](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-managed-scaling.html)
+[^13]: [Adding jobs in AWS Glue](https://docs.aws.amazon.com/glue/latest/dg/add-job.html)
