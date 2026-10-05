@@ -97,8 +97,6 @@ why it hurts, and how to fix it.
       transferred via Arrow, there's no need to serialize/pickle it, since it's already in a
       format consumable by the Python process.[^5]
 
-> **Native engines:** Row-at-a-time Python UDFs also sit outside native execution: Photon doesn't support UDFs,[^12] and Comet keeps Python `@udf` and pandas `@pandas_udf` UDFs on Spark.[^13] See [PySpark Specifics](#pyspark).
-
 9. **Leaving `spark.sql.shuffle.partitions` at its default of 200**
     - **What:** Never tuning `spark.sql.shuffle.partitions` away from its default of 200 for
       wide transformations (`join`, `groupBy`, aggregations).
@@ -171,5 +169,3 @@ why it hurts, and how to fix it.
 [^9]: [Spark Tips: DataFrame API](https://luminousmen.com/post/spark-tips-dataframe-api)
 [^10]: [Spark Partitions](https://luminousmen.com/post/spark-partitions)
 [^11]: [Configuration — Spark](https://spark.apache.org/docs/latest/configuration.html)
-[^12]: [What is Photon? (Databricks)](https://docs.databricks.com/aws/en/compute/photon)
-[^13]: [Comet Scala and Java UDFs](https://github.com/apache/datafusion-comet/blob/main/docs/source/user-guide/latest/scala_java_udfs.md)

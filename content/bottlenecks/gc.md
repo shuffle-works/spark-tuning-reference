@@ -83,8 +83,6 @@ spark.memory.offHeap.size=2g            # must be > 0 whenever off-heap is enabl
 spark.executor.extraJavaOptions=-XX:+UseG1GC -XX:G1HeapRegionSize=16m   # 16m is an example
 ```
 
-> **Native engines:** GC time only covers work that runs on the JVM heap. Comet's native operators allocate from the Rust heap rather than from JVM memory and charge those reservations against Spark's off-heap pool,[^8] so memory they hold is outside what the garbage collector manages.
-
 ## Confidence
 
 The warning and critical thresholds on gcPct are validated: they read a bounded ratio of
@@ -117,4 +115,3 @@ wrong.
 [^5]: [Spark Tuning Guide](https://spark.apache.org/docs/latest/tuning.html)
 [^6]: [Tuning Java Garbage Collection for Apache Spark Applications](https://www.databricks.com/blog/2015/05/28/tuning-java-garbage-collection-for-spark-applications.html)
 [^7]: [The Z Garbage Collector (ZGC)](https://wiki.openjdk.org/display/zgc)
-[^8]: [Comet memory tuning](https://github.com/apache/datafusion-comet/blob/main/docs/source/user-guide/latest/tuning/memory.md)

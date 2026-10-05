@@ -62,7 +62,7 @@ Parallelism and scheduling are both tunable from here. When `coalesce`'s single-
 
 For concurrent workloads, Spark also offers a fair scheduler as an alternative to the FIFO default, assigning tasks to concurrent jobs round-robin so each job gets a more even share of cluster resources[^4]; job pools and weights for finer-grained sharing are configured via `spark.scheduler.mode=FAIR` and the `spark.scheduler.pool` local property set on the submitting thread[^1]. Submitting jobs from separate Driver threads is what lets them run concurrently in the first place, rather than queuing behind each other[^10].
 
-> **Native engines:** Native engines keep Spark's driver, DAG and stages and swap what runs inside a task. Gluten transforms Spark's whole-stage physical plan into a Substrait plan, sends it to the native engine, and reuses Spark's distributed control flow.[^11] Comet combines consecutive Rust-implemented operators into one block that DataFusion executes on the executor, and operators it doesn't support stay in their original Spark form.[^12] Photon, Databricks' native engine, accelerates SQL, DataFrame API calls, ETL pipelines and stateless streaming, but doesn't support UDFs, RDD APIs or Dataset APIs, and doesn't improve queries that normally run in under two seconds.[^13]
+> **Native engines:** [Photon](#native-photon), [Apache Gluten](#native-gluten) and [Apache DataFusion Comet](#native-comet) cover how native execution engines change the advice on this page.
 
 ## Sources
 
@@ -76,6 +76,3 @@ For concurrent workloads, Spark also offers a fair scheduler as an alternative t
 [^8]: [Spark Tips: Caching](https://luminousmen.com/post/spark-tips-caching)
 [^9]: *Learning Spark, 2nd Edition*, Damji, Wenig, Das & Lee, ch. 7
 [^10]: [Job Scheduling](https://spark.apache.org/docs/latest/job-scheduling.html)
-[^11]: [Apache Gluten documentation](https://github.com/apache/gluten/blob/main/docs/index.md)
-[^12]: [Understanding Comet plans](https://github.com/apache/datafusion-comet/blob/main/docs/source/user-guide/latest/understanding-comet-plans.md)
-[^13]: [What is Photon? (Databricks)](https://docs.databricks.com/aws/en/compute/photon)

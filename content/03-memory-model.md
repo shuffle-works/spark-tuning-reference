@@ -58,7 +58,7 @@ When enabling off-heap memory, always pair `spark.memory.offHeap.enabled=true` w
 
 > **PySpark:** if you need PySpark's own memory bounded rather than folded silently into the overhead, set `spark.executor.pyspark.memory` explicitly, though its enforcement relies on Python's `resource` module and won't work on Windows and won't actually limit anything on macOS[^4].
 
-> **Native engines:** Gluten and Comet need off-heap memory. Both quick starts set `spark.memory.offHeap.enabled=true` with a `spark.memory.offHeap.size`,[^12][^13] and Comet's also sets `spark.executor.memoryOverhead=2g`.[^13] Comet charges its native operators' reservations against the same off-heap pool as Spark's own off-heap consumers, but the part its accounting doesn't track has to fit in `spark.executor.memoryOverhead`, so enabling off-heap memory alone is not enough.[^14] Setting `spark.executor.memoryOverhead` replaces the derived value instead of adding to it, so a value below the derived one shrinks the container.[^14] Gluten allocates native memory from `spark.memory.offHeap.size` even when off-heap memory is disabled, and recommends raising it if the plugin runs out of memory.[^12]
+> **Native engines:** [Apache Gluten](#native-gluten) and [Apache DataFusion Comet](#native-comet) cover off-heap memory sizing with native engines.
 
 ## Cache utilization {#bottleneck-cache-utilization}
 
@@ -112,6 +112,3 @@ but a disk read is still far slower than serving it out of memory.
 [^9]: *High Performance Spark, 2nd Edition*, Karau, Polak & Warren, ch. 7
 [^10]: [SQLConf.scala](https://raw.githubusercontent.com/apache/spark/v3.5.0/sql/catalyst/src/main/scala/org/apache/spark/sql/internal/SQLConf.scala)
 [^11]: [Monitoring and Instrumentation](https://spark.apache.org/docs/latest/monitoring.html#spark-history-server)
-[^12]: [Apache Gluten configuration](https://github.com/apache/gluten/blob/main/docs/Configuration.md)
-[^13]: [Comet installation guide](https://github.com/apache/datafusion-comet/blob/main/docs/source/user-guide/latest/installation.md)
-[^14]: [Comet memory tuning](https://github.com/apache/datafusion-comet/blob/main/docs/source/user-guide/latest/tuning/memory.md)

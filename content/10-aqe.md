@@ -155,7 +155,7 @@ files from unsorted/unhashed writers per partition.[^4]
 
 > **Managed platforms:** AQE defaults differ by platform. Databricks enables AQE by default and lists four features: converting sort-merge joins to broadcast hash joins, coalescing partitions after a shuffle, handling skew in sort-merge and shuffle hash joins, and detecting empty relations.[^11] Amazon EMR enables adaptive partition coalescing by default unless `spark.sql.shuffle.partitions` is explicitly set, and adaptive join conversion by default, which setting `spark.sql.adaptive.enabled` to `false` also disables along with the rest of AQE.[^12]
 
-> **Native engines:** AQE changes how you inspect an engine's plan. Gluten's guide says to disable AQE (`spark.sql.adaptive.enabled=false`) to trigger plan validation and see fallback reasons before reading the physical plan.[^13] Comet's plan report under AQE describes the plan before any adaptive re-planning, so coverage of the plan that finally executes can differ.[^14] The Fabric native execution engine preserves AQE.[^15]
+> **Native engines:** [Apache Gluten](#native-gluten) and [Apache DataFusion Comet](#native-comet) cover reading plans under AQE with native engines.
 
 ## Sources
 
@@ -171,6 +171,3 @@ files from unsorted/unhashed writers per partition.[^4]
 [^10]: [Explaining the Mechanics of Spark Caching](https://luminousmen.com/post/explaining-the-mechanics-of-spark-caching)
 [^11]: [Adaptive query execution (Databricks)](https://docs.databricks.com/aws/en/optimizations/aqe)
 [^12]: [Optimize Spark performance (Amazon EMR)](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-spark-performance.html)
-[^13]: [Apache Gluten: Velox backend getting started](https://github.com/apache/gluten/blob/main/docs/get-started/Velox.md)
-[^14]: [Understanding Comet plans](https://github.com/apache/datafusion-comet/blob/main/docs/source/user-guide/latest/understanding-comet-plans.md)
-[^15]: [Native execution engine for Fabric Data Engineering](https://learn.microsoft.com/en-us/fabric/data-engineering/native-execution-engine-overview)

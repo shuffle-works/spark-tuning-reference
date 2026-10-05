@@ -21,7 +21,7 @@ Each bottleneck section below documents the exact thresholds behind these dots.
 
 ## Native engines and managed platforms
 
-This reference describes Spark's JVM execution as the Spark documentation defines it. Where a native engine (Photon on Databricks, Apache Gluten, Apache DataFusion Comet) or a managed platform (Databricks, Amazon EMR, AWS Glue, Google Cloud's managed Spark service, Microsoft Fabric) changes the advice, the affected page carries a **Native engines** or **Managed platforms** note that cites the vendor or project documentation it comes from. The Gluten and Comet notes follow each project's documentation on its main branch as of October 2026, so check them against the version you run.
+This reference describes Spark's JVM execution as the Spark documentation defines it. The Native Engines group has one page each for [Photon](#native-photon), [Apache Gluten](#native-gluten) and [Apache DataFusion Comet](#native-comet). Where a managed platform (Databricks, Amazon EMR, AWS Glue, Google Cloud's managed Spark service) changes the advice, the page carries a **Managed platforms** note that cites the vendor documentation. The Gluten and Comet pages follow each project's unversioned documentation, so check them against the version you run.
 
 ## Tag system
 

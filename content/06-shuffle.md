@@ -44,7 +44,7 @@ For shuffles you can't avoid, the main tuning levers are:
 - `spark.shuffle.service.enabled` (default `false`): turn on the external shuffle service so executors can be safely removed under dynamic allocation without losing shuffle state. Dynamic allocation's documentation lists shuffle tracking (`spark.dynamicAllocation.shuffleTracking.enabled`), shuffle-block decommissioning, and a custom `ShuffleDataIO` plugin backed by reliable storage as alternatives to enabling the service outright[^8].
 - Push-based shuffle: enable it with the paired server/client flags added in Spark 3.2.0: `spark.shuffle.push.server.mergedShuffleFileManagerImpl` on the server side, and `spark.shuffle.push.enabled=true` on the client side (both disabled by default; the client flag only takes effect together with the server-side one). It's currently only supported for Spark on YARN with the external shuffle service enabled[^8].
 
-> **Native engines:** Both plugins replace Spark's shuffle manager. Gluten sets `spark.shuffle.manager` to `org.apache.spark.shuffle.sort.ColumnarShuffleManager`,[^12] Comet to `org.apache.spark.sql.comet.execution.shuffle.CometShuffleManager`.[^13] Comet tries native shuffle first, then columnar shuffle, and falls back to Spark's shuffle if neither applies.[^14] `spark.shuffle.manager` is a static setting that can't change after the Spark context starts, so Comet shuffle is toggled at runtime with `spark.comet.shuffle.enabled` instead.[^14] The codec is set separately from Spark's: Gluten supports lz4 and zstd through `spark.gluten.sql.columnar.shuffle.codec`,[^12] and Comet supports lz4 (default), zstd and snappy through `spark.comet.shuffle.compression.codec`.[^14] Photon lists shuffle among its supported operators.[^15]
+> **Native engines:** [Apache Gluten](#native-gluten) and [Apache DataFusion Comet](#native-comet) cover shuffle settings under native engines.
 
 ## Sources
 
@@ -59,7 +59,3 @@ For shuffles you can't avoid, the main tuning levers are:
 [^9]: [Job Scheduling](https://spark.apache.org/docs/latest/job-scheduling.html)
 [^10]: [Bucket the Shuffle Out of Here (Taboola Engineering)](https://www.taboola.com/engineering/bucket-the-shuffle-out-of-here/)
 [^11]: *High Performance Spark, 2nd Edition*, Karau, Polak & Warren, ch. 5: DataFrames, Datasets, and Spark SQL
-[^12]: [Apache Gluten configuration](https://github.com/apache/gluten/blob/main/docs/Configuration.md)
-[^13]: [Comet installation guide](https://github.com/apache/datafusion-comet/blob/main/docs/source/user-guide/latest/installation.md)
-[^14]: [Comet shuffle tuning](https://github.com/apache/datafusion-comet/blob/main/docs/source/user-guide/latest/tuning/shuffle.md)
-[^15]: [What is Photon? (Databricks)](https://docs.databricks.com/aws/en/compute/photon)

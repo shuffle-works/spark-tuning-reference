@@ -79,9 +79,9 @@ The heap peak counts garbage the JVM has not collected yet[^6], so heapNearCapac
 
 Idle cores are not always waste. The tail of a stage legitimately leaves slots empty while a straggler or two finish[^2], so a snapshot of low parallelism can reflect a normal straggler tail rather than chronic under-utilization. Executor metrics are absent entirely unless `spark.eventLog.logStageExecutorMetrics` is enabled[^6].
 
-> **Native engines:** The heap ratio is blind to native memory. Comet's native operators allocate from the Rust heap, not the JVM heap, and the part of that memory its accounting doesn't track has to fit in `spark.executor.memoryOverhead`.[^8] Gluten sizes its native memory from `spark.memory.offHeap.size`.[^9] On an executor running one of these engines, a heap far below 70% can sit next to a full off-heap pool or container, so check those before lowering `spark.executor.memory`.
+> **Managed platforms:** Several platforms set or replace the executor sizing and scaling this page discusses. Databricks autoscaling replaces `spark.dynamicAllocation.enabled`, and serverless compute does not support most Spark properties.[^8] On Amazon EMR, `maximizeResourceAllocation` sets `spark.executor.memory` and related spark-defaults values from the instance type,[^9] and managed scaling expects Spark dynamic allocation to stay enabled.[^10] AWS Glue memory is fixed by worker type, 16 GB for G.1X and 32 GB for G.2X, with one executor per worker.[^11]
 
-> **Managed platforms:** Several platforms set or replace the executor sizing and scaling this page discusses. Databricks autoscaling replaces `spark.dynamicAllocation.enabled`, and serverless compute does not support most Spark properties.[^10] On Amazon EMR, `maximizeResourceAllocation` sets `spark.executor.memory` and related spark-defaults values from the instance type,[^11] and managed scaling expects Spark dynamic allocation to stay enabled.[^12] AWS Glue memory is fixed by worker type, 16 GB for G.1X and 32 GB for G.2X, with one executor per worker.[^13]
+> **Native engines:** [Apache Gluten](#native-gluten) and [Apache DataFusion Comet](#native-comet) cover native memory sizing, which the heap ratio does not see.
 
 [^1]: [How to Tune Your Apache Spark Jobs (Part 2)](https://blog.cloudera.com/how-to-tune-your-apache-spark-jobs-part-2/)
 [^2]: [Configuration — Spark](https://spark.apache.org/docs/latest/configuration.html)
@@ -90,9 +90,7 @@ Idle cores are not always waste. The tail of a stage legitimately leaves slots e
 [^5]: [Job Scheduling — Spark](https://spark.apache.org/docs/latest/job-scheduling.html)
 [^6]: [Monitoring — Spark](https://spark.apache.org/docs/latest/monitoring.html)
 [^7]: [Tuning Spark](https://spark.apache.org/docs/latest/tuning.html)
-[^8]: [Comet memory tuning](https://github.com/apache/datafusion-comet/blob/main/docs/source/user-guide/latest/tuning/memory.md)
-[^9]: [Apache Gluten configuration](https://github.com/apache/gluten/blob/main/docs/Configuration.md)
-[^10]: [Set Spark configuration properties on Databricks](https://docs.databricks.com/aws/en/spark/conf)
-[^11]: [Configure Spark — Amazon EMR](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-spark-configure.html)
-[^12]: [Using managed scaling in Amazon EMR](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-managed-scaling.html)
-[^13]: [Adding jobs in AWS Glue](https://docs.aws.amazon.com/glue/latest/dg/add-job.html)
+[^8]: [Set Spark configuration properties on Databricks](https://docs.databricks.com/aws/en/spark/conf)
+[^9]: [Configure Spark — Amazon EMR](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-spark-configure.html)
+[^10]: [Using managed scaling in Amazon EMR](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-managed-scaling.html)
+[^11]: [Adding jobs in AWS Glue](https://docs.aws.amazon.com/glue/latest/dg/add-job.html)

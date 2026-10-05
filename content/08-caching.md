@@ -44,7 +44,7 @@ A few habits keep caching effective despite how easily any of that goes wrong:
 - **Reach for checkpointing, not persisting, for genuine lineage truncation with fault tolerance** across a long transformation chain, since it writes to a reliable external filesystem rather than relying on executor-local memory or disk[^3][^5]. Avoid `localCheckpoint()` under dynamic allocation for the same reason caching is unsafe there: its data lives in ephemeral local executor storage that can vanish along with a reclaimed executor[^6]. Also set a checkpoint directory via `SparkContext.setCheckpointDir` before calling `.checkpoint()`; without one, the call throws immediately rather than silently doing nothing[^6].
 - **Don't cache data that won't benefit:** single-use datasets, datasets that don't fit in available memory, or datasets you only ever touch through partial actions (`take`, `limit`). In each of these cases the caching overhead isn't paid back[^7][^1].
 
-> **Managed platforms:** Databricks disk caching (formerly the Delta cache) creates copies of remote Parquet data files in the workers' local storage and works for all Parquet data files, including Delta Lake tables.[^11] It is triggered automatically on the first read, where `cache()` and `persist()` are manual and require code changes.[^11]
+> **Managed platforms:** Databricks disk caching creates copies of remote Parquet data files in the workers' local storage and works for all Parquet data files, including Delta Lake tables.[^11] It is triggered automatically on the first read, where `cache()` and `persist()` are manual and require code changes.[^11]
 
 ## Sources
 

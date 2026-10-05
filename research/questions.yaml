@@ -83,6 +83,10 @@ sections:
   num: '3.15'
   title: Spark Config Quick-Reference
   default_k: 18
+- id: 3.16-native-engines
+  num: '3.16'
+  title: Native Engines
+  default_k: 15
 questions:
 - id: 3.1-q01
   section: 3.1-introduction
@@ -1007,4 +1011,22 @@ questions:
   text: How do you parallelize a JDBC read in Spark using partitionColumn, lowerBound, upperBound, numPartitions, fetchsize, or predicates, how should the partition column and bounds be chosen, and how do you avoid overloading the source database?
   version: n/a
   k: 20
+  status: answered
+- id: 3.16-q01
+  section: 3.16-native-engines
+  text: How does Databricks Photon change Spark execution and tuning, when does it fall back to the Spark runtime, and how can you see where it ran?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.16-q02
+  section: 3.16-native-engines
+  text: How does Apache Gluten change Spark execution and tuning, when does it fall back to vanilla Spark, and how do engines built on it (Microsoft Fabric's native execution engine, Google Cloud's native query execution) differ?
+  version: n/a
+  k: null
+  status: answered
+- id: 3.16-q03
+  section: 3.16-native-engines
+  text: How does Apache DataFusion Comet change Spark execution and tuning, when does it fall back to Spark, and how do you size its memory and read its plans?
+  version: n/a
+  k: null
   status: answered

@@ -140,6 +140,41 @@
     ]
   },
   {
+    "anchor": "native-photon",
+    "section": "Native Engines",
+    "title": "Photon",
+    "keywords": [
+      "photon",
+      "databricks",
+      "native-engine",
+      "fallback"
+    ]
+  },
+  {
+    "anchor": "native-gluten",
+    "section": "Native Engines",
+    "title": "Apache Gluten",
+    "keywords": [
+      "gluten",
+      "velox",
+      "native-engine",
+      "fallback",
+      "off-heap"
+    ]
+  },
+  {
+    "anchor": "native-comet",
+    "section": "Native Engines",
+    "title": "Apache DataFusion Comet",
+    "keywords": [
+      "comet",
+      "datafusion",
+      "native-engine",
+      "fallback",
+      "off-heap"
+    ]
+  },
+  {
     "anchor": "bottleneck-skew",
     "section": "Detector Catalog",
     "title": "Task Skew",

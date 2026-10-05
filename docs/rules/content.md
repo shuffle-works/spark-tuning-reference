@@ -23,8 +23,8 @@ generation" section). Data model and pipeline shape: `docs/architecture.md`.
    sibling repo's own contract doc wins on divergence. This applies ONLY to
    `content/manifest.yaml` (the Spark corpus); `content/meta/manifest.yaml`
    carries no such contract and its anchors may change freely. This covers:
-   - the 31 manifest-level anchors (one per `content/manifest.yaml` entry, enforced by
-     `scripts/smoke_content.py`'s 31-section count check), and
+   - the 34 manifest-level anchors (one per `content/manifest.yaml` entry, enforced by
+     `scripts/smoke_content.py`'s 34-section count check), and
    - 12 sub-anchors that live inside a manifest entry's own page and so aren't manifest
      entries themselves, enforced by `scripts/smoke_content.py`'s separate `SUB_ANCHORS`
      check: 4 config-page sub-anchors nested inside the single `config` entry
@@ -43,7 +43,7 @@ generation" section). Data model and pipeline shape: `docs/architecture.md`.
      `cluster-config`); see `docs/anchor-map.md`'s coverage-contract section for how
      sparkforensics' doc-anchor coverage check treats these against `anchors.json`.
 
-   Adding or removing a content page changes the 31-section count `smoke_content.py`
+   Adding or removing a content page changes the 34-section count `smoke_content.py`
    asserts: update that literal in the same change. Note `anchors.json`
    projects only the manifest-level anchors, not these 12 sub-anchors; see
    `docs/anchor-map.md`'s coverage-contract section for why that's a known,
