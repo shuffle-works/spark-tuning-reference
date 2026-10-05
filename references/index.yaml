@@ -701,3 +701,163 @@ sources:
     spark_version: "n/a"
     version_bucket: "n/a"
     min_bytes: 3000
+  - id: databricks-photon
+    type: web
+    url: https://docs.databricks.com/aws/en/compute/photon
+    local: references/web/databricks-photon.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 3000
+  - id: gluten-index
+    type: web
+    url: https://raw.githubusercontent.com/apache/gluten/main/docs/index.md
+    local: references/web/gluten-index.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 500
+  - id: gluten-configuration
+    type: web
+    url: https://raw.githubusercontent.com/apache/gluten/main/docs/Configuration.md
+    local: references/web/gluten-configuration.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 3000
+  - id: gluten-velox
+    type: web
+    url: https://raw.githubusercontent.com/apache/gluten/main/docs/get-started/Velox.md
+    local: references/web/gluten-velox.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 3000
+  - id: gluten-velox-limitations
+    type: web
+    url: https://raw.githubusercontent.com/apache/gluten/main/docs/velox-backend-limitations.md
+    local: references/web/gluten-velox-limitations.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 1500
+  - id: fabric-native-execution-engine
+    type: web
+    url: https://learn.microsoft.com/en-us/fabric/data-engineering/native-execution-engine-overview
+    local: references/web/fabric-native-execution-engine.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 3000
+  - id: dataproc-native-query-execution
+    type: web
+    url: https://docs.cloud.google.com/dataproc-serverless/docs/guides/native-query-execution
+    local: references/web/dataproc-native-query-execution.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 3000
+  - id: dataproc-spark-properties
+    type: web
+    url: https://docs.cloud.google.com/dataproc-serverless/docs/concepts/properties
+    local: references/web/dataproc-spark-properties.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 3000
+  - id: comet-readme
+    type: web
+    url: https://raw.githubusercontent.com/apache/datafusion-comet/main/README.md
+    local: references/web/comet-readme.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 1500
+  - id: comet-installation
+    type: web
+    url: https://raw.githubusercontent.com/apache/datafusion-comet/main/docs/source/user-guide/latest/installation.md
+    local: references/web/comet-installation.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 3000
+  - id: comet-tuning-memory
+    type: web
+    url: https://raw.githubusercontent.com/apache/datafusion-comet/main/docs/source/user-guide/latest/tuning/memory.md
+    local: references/web/comet-tuning-memory.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 3000
+  - id: comet-tuning-shuffle
+    type: web
+    url: https://raw.githubusercontent.com/apache/datafusion-comet/main/docs/source/user-guide/latest/tuning/shuffle.md
+    local: references/web/comet-tuning-shuffle.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 1500
+  - id: comet-tuning-operators
+    type: web
+    url: https://raw.githubusercontent.com/apache/datafusion-comet/main/docs/source/user-guide/latest/tuning/operators.md
+    local: references/web/comet-tuning-operators.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 1500
+  - id: comet-tuning-transitions
+    type: web
+    url: https://raw.githubusercontent.com/apache/datafusion-comet/main/docs/source/user-guide/latest/tuning/transitions.md
+    local: references/web/comet-tuning-transitions.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 1000
+  - id: comet-tuning-scans
+    type: web
+    url: https://raw.githubusercontent.com/apache/datafusion-comet/main/docs/source/user-guide/latest/tuning/scans.md
+    local: references/web/comet-tuning-scans.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 1000
+  - id: comet-scala-java-udfs
+    type: web
+    url: https://raw.githubusercontent.com/apache/datafusion-comet/main/docs/source/user-guide/latest/scala_java_udfs.md
+    local: references/web/comet-scala-java-udfs.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 1500
+  - id: comet-pyarrow-udfs
+    type: web
+    url: https://raw.githubusercontent.com/apache/datafusion-comet/main/docs/source/user-guide/latest/pyarrow-udfs.md
+    local: references/web/comet-pyarrow-udfs.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 800
+  - id: comet-understanding-plans
+    type: web
+    url: https://raw.githubusercontent.com/apache/datafusion-comet/main/docs/source/user-guide/latest/understanding-comet-plans.md
+    local: references/web/comet-understanding-plans.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 3000
+  - id: comet-compatibility-scans
+    type: web
+    url: https://raw.githubusercontent.com/apache/datafusion-comet/main/docs/source/user-guide/latest/compatibility/scans.md
+    local: references/web/comet-compatibility-scans.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 1000
+  - id: comet-compatibility-index
+    type: web
+    url: https://raw.githubusercontent.com/apache/datafusion-comet/main/docs/source/user-guide/latest/compatibility/index.md
+    local: references/web/comet-compatibility-index.md
+    fetched: 2026-10-05
+    spark_version: "n/a"
+    version_bucket: "n/a"
+    min_bytes: 800

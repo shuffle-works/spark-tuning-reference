@@ -3,7 +3,7 @@ build moved upstream, so this now checks content/*.md directly — the same
 invariants, verified before rendering rather than after).
 
 Run: uv run scripts/smoke_content.py
-Asserts: 31 manifest entries, each with an existing content file; every
+Asserts: 34 manifest entries, each with an existing content file; every
 sub-anchor's `{#id}` heading attribute present somewhere in the entries' files;
 no dangling footnote reference; no fenced code nested inside a blockquote.
 """
@@ -24,8 +24,8 @@ errors: list[str] = []
 for anchor, path in ENTRIES:
     if not path.exists():
         errors.append(f"manifest entry #{anchor}: missing content file {path.relative_to(ROOT)}")
-if len(ENTRIES) != 31:
-    errors.append(f"expected 31 manifest anchors, found {len(ENTRIES)}")
+if len(ENTRIES) != 34:
+    errors.append(f"expected 34 manifest anchors, found {len(ENTRIES)}")
 
 SOURCES = {anchor: path.read_text(encoding="utf-8") for anchor, path in ENTRIES if path.exists()}
 ALL_SOURCE = "\n".join(SOURCES.values())
@@ -76,5 +76,5 @@ if errors:
     print("\n".join(errors))
     print(f"\n{len(errors)} smoke error(s).")
     sys.exit(1)
-print(f"OK: 31 sections, all {len(ENTRIES)} anchors + {len(SUB_ANCHORS)} sub-anchors present, "
+print(f"OK: 34 sections, all {len(ENTRIES)} anchors + {len(SUB_ANCHORS)} sub-anchors present, "
       f"no dangling footnotes, no fence-in-blockquote.")

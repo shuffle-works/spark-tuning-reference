@@ -41,6 +41,9 @@ pages, so every `bottleneck-*` entry's `assembled_from:` points to it.
 | 3.13-bottleneck-reference.md | content/bottlenecks/broadcast-sizing.md | bottleneck-broadcast-sizing |
 | 3.14-metrics-glossary.md | content/14-metrics.md | metrics |
 | 3.15-config-quick-reference.md | content/15-config.md | config |
+| 3.16-native-engines.md | content/native-engines/photon.md | native-photon |
+| 3.16-native-engines.md | content/native-engines/gluten.md | native-gluten |
+| 3.16-native-engines.md | content/native-engines/comet.md | native-comet |
 
 Note: an earlier section-id draft listed `3.10-aqe`, but the answer file on disk
 is `3.10-adaptive-query-execution.md`. This table uses the real filename.
@@ -97,14 +100,14 @@ known false positive rather than a real dead link, since it resolves to a
 real id on its own manifest entry's chapter page. A sub-anchor id that isn't
 yet declared as any detector's `docAnchor` simply doesn't surface in that
 check at all, neither flagged nor validated, until a detector's `docAnchor`
-is pointed at it. Only an anchor outside this list of 43 (31 manifest
+is pointed at it. Only an anchor outside this list of 46 (34 manifest
 anchors plus these 12 sub-anchors) is a genuine
 gap.
 
 **`keywords` is the curatable join key, reserved for future use.** The
 `anchor`/`section`/`title` fields are mechanical projections of the manifest;
-`keywords` is the one field an author curates. As of 2026-08-30 it is fully
-populated (all 31 anchors), but sparkforensics does not read it: its detectors
+`keywords` is the one field an author curates. It is fully
+populated (all 34 anchors), but sparkforensics does not read it: its detectors
 match by a hardcoded `docAnchor` string per detector, not by intersecting
 `finding.type` against these terms. Keep it populated as new anchors are added
 so it's ready if/when sparkforensics adopts keyword-based matching, but don't

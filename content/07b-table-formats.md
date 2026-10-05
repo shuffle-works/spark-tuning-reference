@@ -42,6 +42,10 @@ Expire aggressively but safely. Run Delta `VACUUM` (keeping the 7-day floor unle
 
 Match the delete strategy to the workload. Enable Delta deletion vectors (`ALTER TABLE ... SET TBLPROPERTIES('delta.enableDeletionVectors' = true)`) so DML marks rows instead of rewriting files, remembering the marks are applied physically only on `OPTIMIZE` or `REORG TABLE ... APPLY (PURGE)`[^9]. On Iceberg, prefer merge-on-read deletes for update-heavy tables and compact the delete files[^6]. On Hudi, pick Copy-on-Write for read-heavy tables and Merge-on-Read for write-heavy or near-real-time ingestion[^10].
 
+## Managed-platform defaults
+
+Databricks automates part of this maintenance. Optimized writes improve file size as data is written, and auto compaction combines small files within table partitions.[^11] Predictive optimization runs `OPTIMIZE`, `VACUUM` and `ANALYZE` on Unity Catalog managed tables and is enabled by default for accounts created on or after November 11, 2024.[^12] Liquid clustering replaces table partitioning and `ZORDER`, Databricks recommends it for all new tables, and clustering keys can be redefined without rewriting existing data.[^13] On a platform that does this for you, check which of these features is already active before scheduling your own compaction.
+
 ## Sources
 
 [^1]: [Delta Lake: Optimizations (OSS)](https://docs.delta.io/latest/optimizations-oss.html)
@@ -54,3 +58,6 @@ Match the delete strategy to the workload. Enable Delta deletion vectors (`ALTER
 [^8]: [Apache Hudi: Cleaning](https://hudi.apache.org/docs/cleaning/)
 [^9]: [Delta Lake: Deletion Vectors](https://docs.delta.io/latest/delta-deletion-vectors.html)
 [^10]: [Apache Hudi: Table Types](https://hudi.apache.org/docs/table_types/)
+[^11]: [Control data file size (Databricks)](https://docs.databricks.com/aws/en/delta/tune-file-size)
+[^12]: [Predictive optimization for Unity Catalog managed tables (Databricks)](https://docs.databricks.com/aws/en/optimizations/predictive-optimization)
+[^13]: [Use liquid clustering for tables (Databricks)](https://docs.databricks.com/aws/en/delta/clustering)

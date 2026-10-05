@@ -68,6 +68,8 @@ For pandas/NumPy conversion at the driver, turn on Arrow explicitly rather than 
 
 Leave `spark.python.worker.reuse` at its default (`true`) unless there's a specific reason not to; it keeps a fixed pool of Python workers alive so a large broadcast variable isn't re-shipped to Python for every task[^4]. If a job spills at the Python-worker level, `spark.python.worker.memory` is the knob for that; if it's getting OOMKilled at the container level, look at executor overhead and `spark.executor.pyspark.memory` instead, keeping in mind the latter's `resource`-module limitations on macOS and its absence on Windows[^4][^6].
 
+> **Native engines:** [Photon](#native-photon), [Apache Gluten](#native-gluten) and [Apache DataFusion Comet](#native-comet) cover how UDFs behave under native engines.
+
 ## Sources
 
 [^1]: *Learning Spark, 2nd Edition*, Damji, Wenig, Das & Lee, ch. 5

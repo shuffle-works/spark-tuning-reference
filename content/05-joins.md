@@ -46,6 +46,8 @@ Multi-way join reordering is a deliberate opt-in: enable `spark.sql.cbo.enabled`
 
 For [skewed join keys](#bottleneck-skew), Spark offers two built-in alternatives to hand-rolled salting: AQE's skew-join handling (`spark.sql.adaptive.skewJoin.enabled`), which detects oversized shuffle partitions at runtime and splits them automatically, replicating if needed[^10][^5], and Databricks' declarative `SKEW` hint, which builds a skew-aware plan without any manual salting[^11]. Manual salting remains the fallback where neither is available: add a random salt column to the join key on both sides so a hot key spreads across many partitions (exploding the dimension side into one row per salt value and assigning a random salt on the fact side), then join on the composite `(key, salt)` pair[^12].
 
+> **Native engines:** [Photon](#native-photon), [Apache Gluten](#native-gluten) and [Apache DataFusion Comet](#native-comet) cover join settings and plan reading under native engines.
+
 ## Sources
 
 [^1]: *High Performance Spark, 2nd Edition*, Karau, Polak & Warren, ch. 6

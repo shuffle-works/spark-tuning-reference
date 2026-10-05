@@ -44,6 +44,8 @@ For shuffles you can't avoid, the main tuning levers are:
 - `spark.shuffle.service.enabled` (default `false`): turn on the external shuffle service so executors can be safely removed under dynamic allocation without losing shuffle state. Dynamic allocation's documentation lists shuffle tracking (`spark.dynamicAllocation.shuffleTracking.enabled`), shuffle-block decommissioning, and a custom `ShuffleDataIO` plugin backed by reliable storage as alternatives to enabling the service outright[^8].
 - Push-based shuffle: enable it with the paired server/client flags added in Spark 3.2.0: `spark.shuffle.push.server.mergedShuffleFileManagerImpl` on the server side, and `spark.shuffle.push.enabled=true` on the client side (both disabled by default; the client flag only takes effect together with the server-side one). It's currently only supported for Spark on YARN with the external shuffle service enabled[^8].
 
+> **Native engines:** [Apache Gluten](#native-gluten) and [Apache DataFusion Comet](#native-comet) cover shuffle settings under native engines.
+
 ## Sources
 
 [^1]: *Learning Spark, 2nd Edition*, Damji, Wenig, Das, Lee, ch. 7: Optimizing and Tuning Spark Applications

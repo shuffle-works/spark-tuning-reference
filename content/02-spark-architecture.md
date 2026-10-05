@@ -62,6 +62,8 @@ Parallelism and scheduling are both tunable from here. When `coalesce`'s single-
 
 For concurrent workloads, Spark also offers a fair scheduler as an alternative to the FIFO default, assigning tasks to concurrent jobs round-robin so each job gets a more even share of cluster resources[^4]; job pools and weights for finer-grained sharing are configured via `spark.scheduler.mode=FAIR` and the `spark.scheduler.pool` local property set on the submitting thread[^1]. Submitting jobs from separate Driver threads is what lets them run concurrently in the first place, rather than queuing behind each other[^10].
 
+> **Native engines:** [Photon](#native-photon), [Apache Gluten](#native-gluten) and [Apache DataFusion Comet](#native-comet) cover how native execution engines change the advice on this page.
+
 ## Sources
 
 [^1]: *Spark: The Definitive Guide*, Chambers & Zaharia, ch. 15–16

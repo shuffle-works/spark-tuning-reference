@@ -58,6 +58,8 @@ When enabling off-heap memory, always pair `spark.memory.offHeap.enabled=true` w
 
 > **PySpark:** if you need PySpark's own memory bounded rather than folded silently into the overhead, set `spark.executor.pyspark.memory` explicitly, though its enforcement relies on Python's `resource` module and won't work on Windows and won't actually limit anything on macOS[^4].
 
+> **Native engines:** [Apache Gluten](#native-gluten) and [Apache DataFusion Comet](#native-comet) cover off-heap memory sizing with native engines.
+
 ## Cache utilization {#bottleneck-cache-utilization}
 
 <span class="tag">CSTOR</span>

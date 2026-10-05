@@ -28,6 +28,8 @@ A cross-reference of the Spark and PySpark configuration properties discussed el
 
 The 200 default for `spark.sql.shuffle.partitions` hasn't moved since 1.1.0, and AQE (on by default since Spark 3.0) doesn't change that config value[^1][^2][^3]. What it changes is the effective number of partitions used at runtime. With `coalescePartitions.enabled` also on by default, Spark merges small contiguous post-shuffle partitions instead of running one task per configured partition[^1]. Because `parallelismFirst` defaults to `true` since 3.2.0, that merge target usually isn't the 64MB `advisoryPartitionSizeInBytes` value; it's derived from the cluster's default parallelism, with `minPartitionSize` (1MB) as the only enforced floor[^1][^5]. Databricks' own writeup on AQE shows the reduce-task count actually shrinking based on measured data volume[^9], and Learning Spark accordingly calls the static 200 default "too high for smaller or streaming workloads"[^3]. A related, distinct knob (`spark.sql.adaptive.coalescePartitions.minPartitionNum`) sets a minimum parallelism floor for data that's slow to compute despite being small, per High Performance Spark[^10].
 
+> **Managed platforms:** Some platforms set the shuffle partition count for you. On Databricks, setting `spark.sql.shuffle.partitions` to `auto` enables auto-optimized shuffle, which picks the number from the query plan and input data size,[^16] and the serverless documentation lists `auto` as its default.[^17] AWS Glue auto scaling sets `spark.sql.shuffle.partitions` and `spark.default.parallelism` from the job's maximum DPU, and a fixed value can be restored through `--conf` job parameters.[^18] On Amazon EMR, adaptive coalescing is on by default unless `spark.sql.shuffle.partitions` is explicitly set.[^19]
+
 ### `spark.memory.fraction` and `spark.memory.storageFraction`
 
 `spark.memory.fraction` sizes the unified execution/storage region (M) as a fraction of (JVM heap − 300MiB); the tuning guide frames it as a knob to fit M "comfortably within the JVM's old or tenured generation" rather than stating an enforced numeric range[^6]. The cited sources document no failure threshold tied to a specific value like 0.9. What they do document is the risk of pushing the fraction high: the complement, `1 − spark.memory.fraction`, is untracked "User Memory" for UDFs, Python/Arrow glue, and native buffers, and starving it (which is what raising the fraction toward 0.9 does) leads to "GC pressure or random OOMs," with no warning from Spark[^7].
@@ -91,3 +93,7 @@ G1 was designed as a CMS replacement aiming at both throughput and low latency: 
 [^13]: [ZGC — The Z Garbage Collector](https://wiki.openjdk.org/display/zgc)
 [^14]: [Job Scheduling — Spark](https://spark.apache.org/docs/latest/job-scheduling.html)
 [^15]: [The Apache Spark Optimization Checklist](https://luminousmen.com/post/the-apache-spark-optimization-checklist)
+[^16]: [Adaptive query execution (Databricks)](https://docs.databricks.com/aws/en/optimizations/aqe)
+[^17]: [Set Spark configuration properties on Databricks](https://docs.databricks.com/aws/en/spark/conf)
+[^18]: [Using auto scaling for AWS Glue](https://docs.aws.amazon.com/glue/latest/dg/auto-scaling.html)
+[^19]: [Optimize Spark performance (Amazon EMR)](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-spark-performance.html)

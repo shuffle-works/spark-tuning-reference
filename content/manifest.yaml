@@ -83,6 +83,26 @@ groups:
         brief: "Checklist of a dozen recurring Spark performance anti-patterns, each with what it is, how to detect it, why it hurts, and how to fix it."
         keywords: [checklist, anti-pattern]
 
+  - title: "Native Engines"
+    entries:
+      - file: content/native-engines/photon.md
+        anchor: native-photon
+        title: Photon
+        assembled_from: research/answers/3.16-native-engines.md
+        brief: "Databricks Photon: native C++ execution under Catalyst, enablement, what it replaces (joins, shuffle, scans, writes), unsupported UDF/RDD/Dataset work, and reading Photon operators in the Spark UI and query profile."
+        keywords: [photon, databricks, native-engine, fallback]
+      - file: content/native-engines/gluten.md
+        anchor: native-gluten
+        title: Apache Gluten
+        assembled_from: research/answers/3.16-native-engines.md
+        brief: "Apache Gluten (Velox backend): plugin and off-heap memory settings, columnar shuffle and join switches, fallback cases and how to read them in the plan, plus Gluten-based Fabric and Google Cloud native engines."
+        keywords: [gluten, velox, native-engine, fallback, off-heap]
+      - file: content/native-engines/comet.md
+        anchor: native-comet
+        title: Apache DataFusion Comet
+        assembled_from: research/answers/3.16-native-engines.md
+        brief: "Apache DataFusion Comet: plugin and shared off-heap pool sizing, native/columnar shuffle, ShuffledHashJoin tradeoffs, UDF and scan fallbacks, and reading Comet plans and transitions."
+        keywords: [comet, datafusion, native-engine, fallback, off-heap]
   - title: "Detector Catalog"
     entries:
       - file: content/bottlenecks/skew.md
@@ -161,8 +181,8 @@ groups:
         anchor: bottleneck-memory-utilization
         title: Memory Utilization
         assembled_from: research/answers/3.13-bottleneck-reference.md
-        brief: "Detecting and mitigating held-but-idle executor memory: cores sitting idle below allocated slots, dynamic-allocation idle timeouts that reclaim an executor's memory band, and the low-confidence peak-vs-allocated waste estimate."
-        keywords: [memory-utilization, idle-timeout]
+        brief: "Detecting and mitigating executor memory that is poorly used: peak heap above 95% (raise memory) or below 70% (over-provisioned) of spark.executor.memory, idle cores in held executors and the dynamic-allocation idle timeouts that reclaim them, and the low-confidence allocated-vs-used waste estimate."
+        keywords: [memory-utilization, heap-near-capacity, heap-over-provisioned, idle-timeout]
       - file: content/bottlenecks/duplicate-plan-subtree.md
         anchor: bottleneck-duplicate-plan-subtree
         title: Duplicate Plan Subtree
