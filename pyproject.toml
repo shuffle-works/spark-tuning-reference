@@ -20,7 +20,7 @@ dev = [
   # test_mcp_server.py imports scripts.mcp_server, which needs the mcp
   # package to import at all (fakes stand in for the actual model/collection,
   # so the heavier research group stays out of dev).
-  "mcp>=1.0",
+  "mcp>=2.2.0",
   # ask.py and fetch_references.py's main() print through rich; it's a light,
   # pure-Python dep (unlike chromadb/sentence-transformers/trafilatura, which
   # stay research-only), so it's cheap to install here just to test main()'s
@@ -28,7 +28,7 @@ dev = [
   "rich>=13",
 ]
 mcp = [
-  "mcp>=1.0",
+  "mcp>=2.2.0",
   # the server does real retrieval, so it needs the embedding/index runtime
   {include-group = "research"},
 ]
